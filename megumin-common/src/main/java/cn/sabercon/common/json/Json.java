@@ -1,14 +1,13 @@
 package cn.sabercon.common.json;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -34,50 +33,32 @@ public class Json {
         return mapper;
     }
 
+    @SneakyThrows
     public static String write(Object value) {
-        try {
-            return mapper.writeValueAsString(value);
-        } catch (JsonProcessingException e) {
-            log.error("json 序列化失败, 原值: {}", value);
-            return null;
-        }
+        return mapper.writeValueAsString(value);
+
     }
 
+    @SneakyThrows
     public static <T> T read(String content, TypeReference<T> valueTypeRef) {
-        try {
-            return mapper.readValue(content, valueTypeRef);
-        } catch (JsonProcessingException e) {
-            log.error("json 反序列化失败, 原值: {}", content);
-            return null;
-        }
+        return mapper.readValue(content, valueTypeRef);
     }
 
+    @SneakyThrows
     public static <T> T read(String content, Class<T> valueType) {
-        try {
-            return mapper.readValue(content, valueType);
-        } catch (JsonProcessingException e) {
-            log.error("json 反序列化失败, 原值: {}", content);
-            return null;
-        }
+        return mapper.readValue(content, valueType);
+
     }
 
+    @SneakyThrows
     public static JsonNode read(String content) {
-        try {
-            return mapper.readTree(content);
-        } catch (JsonProcessingException e) {
-            log.error("json 反序列化失败, 原值: {}", content);
-            return null;
-        }
+        return mapper.readTree(content);
     }
 
+    @SneakyThrows
     public static <T> List<T> readList(String content, Class<T> valueType) {
-        try {
-            var collectionType = mapper.getTypeFactory().constructCollectionType(List.class, valueType);
-            return mapper.readValue(content, collectionType);
-        } catch (JsonProcessingException e) {
-            log.error("json 反序列化失败, 原值: {}", content);
-            return Collections.emptyList();
-        }
+        var collectionType = mapper.getTypeFactory().constructCollectionType(List.class, valueType);
+        return mapper.readValue(content, collectionType);
     }
 
     public static <T> T convert(Object fromValue, Class<T> toValueType) {
