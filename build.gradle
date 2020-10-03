@@ -1,12 +1,11 @@
 buildscript {
     repositories {
-        mavenLocal()
-        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         mavenCentral()
     }
 
     dependencies {
-        classpath('org.springframework.boot:spring-boot-gradle-plugin:2.3.4.RELEASE')
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.3.4.RELEASE'
     }
 }
 
@@ -21,20 +20,15 @@ allprojects {
     sourceCompatibility = '11'
 
     configurations {
-        compileOnly {
-            extendsFrom annotationProcessor
-        }
+        compileOnly { extendsFrom annotationProcessor }
     }
 
     repositories {
-        mavenLocal()
-        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         mavenCentral()
     }
 
-    test {
-        useJUnitPlatform()
-    }
+    test { useJUnitPlatform() }
 }
 
 subprojects {

@@ -1,0 +1,10 @@
+{
+  "properties": [
+    {
+      "name": "sabercon.enable-common",
+      "type": "java.lang.Boolean",
+      "description": "enable the auto configuration of common part",
+      "defaultValue": "false"
+    }
+  ]
+}
