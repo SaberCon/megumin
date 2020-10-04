@@ -2,6 +2,7 @@ package cn.sabercon.common.enums;
 
 import cn.sabercon.common.exception.ServiceException;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -34,19 +35,22 @@ public interface ResultCode {
     /**
      * 抛出以当前状态码为错误码的异常
      */
-    default void throwExcpWithMsg(String msg, Object... args) {
+    default void throwExceptionWithMsg(String msg, Object... args) {
         throw new ServiceException(msg, code(), key(), args);
     }
 
-    default void throwExcp(Object... args) {
-        throwExcpWithMsg(msg(), args);
+    default void throwException(Object... args) {
+        throwExceptionWithMsg(msg(), args);
     }
 
-    default Supplier<ServiceException> excpSupplierWithMsg(String msg, Object... args) {
+    /**
+     * 主要用于简化 {@link Optional#orElseThrow(Supplier)} 的代码
+     */
+    default Supplier<ServiceException> exceptionSupplierWithMsg(String msg, Object... args) {
         return () -> new ServiceException(msg, code(), key(), args);
     }
 
-    default Supplier<ServiceException> excpSupplier(Object... args) {
-        return excpSupplierWithMsg(msg(), args);
+    default Supplier<ServiceException> exceptionSupplier(Object... args) {
+        return exceptionSupplierWithMsg(msg(), args);
     }
 }

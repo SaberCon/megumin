@@ -19,7 +19,8 @@ public enum CommonCode implements ResultCode {
     FAILURE("B0001", "failure"),
     PARAM_WRONG("B0002", "param is wrong"),
     ASSERTION_FAILURE("B0003", "the assertion failed"),
-    SERVER_NOT_AVAILABLE("C0001", "the server is not available"),
+    UNKNOWN_ERROR("C0001", "unknown error occurred"),
+    SERVER_NOT_AVAILABLE("C0002", "the server is not available"),
     REMOTE_SERVICE_NOT_AVAILABLE("D0001", "the remote server is not available"),
     ;
 

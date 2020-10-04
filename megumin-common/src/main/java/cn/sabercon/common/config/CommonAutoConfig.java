@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
- * 公共包自动装配
+ * 开启公共包自动装配
  *
  * @author SaberCon
  * @since 1.0.0

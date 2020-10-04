@@ -17,16 +17,6 @@ import java.util.Objects;
 public interface IntEnum {
 
     /**
-     * @return 将给定值转换为对应枚举的枚举项, 转换失败时返回 null
-     */
-    static <T extends IntEnum> T convert(Class<T> eClass, Integer val) {
-        if (Objects.isNull(val)) {
-            return null;
-        }
-        return Arrays.stream(eClass.getEnumConstants()).filter(e -> e.val() == val).findFirst().orElse(null);
-    }
-
-    /**
      * @return 代表枚举项的整型值
      */
     @JsonValue
@@ -44,5 +34,15 @@ public interface IntEnum {
      */
     default boolean match(Integer val) {
         return val != null && val == val();
+    }
+
+    /**
+     * @return 将给定值转换为对应枚举的枚举项, 转换失败时返回 null
+     */
+    static <T extends IntEnum> T convert(Class<T> enumClass, Integer val) {
+        if (Objects.isNull(val)) {
+            return null;
+        }
+        return Arrays.stream(enumClass.getEnumConstants()).filter(e -> e.val() == val).findFirst().orElse(null);
     }
 }

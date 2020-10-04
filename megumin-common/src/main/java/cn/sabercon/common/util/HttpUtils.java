@@ -13,6 +13,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
+ * http 相关操作工具类
+ *
  * @author SaberCon
  * @since 1.0.0
  */

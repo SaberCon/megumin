@@ -1,7 +1,6 @@
 package cn.sabercon.common;
 
-import cn.sabercon.common.enums.IntEnum;
-import cn.sabercon.common.enums.type.SortEnum;
+import cn.sabercon.common.util.TimeUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -11,8 +10,7 @@ import org.junit.jupiter.api.Test;
 class SimpleTest {
 
     @Test
-    void test() {
-        var anEnum = IntEnum.convert(SortEnum.class, 2);
-        System.out.println(anEnum);
+    void test() throws Exception {
+        System.out.println(TimeUtils.parseDateTime("2020-11-11"));
     }
 }

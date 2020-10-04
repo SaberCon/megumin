@@ -4,6 +4,7 @@ import cn.sabercon.common.enums.IntEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import org.springframework.data.domain.Sort;
 
 /**
  * 排序类型
@@ -16,10 +17,11 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public enum SortEnum implements IntEnum {
 
-    ASC(1, "升序"),
-    DESC(2, "降序"),
+    ASC(1, "升序", Sort.Direction.ASC),
+    DESC(2, "降序", Sort.Direction.DESC),
     ;
 
     private final int val;
     private final String desc;
+    private final Sort.Direction direction;
 }

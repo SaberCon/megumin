@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
+ * {@link IntEnum} 的反序列化器
+ *
  * @author SaberCon
  * @since 1.0.0
  */

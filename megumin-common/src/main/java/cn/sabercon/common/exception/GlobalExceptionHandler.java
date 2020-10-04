@@ -3,12 +3,18 @@ package cn.sabercon.common.exception;
 import cn.sabercon.common.domian.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.util.Collection;
 import java.util.stream.Collectors;
+
+import static cn.sabercon.common.enums.CommonCode.PARAM_WRONG;
+import static cn.sabercon.common.enums.CommonCode.UNKNOWN_ERROR;
 
 /**
  * 通用的全局异常处理器
@@ -23,7 +29,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public Result<Void> handleException(Exception e) {
         log.error(e.getMessage(), e);
-        return Result.fail(e.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
+        return Result.fail(UNKNOWN_ERROR.code(), e.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
     }
 
     @ExceptionHandler(value = ServiceException.class)
@@ -38,9 +44,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = ConstraintViolationException.class)
     public Result<Void> handleConstraintViolationException(ConstraintViolationException e) {
         log.warn("catch ConstraintViolationException: {}", e.getMessage());
-        return Result.fail(e.getConstraintViolations().stream()
-                .map(violation -> violation.getPropertyPath() + ": " + violation.getMessage())
-                .collect(Collectors.joining(",")));
+        return Result.fail(PARAM_WRONG.code(), buildViolationMsg(e.getConstraintViolations()));
     }
 
     /**
@@ -49,19 +53,31 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BindException.class)
     public Result<Void> handleBindException(BindException e) {
         log.warn("catch BindException: {}", e.getMessage());
-        return Result.fail(e.getBindingResult().getFieldErrors().stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                .collect(Collectors.joining(",")));
+        return Result.fail(PARAM_WRONG.code(), buildErrorMsg(e.getBindingResult().getFieldErrors()));
     }
 
     /**
-     * 统一处理请求参数校验 (实体对象请求体传参)
+     * 统一处理请求参数校验 (实体对象 json 请求体传参)
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Result<Void> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.warn("catch MethodArgumentNotValidException: {}", e.getMessage());
-        return Result.fail(e.getBindingResult().getFieldErrors().stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                .collect(Collectors.joining(",")));
+        return Result.fail(PARAM_WRONG.code(), buildErrorMsg(e.getBindingResult().getFieldErrors()));
+    }
+
+    private static String buildErrorMsg(Collection<FieldError> errors) {
+        return errors.stream().map(e -> e.getField() + ":" + e.getDefaultMessage())
+                .collect(Collectors.joining(","));
+    }
+
+    private static String buildViolationMsg(Collection<ConstraintViolation<?>> violations) {
+        return violations.stream().map(v -> {
+            var field = "";
+            for (var node : v.getPropertyPath()) {
+                // 取最后一个结点即为参数的名称
+                field = node.getName();
+            }
+            return field + ":" + v.getMessage();
+        }).collect(Collectors.joining(","));
     }
 }

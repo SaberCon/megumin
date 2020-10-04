@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.lang.annotation.*;
 
 /**
+ * 集成 controller 注解, 默认开启参数校验
+ *
  * @author SaberCon
  * @since 1.0.0
  */

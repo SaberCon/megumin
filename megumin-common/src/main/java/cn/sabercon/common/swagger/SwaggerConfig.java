@@ -11,6 +11,8 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 /**
+ * swagger 自定义配置
+ *
  * @author SaberCon
  * @since 1.0.0
  */
