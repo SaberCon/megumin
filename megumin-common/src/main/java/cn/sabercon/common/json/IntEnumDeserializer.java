@@ -9,6 +9,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -23,13 +24,17 @@ public class IntEnumDeserializer extends JsonDeserializer<IntEnum> {
     @Override
     @SneakyThrows
     public IntEnum deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        var value = p.getText();
-        if (Objects.isNull(value) || !NumberUtil.isInteger(value)) {
+        if (Objects.isNull(p.getText()) || !NumberUtil.isInteger(p.getText())) {
+            // 非整型不解析
             return null;
         }
-        var context = p.getParsingContext();
-        var enumClass = (Class<IntEnum>) context.getCurrentValue().getClass()
-                .getDeclaredField(context.getCurrentName()).getType();
-        return IntEnum.convert(enumClass, Integer.parseInt(value));
+        var targetClass = p.getParsingContext().getCurrentValue().getClass()
+                .getDeclaredField(p.getParsingContext().getCurrentName()).getType();
+        if (!Enum.class.isAssignableFrom(targetClass) || !IntEnum.class.isAssignableFrom(targetClass)) {
+            return null;
+        }
+        int value = p.getIntValue();
+        return Arrays.stream(targetClass.getEnumConstants()).map(IntEnum.class::cast)
+                .filter(e -> e.val() == value).findFirst().orElse(null);
     }
 }

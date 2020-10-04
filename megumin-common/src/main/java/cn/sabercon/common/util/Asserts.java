@@ -22,7 +22,7 @@ public class Asserts {
         if (condition) {
             return;
         }
-        resultCode.throwExceptionWithMsg(msg);
+        throw resultCode.exceptionWithMsg(msg);
     }
 
     public static void isTrue(boolean condition, ResultCode resultCode) {

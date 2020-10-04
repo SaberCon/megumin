@@ -51,11 +51,11 @@ public class JsonConfig {
     }
 
     private void applyCustomSetting(ObjectMapper mapper) {
-        mapper.registerModule(getTimeModule());
+        mapper.registerModule(timeModule());
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
-    private SimpleModule getTimeModule() {
+    private SimpleModule timeModule() {
         return new JavaTimeModule().addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(SECOND_FORMATTER))
                 .addSerializer(LocalDate.class, new LocalDateSerializer(DATE_FORMATTER))
                 .addSerializer(LocalTime.class, new LocalTimeSerializer(TIME_FORMATTER))

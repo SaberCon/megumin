@@ -20,7 +20,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PageParam {
+public class PageQuery {
 
     /**
      * 页码

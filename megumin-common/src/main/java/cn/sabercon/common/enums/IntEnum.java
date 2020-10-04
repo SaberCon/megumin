@@ -30,13 +30,6 @@ public interface IntEnum {
     }
 
     /**
-     * @return 给定值是否与当前枚举项匹配
-     */
-    default boolean match(Integer val) {
-        return val != null && val == val();
-    }
-
-    /**
      * @return 将给定值转换为对应枚举的枚举项, 转换失败时返回 null
      */
     static <T extends IntEnum> T convert(Class<T> enumClass, Integer val) {
@@ -44,5 +37,19 @@ public interface IntEnum {
             return null;
         }
         return Arrays.stream(enumClass.getEnumConstants()).filter(e -> e.val() == val).findFirst().orElse(null);
+    }
+
+    /**
+     * @return 将给定值转换为对应枚举的枚举项, 转换失败时返回 null
+     */
+    static <T extends IntEnum> T convert(Class<T> enumClass, String val) {
+        if (Objects.isNull(val)) {
+            return null;
+        }
+        try {
+            return convert(enumClass, Integer.parseInt(val));
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 }
