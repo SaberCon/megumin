@@ -1,13 +1,11 @@
 package cn.sabercon.user;
 
+import cn.hutool.core.date.DateUtil;
 import cn.sabercon.common.enums.type.SortEnum;
-import cn.sabercon.user.ctrl.Demo;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.mongodb.core.MongoTemplate;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author SaberCon
@@ -16,17 +14,11 @@ import java.time.LocalDateTime;
 @SpringBootTest
 class CommonTest {
 
-    @Autowired
-    MongoTemplate mongoTemplate;
-
     @Test
     void test() {
-        Demo demo = new Demo();
-        demo.setDate(LocalDateTime.now());
-        demo.setName("hello");
-        demo.setSort(SortEnum.ASC);
-        mongoTemplate.save(demo);
-        Demo demo1 = mongoTemplate.findById(demo.getId(), Demo.class);
-        System.out.println(demo1);
+        System.out.println("hello");
+        System.out.println(System.getProperty("java.class.path"));
+        System.out.println(DateUtil.format(new Date(), "yyyy-MM-dd"));
+        System.out.println(SortEnum.ASC);
     }
 }
