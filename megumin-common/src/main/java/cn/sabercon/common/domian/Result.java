@@ -1,9 +1,11 @@
 package cn.sabercon.common.domian;
 
-import cn.sabercon.common.enums.CommonCode;
+import cn.sabercon.common.enums.code.CommonCode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Objects;
 
 /**
  * 通用的返回对象
@@ -54,6 +56,9 @@ public class Result<T> {
     }
 
     public static <T> Result<T> ok(T data) {
+        if (Objects.isNull(data)) {
+            return ok();
+        }
         return new Result<>(CommonCode.SUCCESS.code(), null, data);
     }
 

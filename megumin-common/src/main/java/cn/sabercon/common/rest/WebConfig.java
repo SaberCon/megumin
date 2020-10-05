@@ -1,6 +1,6 @@
-package cn.sabercon.common.config;
+package cn.sabercon.common.rest;
 
-import cn.sabercon.common.enums.IntEnum;
+import cn.sabercon.common.enums.intenum.IntEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Configuration;

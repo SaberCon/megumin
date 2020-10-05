@@ -1,7 +1,7 @@
 package cn.sabercon.common.util;
 
-import cn.sabercon.common.enums.CommonCode;
-import cn.sabercon.common.enums.ResultCode;
+import cn.sabercon.common.enums.code.CommonCode;
+import cn.sabercon.common.enums.code.ResultCode;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

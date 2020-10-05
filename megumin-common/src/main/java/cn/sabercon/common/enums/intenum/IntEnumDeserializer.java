@@ -1,7 +1,6 @@
-package cn.sabercon.common.json;
+package cn.sabercon.common.enums.intenum;
 
 import cn.hutool.core.util.NumberUtil;
-import cn.sabercon.common.enums.IntEnum;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;

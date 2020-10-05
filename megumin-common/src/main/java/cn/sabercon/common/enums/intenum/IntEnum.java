@@ -1,6 +1,5 @@
-package cn.sabercon.common.enums;
+package cn.sabercon.common.enums.intenum;
 
-import cn.sabercon.common.json.IntEnumDeserializer;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 

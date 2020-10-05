@@ -1,6 +1,7 @@
-package cn.sabercon.common.ctrl;
+package cn.sabercon.common.rest;
 
 
+import cn.sabercon.common.domian.Result;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,8 +11,10 @@ import java.lang.annotation.*;
 
 /**
  * 集成 controller 注解, 默认开启参数校验
+ * 此注解的返回值会被包装成 {@link Result}
  *
  * @author SaberCon
+ * @see ResultWrapAdvice
  * @since 1.0.0
  */
 @Validated
@@ -20,7 +23,7 @@ import java.lang.annotation.*;
 @RestController
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ValidatedController {
+public @interface ServiceController {
 
     @AliasFor(annotation = RequestMapping.class)
     String value() default "";

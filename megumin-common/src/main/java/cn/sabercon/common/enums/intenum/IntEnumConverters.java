@@ -1,6 +1,5 @@
-package cn.sabercon.common.convert;
+package cn.sabercon.common.enums.intenum;
 
-import cn.sabercon.common.enums.IntEnum;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.core.convert.converter.Converter;

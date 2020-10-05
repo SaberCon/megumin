@@ -1,6 +1,5 @@
-package cn.sabercon.common.data;
+package cn.sabercon.common.enums.intenum;
 
-import cn.sabercon.common.enums.IntEnum;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.DynamicParameterizedType;
@@ -22,7 +21,7 @@ import java.util.Properties;
  */
 public class IntEnumType implements UserType, DynamicParameterizedType {
 
-    public static final String CLASS_FULL_NAME = "cn.sabercon.common.data.IntEnumType";
+    public static final String CLASS_FULL_NAME = "cn.sabercon.common.enums.intenum.IntEnumType";
 
     private Class<? extends IntEnum> enumClass;
 

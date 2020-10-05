@@ -1,6 +1,5 @@
-package cn.sabercon.common.convert;
+package cn.sabercon.common.time;
 
-import cn.sabercon.common.util.TimeUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.core.convert.converter.Converter;

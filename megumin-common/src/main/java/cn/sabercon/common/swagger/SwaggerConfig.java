@@ -1,6 +1,6 @@
 package cn.sabercon.common.swagger;
 
-import cn.sabercon.common.constant.CommonConstant;
+import cn.sabercon.common.CommonConstant;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;

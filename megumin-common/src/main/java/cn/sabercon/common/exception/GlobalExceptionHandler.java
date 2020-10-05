@@ -13,8 +13,8 @@ import javax.validation.ConstraintViolationException;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import static cn.sabercon.common.enums.CommonCode.PARAM_WRONG;
-import static cn.sabercon.common.enums.CommonCode.UNKNOWN_ERROR;
+import static cn.sabercon.common.enums.code.CommonCode.PARAM_WRONG;
+import static cn.sabercon.common.enums.code.CommonCode.UNKNOWN_ERROR;
 
 /**
  * 通用的全局异常处理器

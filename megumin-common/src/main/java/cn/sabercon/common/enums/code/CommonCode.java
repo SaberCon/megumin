@@ -1,4 +1,4 @@
-package cn.sabercon.common.enums;
+package cn.sabercon.common.enums.code;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

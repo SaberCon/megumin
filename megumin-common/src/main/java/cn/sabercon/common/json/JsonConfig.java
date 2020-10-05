@@ -21,7 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import static cn.sabercon.common.util.TimeUtils.*;
+import static cn.sabercon.common.time.TimeUtils.*;
 
 /**
  * 自定义全局的 json 操作

@@ -1,4 +1,4 @@
-package cn.sabercon.common.util;
+package cn.sabercon.common.time;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

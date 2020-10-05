@@ -1,6 +1,6 @@
-package cn.sabercon.common.enums.type;
+package cn.sabercon.common.enums.intenum.type;
 
-import cn.sabercon.common.enums.IntEnum;
+import cn.sabercon.common.enums.intenum.IntEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;

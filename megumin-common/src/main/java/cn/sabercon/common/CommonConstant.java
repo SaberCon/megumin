@@ -1,4 +1,4 @@
-package cn.sabercon.common.constant;
+package cn.sabercon.common;
 
 /**
  * 通用常数

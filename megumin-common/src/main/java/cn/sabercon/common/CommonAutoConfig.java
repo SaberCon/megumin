@@ -1,6 +1,5 @@
-package cn.sabercon.common.config;
+package cn.sabercon.common;
 
-import cn.sabercon.common.constant.CommonConstant;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.ComponentScan;
 
