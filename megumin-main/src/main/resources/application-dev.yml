@@ -1,0 +1,50 @@
+server:
+  port: 80
+spring:
+  datasource:
+    url: jdbc:mysql://www.sabercon.cn:3306/megumin?serverTimezone=Asia/Shanghai
+    username: root
+    password: ENC(z+RhuUIJkbiC1SvLB60veNQ7af5hmZk82EHLLErazaAJ/1u8Hsq25C0ByNmZJNFo)
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  data:
+    mongodb:
+      host: www.sabercon.cn
+      port: 27017
+      database: megumin
+      username: root
+      password: ENC(z+RhuUIJkbiC1SvLB60veNQ7af5hmZk82EHLLErazaAJ/1u8Hsq25C0ByNmZJNFo)
+      authentication-database: admin
+  redis:
+    host: www.sabercon.cn
+    port: 6379
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+    shutdown:
+      enabled: true
+logging:
+  level:
+    web: debug
+    sql: debug
+    cn.sabercon: debug
+aliyun:
+  accessKeyId: LTAI4GAHMt2GkFFmb25d9K9L
+  accessKeySecret: ENC(Py3LrvXPsnHd5TJFdVlm1Lkm5q0W1WRwjKhlvzGWQ0Vjy6mNeRvn8+2cKY8flZvNI3MfHa6rNqRFKmzy5A1w/Q==)
+  sms:
+    signName: SaberCon
+    templateCode: SMS_175480786
+  oss:
+    endpoint: oss-cn-shenzhen.aliyuncs.com
+    bucketName: motto
+    accessDomain: http://oss.sabercon.cn
+    dir:
+      img: img
+      file: file

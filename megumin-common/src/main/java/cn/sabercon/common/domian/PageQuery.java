@@ -1,6 +1,6 @@
 package cn.sabercon.common.domian;
 
-import cn.sabercon.common.enums.intenum.type.SortEnum;
+import cn.sabercon.common.enums.type.SortEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

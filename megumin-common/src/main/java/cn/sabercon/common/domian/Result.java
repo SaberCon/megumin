@@ -1,6 +1,6 @@
 package cn.sabercon.common.domian;
 
-import cn.sabercon.common.enums.code.CommonCode;
+import cn.sabercon.common.enums.CommonCode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -64,9 +64,5 @@ public class Result<T> {
 
     public static <T> Result<T> fail(String code, String msg) {
         return new Result<>(code, msg, null);
-    }
-
-    public static <T> Result<T> fail(String msg) {
-        return fail(CommonCode.FAILURE.code(), msg);
     }
 }
