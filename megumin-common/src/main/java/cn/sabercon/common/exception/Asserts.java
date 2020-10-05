@@ -1,4 +1,4 @@
-package cn.sabercon.common.util;
+package cn.sabercon.common.exception;
 
 import cn.sabercon.common.enums.code.CommonCode;
 import cn.sabercon.common.enums.code.ResultCode;

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 /**
- * 包装返回结果的切面
+ * 包装返回结果为 {@link Result} 的切面
  *
  * @author SaberCon
  * @since 1.0.0

@@ -3,3 +3,6 @@ spring:
     active: dev
 sabercon:
   enable-common: true
+jasypt:
+  encryptor:
+    password: sabercon
