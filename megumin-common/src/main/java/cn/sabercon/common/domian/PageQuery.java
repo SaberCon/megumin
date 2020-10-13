@@ -1,6 +1,6 @@
 package cn.sabercon.common.domian;
 
-import cn.sabercon.common.enums.type.SortEnum;
+import cn.sabercon.common.enums.type.SortType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -48,12 +48,12 @@ public class PageQuery {
         return PageRequest.of(pageNum - 1, pageSize, sort);
     }
 
-    public PageRequest toPageRequest(SortEnum sort, String... properties) {
+    public PageRequest toPageRequest(SortType sort, String... properties) {
         return PageRequest.of(pageNum - 1, pageSize, sort.direction(), properties);
     }
 
     public PageRequest toPageRequest(String... properties) {
-        return PageRequest.of(pageNum - 1, pageSize, SortEnum.ASC.direction(), properties);
+        return PageRequest.of(pageNum - 1, pageSize, SortType.ASC.direction(), properties);
     }
 
     public <T> PageModel<T> toPageModel(List<T> list, long total) {

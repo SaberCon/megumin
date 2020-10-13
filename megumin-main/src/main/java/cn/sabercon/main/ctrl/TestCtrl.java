@@ -13,7 +13,6 @@ public class TestCtrl {
 
     @GetMapping
     public void test() {
-
     }
 
     @PostMapping

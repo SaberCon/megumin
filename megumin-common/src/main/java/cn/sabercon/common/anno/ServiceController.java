@@ -18,12 +18,12 @@ import java.lang.annotation.*;
  * @see ResultWrapAdvice
  * @since 1.0.0
  */
-@Validated
-@Documented
-@RequestMapping
-@RestController
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Validated
+@RequestMapping
+@RestController
 public @interface ServiceController {
 
     @AliasFor(annotation = RequestMapping.class)

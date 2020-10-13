@@ -15,7 +15,7 @@ import org.springframework.data.domain.Sort;
 @Getter
 @AllArgsConstructor
 @Accessors(fluent = true)
-public enum SortEnum implements IntEnum {
+public enum SortType implements IntEnum {
 
     ASC(1, "升序", Sort.Direction.ASC),
     DESC(2, "降序", Sort.Direction.DESC),
