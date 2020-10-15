@@ -30,7 +30,7 @@ public class MongoHelper {
         long skip = query.getSkip();
         int limit = query.getLimit();
         // 加上新的分页参数
-        query.skip(pageQuery.calcSkip()).limit(pageQuery.getPageSize());
+        query.skip(pageQuery.calcSkip()).limit(pageQuery.getS());
         var list = template.find(query, entityClass);
         // 还原原来的分页参数
         query.skip(skip).limit(limit);

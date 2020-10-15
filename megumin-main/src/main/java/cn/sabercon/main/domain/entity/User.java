@@ -3,6 +3,7 @@ package cn.sabercon.main.domain.entity;
 import cn.sabercon.common.domian.BaseEntity;
 import cn.sabercon.common.enums.IntEnumType;
 import cn.sabercon.common.enums.type.Gender;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 
@@ -22,6 +23,7 @@ import java.time.LocalDate;
 @Table(name = "t_user")
 public class User extends BaseEntity {
 
+    @ApiModelProperty("姓名")
     @Column(nullable = false, unique = true)
     String username;
 
@@ -38,6 +40,7 @@ public class User extends BaseEntity {
 
     String profile;
 
+    @ApiModelProperty("性别")
     @Type(type = IntEnumType.CLASS_FULL_NAME)
     Gender gender;
 

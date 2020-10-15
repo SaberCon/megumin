@@ -20,11 +20,11 @@ public class PageModel<T> {
     /**
      * 页码
      */
-    private int pageNum;
+    private int page;
     /**
      * 页幅
      */
-    private int pageSize;
+    private int size;
     /**
      * 总数
      */
@@ -39,8 +39,8 @@ public class PageModel<T> {
      */
     public static <T> PageModel<T> from(Page<T> pageInfo) {
         var page = new PageModel<T>();
-        page.setPageNum(pageInfo.getNumber());
-        page.setPageSize(pageInfo.getSize());
+        page.setPage(pageInfo.getNumber());
+        page.setSize(pageInfo.getSize());
         page.setTotal(pageInfo.getTotalElements());
         page.setList(pageInfo.getContent());
         return page;
@@ -48,8 +48,8 @@ public class PageModel<T> {
 
     public <U> PageModel<U> map(Function<? super T, ? extends U> converter) {
         var newPage = new PageModel<U>();
-        newPage.setPageNum(pageNum);
-        newPage.setPageSize(pageSize);
+        newPage.setPage(page);
+        newPage.setSize(size);
         newPage.setTotal(total);
         newPage.setList(list.stream().map(converter).collect(Collectors.toList()));
         return newPage;

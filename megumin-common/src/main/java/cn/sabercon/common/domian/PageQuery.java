@@ -26,40 +26,40 @@ public class PageQuery {
      * 页码
      */
     @Positive
-    private int pageNum = 1;
+    private int p = 1;
     /**
      * 页幅
      */
     @Positive
-    private int pageSize = 10;
+    private int s = 10;
 
     /**
      * @return 跳过的条目数, 用于 limit 查询
      */
     public long calcSkip() {
-        return ((long) pageSize) * (pageNum - 1);
+        return ((long) s) * (p - 1);
     }
 
     public PageRequest toPageRequest() {
-        return PageRequest.of(pageNum - 1, pageSize);
+        return PageRequest.of(p - 1, s);
     }
 
     public PageRequest toPageRequest(Sort sort) {
-        return PageRequest.of(pageNum - 1, pageSize, sort);
+        return PageRequest.of(p - 1, s, sort);
     }
 
     public PageRequest toPageRequest(SortType sort, String... properties) {
-        return PageRequest.of(pageNum - 1, pageSize, sort.direction(), properties);
+        return PageRequest.of(p - 1, s, sort.direction(), properties);
     }
 
     public PageRequest toPageRequest(String... properties) {
-        return PageRequest.of(pageNum - 1, pageSize, SortType.ASC.direction(), properties);
+        return PageRequest.of(p - 1, s, SortType.ASC.direction(), properties);
     }
 
     public <T> PageModel<T> toPageModel(List<T> list, long total) {
         var page = new PageModel<T>();
-        page.setPageNum(pageNum);
-        page.setPageSize(pageSize);
+        page.setPage(p);
+        page.setSize(s);
         page.setList(list);
         page.setTotal(total);
         return page;
