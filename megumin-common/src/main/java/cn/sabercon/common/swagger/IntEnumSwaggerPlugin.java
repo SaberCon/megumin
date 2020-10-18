@@ -5,8 +5,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import springfox.documentation.builders.ExampleBuilder;
 import springfox.documentation.builders.ModelSpecificationBuilder;
 import springfox.documentation.schema.ScalarType;
+import springfox.documentation.service.AllowableListValues;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.schema.ModelPropertyBuilderPlugin;
 import springfox.documentation.spi.schema.contexts.ModelPropertyContext;
@@ -17,6 +19,8 @@ import springfox.documentation.spi.service.contexts.ParameterExpansionContext;
 import springfox.documentation.swagger.common.SwaggerPluginSupport;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 解析 {@link IntEnum} 的描述信息到 swagger 文档的插件
@@ -56,6 +60,11 @@ public class IntEnumSwaggerPlugin implements ModelPropertyBuilderPlugin, Paramet
             return;
         }
         var builder = context.getRequestParameterBuilder();
+        List<String> valueList = Arrays.stream(context.getFieldType().getErasedType().getEnumConstants())
+                .map(IntEnum.class::cast).map(IntEnum::val).map(String::valueOf).collect(Collectors.toList());
+        builder.query(p -> p.model(c -> c.scalarModel(ScalarType.INTEGER))
+                .enumerationFacet(e -> e.allowedValues(new AllowableListValues(valueList, "LIST"))));
+        builder.example(new ExampleBuilder().value(valueList.get(0)).build());
         builder.description(buildDesc(builder.build().getDescription(), context.getFieldType().getErasedType()));
     }
 
@@ -69,6 +78,7 @@ public class IntEnumSwaggerPlugin implements ModelPropertyBuilderPlugin, Paramet
             return;
         }
         var builder = parameterContext.requestParameterBuilder();
+        builder.query(p -> p.model(c -> c.scalarModel(ScalarType.INTEGER)));
         builder.description(buildDesc(builder.build().getDescription(), parameterContext.resolvedMethodParameter().getParameterType().getErasedType()));
     }
 
