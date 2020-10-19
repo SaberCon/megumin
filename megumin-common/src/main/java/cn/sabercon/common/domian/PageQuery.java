@@ -14,7 +14,7 @@ import java.util.List;
  * 通用的分页查询参数对象
  *
  * @author SaberCon
- * @implNote 多条件查询的参数对象可以继承此类已简化操作
+ * @implNote 多条件查询的参数对象可以继承此类以简化操作
  * @since 1.0.0
  */
 @Data
@@ -40,10 +40,6 @@ public class PageQuery {
         return ((long) s) * (p - 1);
     }
 
-    public PageRequest toPageRequest() {
-        return PageRequest.of(p - 1, s);
-    }
-
     public PageRequest toPageRequest(Sort sort) {
         return PageRequest.of(p - 1, s, sort);
     }
@@ -52,8 +48,11 @@ public class PageQuery {
         return PageRequest.of(p - 1, s, sort.direction(), properties);
     }
 
+    /**
+     * 默认升序
+     */
     public PageRequest toPageRequest(String... properties) {
-        return PageRequest.of(p - 1, s, SortType.ASC.direction(), properties);
+        return toPageRequest(SortType.ASC, properties);
     }
 
     public <T> PageModel<T> toPageModel(List<T> list, long total) {

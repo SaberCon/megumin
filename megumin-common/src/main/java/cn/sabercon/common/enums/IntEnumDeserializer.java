@@ -32,8 +32,7 @@ public class IntEnumDeserializer extends JsonDeserializer<IntEnum> {
         if (!Enum.class.isAssignableFrom(targetClass) || !IntEnum.class.isAssignableFrom(targetClass)) {
             return null;
         }
-        int value = p.getIntValue();
         return Arrays.stream(targetClass.getEnumConstants()).map(IntEnum.class::cast)
-                .filter(e -> e.val() == value).findFirst().orElse(null);
+                .filter(e -> e.val() == p.getIntValue()).findFirst().orElse(null);
     }
 }

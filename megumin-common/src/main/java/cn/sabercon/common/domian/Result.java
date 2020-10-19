@@ -1,9 +1,7 @@
 package cn.sabercon.common.domian;
 
 import cn.sabercon.common.enums.CommonCode;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Value;
 
 import java.util.Objects;
 
@@ -13,39 +11,22 @@ import java.util.Objects;
  * @author SaberCon
  * @since 1.0.0
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Value
 public class Result<T> {
 
-    private static final Result<?> DEFAULT_SUCCESS = new Result<>(CommonCode.SUCCESS.code(), null, null) {
-        @Override
-        public void setCode(String code) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void setMsg(String msg) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void setData(Object data) {
-            throw new UnsupportedOperationException();
-        }
-    };
+    private static final Result<?> DEFAULT_SUCCESS = new Result<>(CommonCode.SUCCESS.code(), null, null);
     /**
      * 状态码
      */
-    private String code;
+    String code;
     /**
      * 状态信息
      */
-    private String msg;
+    String msg;
     /**
      * 返回数据
      */
-    private T data;
+    T data;
 
     /**
      * @return 不可变的无数据成功对象
