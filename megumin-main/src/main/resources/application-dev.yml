@@ -36,15 +36,15 @@ logging:
     sql: debug
     cn.sabercon: debug
 aliyun:
-  accessKeyId: LTAI4GAHMt2GkFFmb25d9K9L
-  accessKeySecret: ENC(Py3LrvXPsnHd5TJFdVlm1Lkm5q0W1WRwjKhlvzGWQ0Vjy6mNeRvn8+2cKY8flZvNI3MfHa6rNqRFKmzy5A1w/Q==)
+  access-key-id: LTAI4GAHMt2GkFFmb25d9K9L
+  access-key-secret: ENC(Py3LrvXPsnHd5TJFdVlm1Lkm5q0W1WRwjKhlvzGWQ0Vjy6mNeRvn8+2cKY8flZvNI3MfHa6rNqRFKmzy5A1w/Q==)
   sms:
-    signName: SaberCon
-    templateCode: SMS_175480786
+    sign-name: SaberCon
+    template-code: SMS_175480786
   oss:
     endpoint: oss-cn-shenzhen.aliyuncs.com
-    bucketName: motto
-    accessDomain: http://oss.sabercon.cn
+    bucket-name: motto
+    access-domain: http://oss.sabercon.cn
     dir:
       img: img
       file: file

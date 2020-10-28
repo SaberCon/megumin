@@ -22,7 +22,7 @@ import java.util.Properties;
  */
 public class IntEnumType implements UserType, DynamicParameterizedType {
 
-    public static final String CLASS_FULL_NAME = CommonConstant.BASE_COMMON_PACKAGE + "enums.IntEnumType";
+    public static final String CLASS_FULL_NAME = CommonConstant.BASE_COMMON_PACKAGE + ".enums.IntEnumType";
 
     private static final int[] SQL_TYPES = new int[]{Types.INTEGER};
 
