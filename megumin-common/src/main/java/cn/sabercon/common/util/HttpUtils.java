@@ -9,9 +9,12 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
+
+import static cn.sabercon.common.enums.CommonCode.UNAUTHORIZED;
 
 /**
  * http 相关操作工具类
@@ -65,5 +68,13 @@ public class HttpUtils {
             return tokenOpt.map(Long::parseLong).get();
         }
         return tokenOpt.map(Jwt::getIdFromToken).orElse(null);
+    }
+
+    /**
+     * @return token 中的用户 id, 没有时抛出异常
+     */
+    @NotNull
+    public static Long getUserIdOrError() {
+        return Assert.notNull(getUserId(), UNAUTHORIZED);
     }
 }
