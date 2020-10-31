@@ -16,7 +16,7 @@ import java.util.Map;
  * @since 1.0.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class JwtUtils {
+public class Jwt {
 
     /**
      * 加密密钥

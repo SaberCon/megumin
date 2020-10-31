@@ -16,7 +16,7 @@ import java.util.Objects;
  * @since 1.0.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class Asserts {
+public class Assert {
 
     public static void isTrue(boolean condition, ResultCode resultCode, String msg) {
         if (condition) {

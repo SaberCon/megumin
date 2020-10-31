@@ -1,5 +1,6 @@
 package cn.sabercon.common.util;
 
+import cn.hutool.core.util.NumberUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -25,12 +26,12 @@ public class HttpUtils {
 
     public static HttpServletRequest getRequest() {
         var attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        return Asserts.notNull(attributes.getRequest());
+        return Assert.notNull(attributes.getRequest());
     }
 
     public static HttpServletResponse getResponse() {
         var attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        return Asserts.notNull(attributes.getResponse());
+        return Assert.notNull(attributes.getResponse());
     }
 
     public static void addCookie(Cookie cookie) {
@@ -58,6 +59,11 @@ public class HttpUtils {
      * @return token 中的用户 id, 没有时返回 null
      */
     public static Long getUserId() {
-        return getHeader(TOKEN_HEADER).map(JwtUtils::getIdFromToken).orElse(null);
+        var tokenOpt = getHeader(TOKEN_HEADER);
+        if (!Env.isProd() && tokenOpt.stream().anyMatch(NumberUtil::isLong)) {
+            // 非生产环境 token 直接为用户 id 时可通过
+            return tokenOpt.map(Long::parseLong).get();
+        }
+        return tokenOpt.map(Jwt::getIdFromToken).orElse(null);
     }
 }

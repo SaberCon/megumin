@@ -1,7 +1,7 @@
 package cn.sabercon.main.advice;
 
 import cn.sabercon.common.data.RedisHelper;
-import cn.sabercon.common.util.Asserts;
+import cn.sabercon.common.util.Assert;
 import cn.sabercon.common.util.HttpUtils;
 import cn.sabercon.common.util.StrUtils;
 import cn.sabercon.main.constant.RedisConstant;
@@ -37,8 +37,8 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }
         var userId = HttpUtils.getUserId();
-        Asserts.notNull(userId, UNAUTHORIZED);
-        Asserts.isTrue(redisHelper.exists(StrUtils.buildRedisKey(RedisConstant.LOGIN_USER_PREFIX, userId)), UNAUTHORIZED);
+        Assert.notNull(userId, UNAUTHORIZED);
+        Assert.isTrue(redisHelper.exists(StrUtils.buildRedisKey(RedisConstant.LOGIN_USER_PREFIX, userId)), UNAUTHORIZED);
         return true;
     }
 }
