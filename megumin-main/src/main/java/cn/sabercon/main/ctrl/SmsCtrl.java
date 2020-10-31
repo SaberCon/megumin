@@ -4,9 +4,12 @@ import cn.sabercon.common.anno.ServiceController;
 import cn.sabercon.main.enums.type.SmsType;
 import cn.sabercon.main.manager.SmsManager;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @author SaberCon
@@ -20,7 +23,14 @@ public class SmsCtrl {
     private final SmsManager manager;
 
     @GetMapping
-    public void sendCode(@ApiParam("短信类型") SmsType type, @ApiParam("手机号码") String phone) {
+    @ApiOperation("发送短信验证码")
+    public void sendCode(@ApiParam("短信类型") @NotNull SmsType type, @ApiParam("手机号码") @NotNull String phone) {
         manager.sendCode(type, phone);
+    }
+
+    @GetMapping("check")
+    @ApiOperation("校验短信验证码是否正确")
+    public boolean checkCode(@ApiParam("短信类型") @NotNull SmsType type, @ApiParam("手机号码") @NotNull String phone, @ApiParam("验证码") @NotNull String code) {
+        return manager.checkCode(type, phone, code);
     }
 }

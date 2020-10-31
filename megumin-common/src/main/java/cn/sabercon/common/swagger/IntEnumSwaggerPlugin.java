@@ -1,6 +1,8 @@
 package cn.sabercon.common.swagger;
 
 import cn.sabercon.common.enums.IntEnum;
+import com.fasterxml.classmate.ResolvedType;
+import com.fasterxml.jackson.databind.introspect.AnnotatedField;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,8 +16,10 @@ import springfox.documentation.spi.schema.ModelPropertyBuilderPlugin;
 import springfox.documentation.spi.schema.contexts.ModelPropertyContext;
 import springfox.documentation.spi.service.ExpandedParameterBuilderPlugin;
 import springfox.documentation.spi.service.ParameterBuilderPlugin;
+import springfox.documentation.spi.service.ResponseBuilderPlugin;
 import springfox.documentation.spi.service.contexts.ParameterContext;
 import springfox.documentation.spi.service.contexts.ParameterExpansionContext;
+import springfox.documentation.spi.service.contexts.ResponseContext;
 import springfox.documentation.swagger.common.SwaggerPluginSupport;
 
 import java.util.Arrays;
@@ -29,7 +33,7 @@ import java.util.stream.Collectors;
  * @since 1.0.0
  */
 @Component
-public class IntEnumSwaggerPlugin implements ModelPropertyBuilderPlugin, ParameterBuilderPlugin, ExpandedParameterBuilderPlugin {
+public class IntEnumSwaggerPlugin implements ModelPropertyBuilderPlugin, ExpandedParameterBuilderPlugin, ParameterBuilderPlugin, ResponseBuilderPlugin {
 
     /**
      * 处理模型中的枚举注释
@@ -41,13 +45,13 @@ public class IntEnumSwaggerPlugin implements ModelPropertyBuilderPlugin, Paramet
         if (definitionOptional.isEmpty()) {
             return;
         }
-        var definition = definitionOptional.get();
-        if (!IntEnum.class.isAssignableFrom(definition.getField().getRawType())) {
+        AnnotatedField type = definitionOptional.get().getField();
+        if (!IntEnum.class.isAssignableFrom(type.getRawType())) {
             return;
         }
         var builder = context.getSpecificationBuilder();
         builder.type(new ModelSpecificationBuilder().copyOf(builder.build().getType()).scalarModel(ScalarType.INTEGER).build());
-        builder.description(buildDesc(builder.build().getDescription(), definition.getField().getRawType()));
+        builder.description(buildDesc(builder.build().getDescription(), type.getRawType()));
     }
 
     /**
@@ -56,16 +60,17 @@ public class IntEnumSwaggerPlugin implements ModelPropertyBuilderPlugin, Paramet
      */
     @Override
     public void apply(ParameterExpansionContext context) {
-        if (!context.getFieldType().isInstanceOf(IntEnum.class)) {
+        ResolvedType type = context.getFieldType();
+        if (!type.isInstanceOf(IntEnum.class)) {
             return;
         }
         var builder = context.getRequestParameterBuilder();
-        List<String> valueList = Arrays.stream(context.getFieldType().getErasedType().getEnumConstants())
+        List<String> valueList = Arrays.stream(type.getErasedType().getEnumConstants())
                 .map(IntEnum.class::cast).map(IntEnum::val).map(String::valueOf).collect(Collectors.toList());
         builder.query(p -> p.model(c -> c.scalarModel(ScalarType.INTEGER))
                 .enumerationFacet(e -> e.allowedValues(new AllowableListValues(valueList, "LIST"))));
         builder.example(new ExampleBuilder().value(valueList.get(0)).build());
-        builder.description(buildDesc(builder.build().getDescription(), context.getFieldType().getErasedType()));
+        builder.description(buildDesc(builder.build().getDescription(), type.getErasedType()));
     }
 
     /**
@@ -74,12 +79,27 @@ public class IntEnumSwaggerPlugin implements ModelPropertyBuilderPlugin, Paramet
      */
     @Override
     public void apply(ParameterContext parameterContext) {
-        if (!parameterContext.resolvedMethodParameter().getParameterType().isInstanceOf(IntEnum.class)) {
+        ResolvedType type = parameterContext.resolvedMethodParameter().getParameterType();
+        if (!type.isInstanceOf(IntEnum.class)) {
             return;
         }
         var builder = parameterContext.requestParameterBuilder();
         builder.query(p -> p.model(c -> c.scalarModel(ScalarType.INTEGER)));
-        builder.description(buildDesc(builder.build().getDescription(), parameterContext.resolvedMethodParameter().getParameterType().getErasedType()));
+        builder.description(buildDesc(builder.build().getDescription(), type.getErasedType()));
+    }
+
+    /**
+     * 处理直接返回值的枚举注释
+     */
+    @Override
+    public void apply(ResponseContext responseContext) {
+        ResolvedType type = responseContext.getOperationContext().getReturnType();
+        if (!type.isInstanceOf(IntEnum.class)) {
+            return;
+        }
+        var builder = responseContext.responseBuilder();
+        // 原来的 desc 是 OK, 替换掉
+        builder.description(buildDesc(null, type.getErasedType()));
     }
 
     @Override

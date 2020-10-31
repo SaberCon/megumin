@@ -16,6 +16,7 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public enum Gender implements IntEnum {
 
+    UNKNOWN(0, "未知"),
     MALE(1, "男"),
     FEMALE(2, "女"),
     ;

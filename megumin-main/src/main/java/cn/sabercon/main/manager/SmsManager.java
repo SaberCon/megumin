@@ -41,7 +41,7 @@ public class SmsManager {
     /**
      * 保存到 redis 的验证码的键名前缀
      */
-    private static String SMS_CODE_PREFIX = "sms:code";
+    private static final String SMS_CODE_PREFIX = "sms:code";
 
     /**
      * 发送短信验证码
