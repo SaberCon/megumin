@@ -22,21 +22,18 @@ import javax.persistence.Table;
 public class User extends BaseEntity {
 
     @Column(nullable = false, unique = true)
-    String username;
+    private String phone;
 
     @Column(nullable = false, unique = true)
-    String phone;
+    private String username;
 
     @Column(nullable = false)
-    String password;
+    private String password;
 
-    @Column(nullable = false)
-    String nickname;
+    private String avatar;
 
-    String avatar;
-
-    String profile;
+    private String profile;
 
     @Type(type = IntEnumType.CLASS_FULL_NAME)
-    Gender gender;
+    private Gender gender;
 }

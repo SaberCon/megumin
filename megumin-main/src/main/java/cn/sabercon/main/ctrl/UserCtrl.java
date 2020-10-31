@@ -1,9 +1,15 @@
 package cn.sabercon.main.ctrl;
 
 import cn.sabercon.common.anno.ServiceController;
+import cn.sabercon.main.domain.param.LoginParam;
 import cn.sabercon.main.service.UserService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import javax.validation.Valid;
 
 /**
  * @author SaberCon
@@ -15,4 +21,10 @@ import lombok.RequiredArgsConstructor;
 public class UserCtrl {
 
     private final UserService service;
+
+    @ApiOperation("用户登录(未注册会直接注册), 返回 token")
+    @PostMapping("login")
+    public String login(@RequestBody @Valid LoginParam param) {
+        return service.login(param);
+    }
 }
