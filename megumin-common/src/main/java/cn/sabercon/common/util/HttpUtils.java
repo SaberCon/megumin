@@ -21,6 +21,8 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class HttpUtils {
 
+    private static final String TOKEN_HEADER = "jwt-token";
+
     public static HttpServletRequest getRequest() {
         var attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         return Asserts.notNull(attributes.getRequest());
@@ -50,5 +52,12 @@ public class HttpUtils {
 
     public static Optional<String> getHeader(String key) {
         return Optional.ofNullable(getRequest().getHeader(key));
+    }
+
+    /**
+     * @return token 中的用户 id, 没有时返回 null
+     */
+    public static Long getUserId() {
+        return getHeader(TOKEN_HEADER).map(JwtUtils::getIdFromToken).orElse(null);
     }
 }

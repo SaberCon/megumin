@@ -1,4 +1,4 @@
-package cn.sabercon.main.util;
+package cn.sabercon.common.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -51,24 +51,14 @@ public class JwtUtils {
     }
 
     /**
-     * 从 token 中获取登录用户 id，失败时返回 null
+     * 从 token 中获取登录用户 id，过期或失败时返回 null
      */
-    public static String getIdFromToken(String token) {
+    public static Long getIdFromToken(String token) {
         try {
-            return getClaimsFromToken(token).getId();
+            var claims = getClaimsFromToken(token);
+            return claims.getExpiration().after(new Date()) ? Long.valueOf(claims.getId()) : null;
         } catch (Exception e) {
             return null;
-        }
-    }
-
-    /**
-     * 判断 token 是否有效
-     */
-    public static boolean isTokenValid(String token) {
-        try {
-            return getClaimsFromToken(token).getExpiration().after(new Date());
-        } catch (Exception e) {
-            return false;
         }
     }
 }
