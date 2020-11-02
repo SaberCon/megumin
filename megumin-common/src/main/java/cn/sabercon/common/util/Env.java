@@ -26,6 +26,10 @@ public class Env implements EnvironmentAware {
         return Arrays.stream(profiles).anyMatch(PROD::equalsIgnoreCase);
     }
 
+    public static boolean isNotProd() {
+        return !isProd();
+    }
+
     @Override
     public void setEnvironment(Environment environment) {
         profiles = environment.getActiveProfiles();

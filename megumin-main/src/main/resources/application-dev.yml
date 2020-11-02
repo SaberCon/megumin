@@ -43,8 +43,5 @@ aliyun:
     template-code: SMS_175480786
   oss:
     endpoint: oss-cn-shenzhen.aliyuncs.com
-    bucket-name: motto
+    bucket: motto
     access-domain: http://oss.sabercon.cn
-    dir:
-      img: img
-      file: file

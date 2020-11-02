@@ -63,7 +63,7 @@ public class HttpUtils {
      */
     public static Long getUserId() {
         var tokenOpt = getHeader(TOKEN_HEADER);
-        if (!Env.isProd() && tokenOpt.stream().anyMatch(NumberUtil::isLong)) {
+        if (Env.isNotProd() && tokenOpt.stream().anyMatch(NumberUtil::isLong)) {
             // 非生产环境 token 直接为用户 id 时可通过
             return tokenOpt.map(Long::parseLong).get();
         }
