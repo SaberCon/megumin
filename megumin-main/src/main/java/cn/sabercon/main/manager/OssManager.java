@@ -1,8 +1,13 @@
 package cn.sabercon.main.manager;
 
+import cn.sabercon.main.domain.model.OssToken;
 import cn.sabercon.main.enums.type.FileType;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.model.ObjectMetadata;
+import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.auth.sts.AssumeRoleRequest;
+import com.aliyuncs.http.MethodType;
+import com.aliyuncs.profile.DefaultProfile;
 import com.google.common.base.Joiner;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -31,8 +36,8 @@ public class OssManager {
     private String accessKeySecret;
     @Value("${aliyun.oss.endpoint}")
     private String endpoint;
-    @Value("${aliyun.oss.bucket-name}")
-    private String bucketName;
+    @Value("${aliyun.oss.bucket}")
+    private String bucket;
     @Value("${aliyun.oss.access-domain}")
     private String accessDomain;
 
@@ -52,11 +57,32 @@ public class OssManager {
 
         var ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
         try {
-            var result = ossClient.putObject(bucketName, fullname, file.getInputStream(), metadata);
+            var result = ossClient.putObject(bucket, fullname, file.getInputStream(), metadata);
             log.debug("aliyun oss upload result: {}", result.getResponse().getContent());
         } finally {
             ossClient.shutdown();
         }
         return Joiner.on("/").join(accessDomain, fullname);
+    }
+
+    /**
+     * @return 临时 token
+     */
+    @SneakyThrows
+    public OssToken getToken(FileType type) {
+//        DefaultProfile.addEndpoint("", "", "Sts", endpoint);
+        var client = new DefaultAcsClient(DefaultProfile.getProfile("", accessKeyId, accessKeySecret));
+        var request = new AssumeRoleRequest();
+        request.setSysMethod(MethodType.POST);
+//        request.setRoleArn(roleArn);
+//        request.setRoleSessionName(roleSessionName);
+        request.setDurationSeconds(3600L);
+        var credentials = client.getAcsResponse(request).getCredentials();
+        return OssToken.builder().accessKeyId(credentials.getAccessKeyId())
+                .accessKeySecret(credentials.getAccessKeySecret())
+                .securityToken(credentials.getSecurityToken())
+                .expiration(credentials.getExpiration())
+                .endpoint(endpoint).bucket(bucket).accessDomain(accessDomain)
+                .dir(Joiner.on("/").join(type.dir(), FORMATTER.format(LocalDate.now()))).build();
     }
 }
