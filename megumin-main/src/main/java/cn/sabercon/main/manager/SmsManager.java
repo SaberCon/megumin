@@ -2,14 +2,15 @@ package cn.sabercon.main.manager;
 
 import cn.hutool.core.util.RandomUtil;
 import cn.sabercon.common.data.RedisHelper;
+import cn.sabercon.common.util.Env;
 import cn.sabercon.common.util.StrUtils;
 import cn.sabercon.main.enums.type.SmsType;
 import com.aliyuncs.CommonRequest;
 import com.aliyuncs.DefaultAcsClient;
-import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -46,6 +47,7 @@ public class SmsManager {
     /**
      * 发送短信验证码
      */
+    @SneakyThrows
     public void sendCode(SmsType type, String phone) {
         var code = RandomUtil.randomNumbers(4);
 
@@ -60,14 +62,8 @@ public class SmsManager {
         request.putQueryParameter("SignName", signName);
         request.putQueryParameter("TemplateCode", templateCode);
         request.putQueryParameter("TemplateParam", "{\"code\":\"" + code + "\"}");
-        try {
-            var response = client.getCommonResponse(request);
-            log.debug("aliyun sms code sending result: {}", response.getData());
-        } catch (ClientException e) {
-            log.error("aliyun sms code sending failed", e);
-            return;
-        }
-
+        var response = client.getCommonResponse(request);
+        log.debug("aliyun sms code sending result: {}", response.getData());
         // 保存验证码到redis中，保存时间五分钟
         var key = StrUtils.buildRedisKey(SMS_CODE_PREFIX, type.val(), phone);
         redisHelper.set(key, code, 5, TimeUnit.MINUTES);
@@ -78,6 +74,10 @@ public class SmsManager {
      * @return 短信验证码是否正确
      */
     public boolean checkCode(SmsType type, String phone, String code) {
+        if (Env.isNotProd() && "1234".equals(code)) {
+            // 非生产环境 1234 为万能校验码
+            return true;
+        }
         var key = StrUtils.buildRedisKey(SMS_CODE_PREFIX, type.val(), phone);
         return code.equals(redisHelper.get(key));
     }

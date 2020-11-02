@@ -45,6 +45,3 @@ aliyun:
     endpoint: oss-cn-shenzhen.aliyuncs.com
     bucket-name: motto
     access-domain: http://oss.sabercon.cn
-    dir:
-      img: img
-      file: file
