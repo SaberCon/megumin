@@ -2,12 +2,11 @@ package cn.sabercon.main.manager;
 
 import cn.sabercon.main.domain.model.OssToken;
 import cn.sabercon.main.enums.type.FileType;
-import com.aliyun.oss.OSSClientBuilder;
+import com.aliyun.oss.OSS;
 import com.aliyun.oss.model.ObjectMetadata;
-import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.IAcsClient;
 import com.aliyuncs.auth.sts.AssumeRoleRequest;
 import com.aliyuncs.http.MethodType;
-import com.aliyuncs.profile.DefaultProfile;
 import com.google.common.base.Joiner;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -30,9 +29,13 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class OssManager {
 
-    @Value("${aliyun.oss.access-key-id}")
+    private final OSS oss;
+
+    private final IAcsClient acsClient;
+
+    @Value("${aliyun.access-key-id}")
     private String accessKeyId;
-    @Value("${aliyun.oss.access-key-secret}")
+    @Value("${aliyun.access-key-secret}")
     private String accessKeySecret;
     @Value("${aliyun.oss.endpoint}")
     private String endpoint;
@@ -49,20 +52,13 @@ public class OssManager {
     @SneakyThrows
     public String upload(MultipartFile file, FileType type, String filename) {
         // 拼接文件全路径名
-        var fullname = Joiner.on("/").join(type.dir(), FORMATTER.format(LocalDate.now()), filename);
+        var fullName = Joiner.on("/").join(type.dir(), FORMATTER.format(LocalDate.now()), filename);
 
         var metadata = new ObjectMetadata();
         metadata.setContentType(file.getContentType());
         metadata.setContentDisposition(type.contentDisposition());
-
-        var ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
-        try {
-            var result = ossClient.putObject(bucket, fullname, file.getInputStream(), metadata);
-            log.debug("aliyun oss upload result: {}", result.getResponse().getContent());
-        } finally {
-            ossClient.shutdown();
-        }
-        return Joiner.on("/").join(accessDomain, fullname);
+        oss.putObject(bucket, fullName, file.getInputStream(), metadata);
+        return Joiner.on("/").join(accessDomain, fullName);
     }
 
     /**
@@ -70,14 +66,12 @@ public class OssManager {
      */
     @SneakyThrows
     public OssToken getToken(FileType type) {
-//        DefaultProfile.addEndpoint("", "", "Sts", endpoint);
-        var client = new DefaultAcsClient(DefaultProfile.getProfile("", accessKeyId, accessKeySecret));
         var request = new AssumeRoleRequest();
         request.setSysMethod(MethodType.POST);
-//        request.setRoleArn(roleArn);
-//        request.setRoleSessionName(roleSessionName);
+        request.setRoleArn("acs:ram::1601562664794679:role/aliyunmtsdefaultrole");
+        request.setRoleSessionName("sabercon");
         request.setDurationSeconds(3600L);
-        var credentials = client.getAcsResponse(request).getCredentials();
+        var credentials = acsClient.getAcsResponse(request).getCredentials();
         return OssToken.builder().accessKeyId(credentials.getAccessKeyId())
                 .accessKeySecret(credentials.getAccessKeySecret())
                 .securityToken(credentials.getSecurityToken())

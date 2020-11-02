@@ -3,12 +3,10 @@ package cn.sabercon.main.manager;
 import cn.hutool.core.util.RandomUtil;
 import cn.sabercon.common.data.RedisHelper;
 import cn.sabercon.common.util.Env;
-import cn.sabercon.common.util.StrUtils;
 import cn.sabercon.main.enums.type.SmsType;
 import com.aliyuncs.CommonRequest;
-import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.IAcsClient;
 import com.aliyuncs.http.MethodType;
-import com.aliyuncs.profile.DefaultProfile;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
+
+import static cn.sabercon.common.util.StrUtils.buildRedisKey;
 
 /**
  * 短信相关操作类
@@ -30,10 +30,8 @@ public class SmsManager {
 
     private final RedisHelper redisHelper;
 
-    @Value("${aliyun.access-key-id}")
-    private String accessKeyId;
-    @Value("${aliyun.access-key-secret}")
-    private String accessKeySecret;
+    private final IAcsClient acsClient;
+
     @Value("${aliyun.sms.sign-name}")
     private String signName;
     @Value("${aliyun.sms.template-code}")
@@ -51,21 +49,19 @@ public class SmsManager {
     public void sendCode(SmsType type, String phone) {
         var code = RandomUtil.randomNumbers(4);
 
-        var client = new DefaultAcsClient(DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret));
         var request = new CommonRequest();
         request.setSysMethod(MethodType.POST);
         request.setSysDomain("dysmsapi.aliyuncs.com");
         request.setSysVersion("2017-05-25");
         request.setSysAction("SendSms");
-        request.putQueryParameter("RegionId", "cn-hangzhou");
         request.putQueryParameter("PhoneNumbers", phone);
         request.putQueryParameter("SignName", signName);
         request.putQueryParameter("TemplateCode", templateCode);
         request.putQueryParameter("TemplateParam", "{\"code\":\"" + code + "\"}");
-        var response = client.getCommonResponse(request);
+        var response = acsClient.getCommonResponse(request);
         log.debug("aliyun sms code sending result: {}", response.getData());
         // 保存验证码到redis中，保存时间五分钟
-        var key = StrUtils.buildRedisKey(SMS_CODE_PREFIX, type.val(), phone);
+        var key = buildRedisKey(SMS_CODE_PREFIX, type.val(), phone);
         redisHelper.set(key, code, 5, TimeUnit.MINUTES);
         log.debug("set sms code to redis, phone number:{}, code:{}", phone, code);
     }
@@ -78,7 +74,7 @@ public class SmsManager {
             // 非生产环境 1234 为万能校验码
             return true;
         }
-        var key = StrUtils.buildRedisKey(SMS_CODE_PREFIX, type.val(), phone);
+        var key = buildRedisKey(SMS_CODE_PREFIX, type.val(), phone);
         return code.equals(redisHelper.get(key));
     }
 }
