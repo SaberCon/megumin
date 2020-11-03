@@ -8,8 +8,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.ConverterFactory;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * web 配置
@@ -27,6 +32,15 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverterFactory(strToIntEnumConverterFactory);
+    }
+
+    @Override
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        // 避免 string 先被 StringHttpMessageConverter 处理导致无法返回 json 包装类, 将他们移到最后
+        List<HttpMessageConverter<?>> stringConverters = converters.stream()
+                .filter(c -> c instanceof StringHttpMessageConverter).collect(Collectors.toList());
+        converters.removeIf(c -> c instanceof StringHttpMessageConverter);
+        converters.addAll(stringConverters);
     }
 
     @Bean
