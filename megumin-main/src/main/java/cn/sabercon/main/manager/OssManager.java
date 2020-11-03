@@ -33,14 +33,12 @@ public class OssManager {
 
     private final IAcsClient acsClient;
 
-    @Value("${aliyun.access-key-id}")
-    private String accessKeyId;
-    @Value("${aliyun.access-key-secret}")
-    private String accessKeySecret;
     @Value("${aliyun.oss.endpoint}")
     private String endpoint;
     @Value("${aliyun.oss.bucket}")
     private String bucket;
+    @Value("${aliyun.oss.role-arn}")
+    private String roleArn;
     @Value("${aliyun.oss.access-domain}")
     private String accessDomain;
 
@@ -68,8 +66,8 @@ public class OssManager {
     public OssToken getToken(FileType type) {
         var request = new AssumeRoleRequest();
         request.setSysMethod(MethodType.POST);
-        request.setRoleArn("acs:ram::1601562664794679:role/aliyunmtsdefaultrole");
-        request.setRoleSessionName("sabercon");
+        request.setRoleArn(roleArn);
+//        request.setRoleSessionName("sabercon");
         request.setDurationSeconds(3600L);
         var credentials = acsClient.getAcsResponse(request).getCredentials();
         return OssToken.builder().accessKeyId(credentials.getAccessKeyId())

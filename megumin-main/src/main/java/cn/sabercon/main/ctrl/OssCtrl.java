@@ -1,6 +1,5 @@
 package cn.sabercon.main.ctrl;
 
-import cn.hutool.core.util.IdUtil;
 import cn.sabercon.common.anno.ServiceController;
 import cn.sabercon.main.domain.model.OssToken;
 import cn.sabercon.main.enums.type.FileType;
@@ -10,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,16 +27,17 @@ public class OssCtrl {
 
     private final OssManager manager;
 
+    @PostMapping
     @ApiOperation("上传文件")
     public String upload(@RequestPart MultipartFile file, @RequestParam FileType type, String filename) {
         if (StringUtils.isEmpty(filename)) {
-            filename = IdUtil.simpleUUID();
+            filename = file.getOriginalFilename();
         }
         return manager.upload(file, type, filename);
     }
 
-    @ApiOperation("获取临时 token")
     @GetMapping
+    @ApiOperation("获取临时 token")
     public OssToken getToken(@NotNull FileType type) {
         return manager.getToken(type);
     }

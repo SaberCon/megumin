@@ -22,8 +22,8 @@ public class UserCtrl {
 
     private final UserService service;
 
-    @ApiOperation("用户登录(未注册会直接注册), 返回 token")
     @PostMapping("login")
+    @ApiOperation("用户登录(未注册会直接注册), 返回 token")
     public String login(@RequestBody @Valid LoginParam param) {
         return service.login(param);
     }
