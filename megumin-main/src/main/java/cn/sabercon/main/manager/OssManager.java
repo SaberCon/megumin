@@ -67,7 +67,7 @@ public class OssManager {
         var request = new AssumeRoleRequest();
         request.setSysMethod(MethodType.POST);
         request.setRoleArn(roleArn);
-//        request.setRoleSessionName("sabercon");
+        request.setRoleSessionName("sabercon");
         request.setDurationSeconds(3600L);
         var credentials = acsClient.getAcsResponse(request).getCredentials();
         return OssToken.builder().accessKeyId(credentials.getAccessKeyId())

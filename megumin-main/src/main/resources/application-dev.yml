@@ -36,13 +36,13 @@ logging:
     sql: debug
     cn.sabercon: debug
 aliyun:
-  access-key-id: LTAI4GAHMt2GkFFmb25d9K9L
-  access-key-secret: ENC(Py3LrvXPsnHd5TJFdVlm1Lkm5q0W1WRwjKhlvzGWQ0Vjy6mNeRvn8+2cKY8flZvNI3MfHa6rNqRFKmzy5A1w/Q==)
+  access-key-id: LTAI4FzDsATrAw4weqWeMHdC
+  access-key-secret: ENC(3UkqscJKB0jQYZZAWrPYmELH3JcwSLjQ2EGq4pCRR0BXtN34lseJHMkGigWmKZrAJMZH96aj2mIPZt4wJSsegA==)
   sms:
     sign-name: SaberCon
     template-code: SMS_175480786
   oss:
     endpoint: oss-cn-shenzhen.aliyuncs.com
     bucket: motto
-    role-arn: acs:ram::1601562664794679:role/aliyunmtsdefaultrole
+    role-arn: acs:ram::1601562664794679:role/sabercon
     access-domain: http://oss.sabercon.cn
