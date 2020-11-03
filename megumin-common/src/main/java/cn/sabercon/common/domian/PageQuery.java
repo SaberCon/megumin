@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 import javax.validation.constraints.Positive;
-import java.util.List;
 
 /**
  * 通用的分页查询参数对象
@@ -53,14 +52,5 @@ public class PageQuery {
      */
     public PageRequest toPageRequest(String... properties) {
         return toPageRequest(SortType.ASC, properties);
-    }
-
-    public <T> PageModel<T> toPageModel(List<T> list, long total) {
-        var page = new PageModel<T>();
-        page.setPage(p);
-        page.setSize(s);
-        page.setList(list);
-        page.setTotal(total);
-        return page;
     }
 }

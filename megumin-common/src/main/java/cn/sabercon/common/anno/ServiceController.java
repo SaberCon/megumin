@@ -27,5 +27,5 @@ import java.lang.annotation.*;
 public @interface ServiceController {
 
     @AliasFor(annotation = RequestMapping.class)
-    String value() default "";
+    String[] value() default {};
 }
