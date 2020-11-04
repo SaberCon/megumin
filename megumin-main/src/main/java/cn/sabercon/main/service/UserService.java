@@ -12,8 +12,10 @@ import cn.sabercon.common.json.Json;
 import cn.sabercon.common.util.Assert;
 import cn.sabercon.common.util.HttpUtils;
 import cn.sabercon.common.util.Jwt;
+import cn.sabercon.main.domain.dto.UserSimpleInfo;
 import cn.sabercon.main.domain.entity.User;
 import cn.sabercon.main.domain.model.LoginUserInfo;
+import cn.sabercon.main.domain.model.UserInfo;
 import cn.sabercon.main.domain.param.LoginParam;
 import cn.sabercon.main.domain.param.UpdateUserParam;
 import cn.sabercon.main.enums.type.SmsType;
@@ -112,5 +114,13 @@ public class UserService {
     private void refreshUserInfoCache(User user) {
         var userInfo = Json.convert(user, LoginUserInfo.class);
         redisHelper.set(buildRedisKey(LOGIN_USER_PREFIX, user.getId()), userInfo, 30, TimeUnit.DAYS);
+    }
+
+    public UserInfo getInfo(Long id) {
+        return repo.findById(id).map(e -> Json.convert(e, UserInfo.class)).orElse(null);
+    }
+
+    public UserSimpleInfo getSimpleInfo(Long id) {
+        return repo.findById(id).map(e -> Json.convert(e, UserSimpleInfo.class)).orElse(null);
     }
 }

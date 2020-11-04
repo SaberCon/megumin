@@ -2,6 +2,7 @@ package cn.sabercon.main.ctrl;
 
 import cn.sabercon.common.anno.ServiceController;
 import cn.sabercon.main.domain.model.LoginUserInfo;
+import cn.sabercon.main.domain.model.UserInfo;
 import cn.sabercon.main.domain.param.LoginParam;
 import cn.sabercon.main.domain.param.UpdateUserParam;
 import cn.sabercon.main.service.UserService;
@@ -59,5 +60,11 @@ public class UserCtrl {
     @ApiOperation("修改信息")
     public void update(@Valid UpdateUserParam param) {
         service.update(param);
+    }
+
+    @GetMapping
+    @ApiOperation("获取用户信息")
+    public UserInfo getInfo(@NotNull Long id) {
+        return service.getInfo(id);
     }
 }
