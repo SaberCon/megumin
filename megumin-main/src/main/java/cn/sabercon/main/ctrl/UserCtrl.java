@@ -1,10 +1,8 @@
 package cn.sabercon.main.ctrl;
 
 import cn.sabercon.common.anno.ServiceController;
-import cn.sabercon.main.domain.dto.UserInfo;
+import cn.sabercon.main.domain.model.LoginUserInfo;
 import cn.sabercon.main.domain.param.LoginParam;
-import cn.sabercon.main.domain.param.UpdatePhoneParam;
-import cn.sabercon.main.domain.param.UpdatePwdParam;
 import cn.sabercon.main.domain.param.UpdateUserParam;
 import cn.sabercon.main.service.UserService;
 import io.swagger.annotations.Api;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import static cn.sabercon.common.util.StrUtils.maskPhoneNumber;
 
@@ -32,8 +31,8 @@ public class UserCtrl {
 
     @GetMapping
     @ApiOperation("获取当前登录用户的信息")
-    public UserInfo getLoginUserInfo() {
-        UserInfo info = service.getLoginUserInfo();
+    public LoginUserInfo getLoginUserInfo() {
+        LoginUserInfo info = service.getLoginUserInfo();
         info.setPhone(maskPhoneNumber(info.getPhone()));
         return info;
     }
@@ -46,19 +45,19 @@ public class UserCtrl {
 
     @PutMapping("phone")
     @ApiOperation("换绑手机")
-    public void updatePhone(@RequestBody @Valid UpdatePhoneParam param) {
-        service.updatePhone(param);
+    public void updatePhone(@NotNull String newPhone, @NotNull String unbindCode, @NotNull String bindCode) {
+        service.updatePhone(newPhone, unbindCode, bindCode);
     }
 
     @PutMapping("pwd")
     @ApiOperation("修改密码")
-    public void updatePwd(@RequestBody @Valid UpdatePwdParam param) {
-        service.updatePwd(param);
+    public void updatePwd(@NotNull String newPwd, @NotNull String code) {
+        service.updatePwd(newPwd, code);
     }
 
     @PutMapping
     @ApiOperation("修改信息")
-    public void update(@RequestBody @Valid UpdateUserParam param) {
+    public void update(@Valid UpdateUserParam param) {
         service.update(param);
     }
 }

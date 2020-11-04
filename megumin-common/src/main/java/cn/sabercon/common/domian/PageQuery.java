@@ -43,8 +43,12 @@ public class PageQuery {
         return PageRequest.of(p - 1, s, sort);
     }
 
+    public PageRequest toPageRequest() {
+        return toPageRequest(Sort.unsorted());
+    }
+
     public PageRequest toPageRequest(SortType sort, String... properties) {
-        return PageRequest.of(p - 1, s, sort.direction(), properties);
+        return toPageRequest(Sort.by(sort.direction(), properties));
     }
 
     /**

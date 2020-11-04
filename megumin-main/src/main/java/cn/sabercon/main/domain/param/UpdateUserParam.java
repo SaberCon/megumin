@@ -20,7 +20,8 @@ public class UpdateUserParam {
     @NotNull
     private String avatar;
 
-    private String profile;
-
+    @NotNull
     private Gender gender;
+
+    private String profile;
 }

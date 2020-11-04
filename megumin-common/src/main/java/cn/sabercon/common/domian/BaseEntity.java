@@ -2,6 +2,7 @@ package cn.sabercon.common.domian;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
+@FieldNameConstants
 @MappedSuperclass
 public abstract class BaseEntity {
 
@@ -31,11 +33,11 @@ public abstract class BaseEntity {
      */
     @CreationTimestamp
     @Column(updatable = false)
-    private LocalDateTime createdTime;
+    private LocalDateTime ctime;
 
     /**
      * 更新时间
      */
     @UpdateTimestamp
-    private LocalDateTime modifiedTime;
+    private LocalDateTime mtime;
 }

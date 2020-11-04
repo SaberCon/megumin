@@ -12,11 +12,9 @@ import cn.sabercon.common.json.Json;
 import cn.sabercon.common.util.Assert;
 import cn.sabercon.common.util.HttpUtils;
 import cn.sabercon.common.util.Jwt;
-import cn.sabercon.main.domain.dto.UserInfo;
 import cn.sabercon.main.domain.entity.User;
+import cn.sabercon.main.domain.model.LoginUserInfo;
 import cn.sabercon.main.domain.param.LoginParam;
-import cn.sabercon.main.domain.param.UpdatePhoneParam;
-import cn.sabercon.main.domain.param.UpdatePwdParam;
 import cn.sabercon.main.domain.param.UpdateUserParam;
 import cn.sabercon.main.enums.type.SmsType;
 import cn.sabercon.main.manager.SmsManager;
@@ -45,9 +43,9 @@ public class UserService {
     private final RedisHelper redisHelper;
     private final SmsManager smsManager;
 
-    public UserInfo getLoginUserInfo() {
+    public LoginUserInfo getLoginUserInfo() {
         var userId = HttpUtils.getUserIdOrError();
-        return redisHelper.get(buildRedisKey(LOGIN_USER_PREFIX, userId), UserInfo.class);
+        return redisHelper.get(buildRedisKey(LOGIN_USER_PREFIX, userId), LoginUserInfo.class);
     }
 
     @Tx
@@ -86,11 +84,10 @@ public class UserService {
     }
 
     @Tx
-    public void updatePhone(UpdatePhoneParam param) {
+    public void updatePhone(String newPhone, String unbindCode, String bindCode) {
         var oldPhone = getLoginUserInfo().getPhone();
-        var newPhone = param.getNewPhone();
-        Assert.isTrue(smsManager.checkCode(SmsType.UNBIND_PHONE, oldPhone, param.getUnbindCode()), SMS_CODE_WRONG);
-        Assert.isTrue(smsManager.checkCode(SmsType.BIND_PHONE, newPhone, param.getBindCode()), SMS_CODE_WRONG);
+        Assert.isTrue(smsManager.checkCode(SmsType.UNBIND_PHONE, oldPhone, unbindCode), SMS_CODE_WRONG);
+        Assert.isTrue(smsManager.checkCode(SmsType.BIND_PHONE, newPhone, bindCode), SMS_CODE_WRONG);
         Assert.isTrue(Objects.equals(oldPhone, newPhone) || !repo.existsByPhone(newPhone), PHONE_ALREADY_BOUND);
         var user = repo.getOne(HttpUtils.getUserId());
         user.setPhone(newPhone);
@@ -98,10 +95,10 @@ public class UserService {
     }
 
     @Tx
-    public void updatePwd(UpdatePwdParam param) {
-        Assert.isTrue(smsManager.checkCode(SmsType.UPDATE_PWD, getLoginUserInfo().getPhone(), param.getCode()), SMS_CODE_WRONG);
+    public void updatePwd(String newPwd, String code) {
+        Assert.isTrue(smsManager.checkCode(SmsType.UPDATE_PWD, getLoginUserInfo().getPhone(), code), SMS_CODE_WRONG);
         var user = repo.getOne(HttpUtils.getUserId());
-        user.setPassword(SecureUtil.md5(param.getNewPwd()));
+        user.setPassword(SecureUtil.md5(newPwd));
     }
 
     @Tx
@@ -113,7 +110,7 @@ public class UserService {
     }
 
     private void refreshUserInfoCache(User user) {
-        var userInfo = Json.convert(user, UserInfo.class);
+        var userInfo = Json.convert(user, LoginUserInfo.class);
         redisHelper.set(buildRedisKey(LOGIN_USER_PREFIX, user.getId()), userInfo, 30, TimeUnit.DAYS);
     }
 }
