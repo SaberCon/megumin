@@ -11,6 +11,8 @@ import lombok.Data;
 @Data
 public class UserSimpleInfo {
 
+    private Long id;
+
     private String username;
 
     private String avatar;
