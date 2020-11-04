@@ -29,10 +29,9 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class OssManager {
 
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
     private final OSS oss;
-
     private final IAcsClient acsClient;
-
     @Value("${aliyun.oss.endpoint}")
     private String endpoint;
     @Value("${aliyun.oss.bucket}")
@@ -41,8 +40,6 @@ public class OssManager {
     private String roleArn;
     @Value("${aliyun.oss.access-domain}")
     private String accessDomain;
-
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
     /**
      * 上传文件

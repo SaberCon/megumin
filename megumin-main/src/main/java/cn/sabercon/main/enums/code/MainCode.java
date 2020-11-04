@@ -18,6 +18,8 @@ public enum MainCode implements ResultCode {
 
     SMS_CODE_WRONG("B0101", "the sms code is wrong"),
     LOGIN_ERROR("B0102", "the phone or password is wrong"),
+    PHONE_ALREADY_BOUND("B0103", "the phone has been bound to other account"),
+    USERNAME_EXISTS("B0104", "the username has been picked by other account"),
     ;
 
     private final String code;

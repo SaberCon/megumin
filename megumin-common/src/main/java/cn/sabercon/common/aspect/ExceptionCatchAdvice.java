@@ -27,6 +27,22 @@ import static cn.sabercon.common.enums.CommonCode.UNKNOWN_ERROR;
 @RestControllerAdvice
 public class ExceptionCatchAdvice {
 
+    private static String buildErrorMsg(Collection<FieldError> errors) {
+        return errors.stream().map(e -> e.getField() + ":" + e.getDefaultMessage())
+                .collect(Collectors.joining(","));
+    }
+
+    private static String buildViolationMsg(Collection<ConstraintViolation<?>> violations) {
+        return violations.stream().map(v -> {
+            var field = "";
+            for (var node : v.getPropertyPath()) {
+                // 取最后一个结点即为参数的名称
+                field = node.getName();
+            }
+            return field + ":" + v.getMessage();
+        }).collect(Collectors.joining(","));
+    }
+
     @ExceptionHandler(value = Exception.class)
     public Result<Void> handleException(Exception e) {
         log.error(e.getMessage(), e);
@@ -64,21 +80,5 @@ public class ExceptionCatchAdvice {
     public Result<Void> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.warn("catch MethodArgumentNotValidException: {}", e.getMessage());
         return Result.fail(PARAM_WRONG.code(), buildErrorMsg(e.getBindingResult().getFieldErrors()));
-    }
-
-    private static String buildErrorMsg(Collection<FieldError> errors) {
-        return errors.stream().map(e -> e.getField() + ":" + e.getDefaultMessage())
-                .collect(Collectors.joining(","));
-    }
-
-    private static String buildViolationMsg(Collection<ConstraintViolation<?>> violations) {
-        return violations.stream().map(v -> {
-            var field = "";
-            for (var node : v.getPropertyPath()) {
-                // 取最后一个结点即为参数的名称
-                field = node.getName();
-            }
-            return field + ":" + v.getMessage();
-        }).collect(Collectors.joining(","));
     }
 }

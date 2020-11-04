@@ -1,5 +1,6 @@
 package cn.sabercon.common.util;
 
+import cn.hutool.core.util.StrUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -20,5 +21,12 @@ public class StrUtils {
      */
     public static String buildRedisKey(Object... parts) {
         return Arrays.stream(parts).map(String::valueOf).collect(Collectors.joining(":"));
+    }
+
+    /**
+     * @return 中间四位替换为 * 的手机号
+     */
+    public static String maskPhoneNumber(String phone) {
+        return StrUtil.replace(phone, 4, 8, '*');
     }
 }

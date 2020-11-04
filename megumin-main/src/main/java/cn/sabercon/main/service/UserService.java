@@ -1,8 +1,11 @@
 package cn.sabercon.main.service;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.SecureUtil;
+import cn.sabercon.common.anno.Tx;
 import cn.sabercon.common.data.RedisHelper;
 import cn.sabercon.common.enums.type.Gender;
 import cn.sabercon.common.json.Json;
@@ -12,6 +15,9 @@ import cn.sabercon.common.util.Jwt;
 import cn.sabercon.main.domain.dto.UserInfo;
 import cn.sabercon.main.domain.entity.User;
 import cn.sabercon.main.domain.param.LoginParam;
+import cn.sabercon.main.domain.param.UpdatePhoneParam;
+import cn.sabercon.main.domain.param.UpdatePwdParam;
+import cn.sabercon.main.domain.param.UpdateUserParam;
 import cn.sabercon.main.enums.type.SmsType;
 import cn.sabercon.main.manager.SmsManager;
 import cn.sabercon.main.repo.UserRepo;
@@ -20,11 +26,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import static cn.sabercon.common.util.StrUtils.buildRedisKey;
 import static cn.sabercon.main.constant.RedisConstant.LOGIN_USER_PREFIX;
-import static cn.sabercon.main.enums.code.MainCode.LOGIN_ERROR;
-import static cn.sabercon.main.enums.code.MainCode.SMS_CODE_WRONG;
+import static cn.sabercon.main.enums.code.MainCode.*;
 
 /**
  * @author SaberCon
@@ -34,19 +40,17 @@ import static cn.sabercon.main.enums.code.MainCode.SMS_CODE_WRONG;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepo repo;
-
-    private final RedisHelper redisHelper;
-
-    private final SmsManager smsManager;
-
     private static final String DEFAULT_AVATAR = "http://oss.sabercon.cn/base/takagi.jpg";
+    private final UserRepo repo;
+    private final RedisHelper redisHelper;
+    private final SmsManager smsManager;
 
     public UserInfo getLoginUserInfo() {
         var userId = HttpUtils.getUserIdOrError();
         return redisHelper.get(buildRedisKey(LOGIN_USER_PREFIX, userId), UserInfo.class);
     }
 
+    @Tx
     public String login(LoginParam param) {
         User user;
         if (StringUtils.isEmpty(param.getCode())) {
@@ -58,8 +62,7 @@ public class UserService {
             Assert.isTrue(smsManager.checkCode(SmsType.LOGIN, param.getPhone(), param.getCode()), SMS_CODE_WRONG);
             user = repo.findByPhone(param.getPhone()).orElseGet(() -> register(param.getPhone()));
         }
-        var userInfo = Json.convert(user, UserInfo.class);
-        redisHelper.set(buildRedisKey(LOGIN_USER_PREFIX, user.getId()), userInfo);
+        refreshUserInfoCache(user);
         return Jwt.generateTokenById(user.getId(), DateUtil.nextMonth());
     }
 
@@ -74,10 +77,43 @@ public class UserService {
     }
 
     private String generateUsername() {
+        // 防止随机名称重复
         String username;
         do {
             username = "user" + IdUtil.simpleUUID();
         } while (repo.existsByUsername(username));
         return username;
+    }
+
+    @Tx
+    public void updatePhone(UpdatePhoneParam param) {
+        var oldPhone = getLoginUserInfo().getPhone();
+        var newPhone = param.getNewPhone();
+        Assert.isTrue(smsManager.checkCode(SmsType.UNBIND_PHONE, oldPhone, param.getUnbindCode()), SMS_CODE_WRONG);
+        Assert.isTrue(smsManager.checkCode(SmsType.BIND_PHONE, newPhone, param.getBindCode()), SMS_CODE_WRONG);
+        Assert.isTrue(Objects.equals(oldPhone, newPhone) || !repo.existsByPhone(newPhone), PHONE_ALREADY_BOUND);
+        var user = repo.getOne(HttpUtils.getUserId());
+        user.setPhone(newPhone);
+        refreshUserInfoCache(user);
+    }
+
+    @Tx
+    public void updatePwd(UpdatePwdParam param) {
+        Assert.isTrue(smsManager.checkCode(SmsType.UPDATE_PWD, getLoginUserInfo().getPhone(), param.getCode()), SMS_CODE_WRONG);
+        var user = repo.getOne(HttpUtils.getUserId());
+        user.setPassword(SecureUtil.md5(param.getNewPwd()));
+    }
+
+    @Tx
+    public void update(UpdateUserParam param) {
+        var user = repo.getOne(HttpUtils.getUserId());
+        Assert.isTrue(Objects.equals(user.getUsername(), param.getUsername()) || !repo.existsByUsername(param.getUsername()), USERNAME_EXISTS);
+        BeanUtil.copyProperties(param, user, CopyOptions.create().ignoreNullValue());
+        refreshUserInfoCache(user);
+    }
+
+    private void refreshUserInfoCache(User user) {
+        var userInfo = Json.convert(user, UserInfo.class);
+        redisHelper.set(buildRedisKey(LOGIN_USER_PREFIX, user.getId()), userInfo, 30, TimeUnit.DAYS);
     }
 }

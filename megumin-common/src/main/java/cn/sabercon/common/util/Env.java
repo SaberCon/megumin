@@ -15,12 +15,11 @@ import java.util.Arrays;
 @Component
 public class Env implements EnvironmentAware {
 
+    private static final String PROD = "prod";
     /**
      * 当前环境
      */
     private static String[] profiles;
-
-    private static final String PROD = "prod";
 
     public static boolean isProd() {
         return Arrays.stream(profiles).anyMatch(PROD::equalsIgnoreCase);

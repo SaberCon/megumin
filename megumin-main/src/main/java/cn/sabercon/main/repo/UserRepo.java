@@ -14,4 +14,6 @@ public interface UserRepo extends BaseJpaRepository<User> {
     Optional<User> findByPhone(String phone);
 
     boolean existsByUsername(String username);
+
+    boolean existsByPhone(String phone);
 }

@@ -28,19 +28,16 @@ import static cn.sabercon.common.util.StrUtils.buildRedisKey;
 @RequiredArgsConstructor
 public class SmsManager {
 
-    private final RedisHelper redisHelper;
-
-    private final IAcsClient acsClient;
-
-    @Value("${aliyun.sms.sign-name}")
-    private String signName;
-    @Value("${aliyun.sms.template-code}")
-    private String templateCode;
-
     /**
      * 保存到 redis 的验证码的键名前缀
      */
     private static final String SMS_CODE_PREFIX = "sms:code";
+    private final RedisHelper redisHelper;
+    private final IAcsClient acsClient;
+    @Value("${aliyun.sms.sign-name}")
+    private String signName;
+    @Value("${aliyun.sms.template-code}")
+    private String templateCode;
 
     /**
      * 发送短信验证码

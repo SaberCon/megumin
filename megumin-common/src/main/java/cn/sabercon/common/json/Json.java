@@ -22,15 +22,15 @@ public class Json {
 
     private static ObjectMapper mapper;
 
+    public static ObjectMapper getMapper() {
+        return mapper;
+    }
+
     /**
      * 设置 json 处理工具, 需要在容器启动期间设置好
      */
     static void setMapper(ObjectMapper mapper) {
         Json.mapper = mapper;
-    }
-
-    public static ObjectMapper getMapper() {
-        return mapper;
     }
 
     /**

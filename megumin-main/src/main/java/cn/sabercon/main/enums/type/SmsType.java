@@ -17,7 +17,9 @@ import lombok.experimental.Accessors;
 public enum SmsType implements IntEnum {
 
     LOGIN(1, "登录注册"),
-    CHANGE_PWD(2, "修改密码"),
+    BIND_PHONE(2, "绑定手机"),
+    UNBIND_PHONE(3, "解绑手机"),
+    UPDATE_PWD(4, "修改密码"),
     ;
 
     private final int val;

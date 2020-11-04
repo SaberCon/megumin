@@ -16,19 +16,6 @@ import java.util.Objects;
 public interface IntEnum {
 
     /**
-     * @return 代表枚举项的整型值
-     */
-    @JsonValue
-    int val();
-
-    /**
-     * @return 枚举项的描述信息
-     */
-    default String desc() {
-        return null;
-    }
-
-    /**
      * @return 将给定值转换为对应枚举的枚举项, 转换失败时返回 null
      */
     static <T extends IntEnum> T convert(Class<T> enumClass, Integer val) {
@@ -50,5 +37,18 @@ public interface IntEnum {
         } catch (NumberFormatException e) {
             return null;
         }
+    }
+
+    /**
+     * @return 代表枚举项的整型值
+     */
+    @JsonValue
+    int val();
+
+    /**
+     * @return 枚举项的描述信息
+     */
+    default String desc() {
+        return null;
     }
 }
