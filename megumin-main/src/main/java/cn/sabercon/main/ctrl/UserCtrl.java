@@ -31,8 +31,8 @@ public class UserCtrl {
 
     @GetMapping
     @ApiOperation("获取当前登录用户的信息")
-    public LoginUserInfo getLoginUserInfo() {
-        LoginUserInfo info = service.getLoginUserInfo();
+    public LoginUserInfo getLoginInfo() {
+        LoginUserInfo info = service.getLoginInfo();
         info.setPhone(maskPhoneNumber(info.getPhone()));
         return info;
     }

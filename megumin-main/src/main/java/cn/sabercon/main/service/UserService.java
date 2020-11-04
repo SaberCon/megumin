@@ -43,7 +43,7 @@ public class UserService {
     private final RedisHelper redisHelper;
     private final SmsManager smsManager;
 
-    public LoginUserInfo getLoginUserInfo() {
+    public LoginUserInfo getLoginInfo() {
         var userId = HttpUtils.getUserIdOrError();
         return redisHelper.get(buildRedisKey(LOGIN_USER_PREFIX, userId), LoginUserInfo.class);
     }
@@ -85,7 +85,7 @@ public class UserService {
 
     @Tx
     public void updatePhone(String newPhone, String unbindCode, String bindCode) {
-        var oldPhone = getLoginUserInfo().getPhone();
+        var oldPhone = getLoginInfo().getPhone();
         Assert.isTrue(smsManager.checkCode(SmsType.UNBIND_PHONE, oldPhone, unbindCode), SMS_CODE_WRONG);
         Assert.isTrue(smsManager.checkCode(SmsType.BIND_PHONE, newPhone, bindCode), SMS_CODE_WRONG);
         Assert.isTrue(Objects.equals(oldPhone, newPhone) || !repo.existsByPhone(newPhone), PHONE_ALREADY_BOUND);
@@ -96,7 +96,7 @@ public class UserService {
 
     @Tx
     public void updatePwd(String newPwd, String code) {
-        Assert.isTrue(smsManager.checkCode(SmsType.UPDATE_PWD, getLoginUserInfo().getPhone(), code), SMS_CODE_WRONG);
+        Assert.isTrue(smsManager.checkCode(SmsType.UPDATE_PWD, getLoginInfo().getPhone(), code), SMS_CODE_WRONG);
         var user = repo.getOne(HttpUtils.getUserId());
         user.setPassword(SecureUtil.md5(newPwd));
     }

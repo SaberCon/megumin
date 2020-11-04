@@ -30,7 +30,7 @@ public class SmsCtrl {
     @ApiOperation("发送短信验证码")
     public void sendCode(@NotNull SmsType type, @ApiParam("为空时表示当前登录用户的手机号") String phone) {
         if (StringUtils.isEmpty(phone)) {
-            phone = userService.getLoginUserInfo().getPhone();
+            phone = userService.getLoginInfo().getPhone();
         }
         manager.sendCode(type, phone);
     }
@@ -39,7 +39,7 @@ public class SmsCtrl {
     @ApiOperation("校验短信验证码是否正确")
     public boolean checkCode(@NotNull SmsType type, @ApiParam("为空时表示当前登录用户的手机号") String phone, @NotNull String code) {
         if (StringUtils.isEmpty(phone)) {
-            phone = userService.getLoginUserInfo().getPhone();
+            phone = userService.getLoginInfo().getPhone();
         }
         return manager.checkCode(type, phone, code);
     }
