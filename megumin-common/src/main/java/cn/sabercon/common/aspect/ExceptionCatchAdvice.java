@@ -43,8 +43,8 @@ public class ExceptionCatchAdvice {
         }).collect(Collectors.joining(","));
     }
 
-    @ExceptionHandler(value = Exception.class)
-    public Result<Void> handleException(Exception e) {
+    @ExceptionHandler(value = Throwable.class)
+    public Result<Void> handleException(Throwable e) {
         log.error(e.getMessage(), e);
         return Result.fail(UNKNOWN_ERROR.code(), e.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
     }
