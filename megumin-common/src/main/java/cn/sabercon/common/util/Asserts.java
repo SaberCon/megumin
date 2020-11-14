@@ -16,7 +16,7 @@ import java.util.Objects;
  * @since 1.0.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class Assert {
+public class Asserts {
 
     public static void isTrue(boolean condition, ResultCode resultCode, String msg) {
         if (condition) {
@@ -30,7 +30,7 @@ public class Assert {
     }
 
     public static void isTrue(boolean condition, String msg) {
-        isTrue(condition, CommonCode.ASSERTION_FAILURE, msg);
+        isTrue(condition, CommonCode.FAILURE, msg);
     }
 
     public static void isTrue(boolean condition) {
@@ -46,7 +46,7 @@ public class Assert {
     }
 
     public static void isFalse(boolean condition, String msg) {
-        isFalse(condition, CommonCode.ASSERTION_FAILURE, msg);
+        isFalse(condition, CommonCode.FAILURE, msg);
     }
 
     public static void isFalse(boolean condition) {
@@ -62,7 +62,7 @@ public class Assert {
     }
 
     public static void isNull(Object obj, String msg) {
-        isNull(obj, CommonCode.ASSERTION_FAILURE, msg);
+        isNull(obj, CommonCode.FAILURE, msg);
     }
 
     public static void isNull(Object obj) {
@@ -82,7 +82,7 @@ public class Assert {
 
     @NotNull
     public static <T> T notNull(T obj, String msg) {
-        return notNull(obj, CommonCode.ASSERTION_FAILURE, msg);
+        return notNull(obj, CommonCode.FAILURE, msg);
     }
 
     @NotNull
@@ -99,7 +99,7 @@ public class Assert {
     }
 
     public static void notEmpty(String str, String msg) {
-        notEmpty(str, CommonCode.ASSERTION_FAILURE, msg);
+        notEmpty(str, CommonCode.FAILURE, msg);
     }
 
     public static void notEmpty(String str) {
@@ -115,7 +115,7 @@ public class Assert {
     }
 
     public static void notEmpty(Collection<?> coll, String msg) {
-        notEmpty(coll, CommonCode.ASSERTION_FAILURE, msg);
+        notEmpty(coll, CommonCode.FAILURE, msg);
     }
 
     public static void notEmpty(Collection<?> coll) {

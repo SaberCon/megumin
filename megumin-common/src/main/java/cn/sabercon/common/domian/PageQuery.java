@@ -1,11 +1,7 @@
 package cn.sabercon.common.domian;
 
-import cn.sabercon.common.enums.type.SortType;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import lombok.experimental.FieldNameConstants;
 
 import javax.validation.constraints.Positive;
 
@@ -13,48 +9,24 @@ import javax.validation.constraints.Positive;
  * 通用的分页查询参数对象
  *
  * @author SaberCon
- * @implNote 多条件查询的参数对象可以继承此类以简化操作
  * @since 1.0.0
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@FieldNameConstants
 public class PageQuery {
 
+    public static final int DEFAULT_PAGE = 0;
+
+    public static final int DEFAULT_SIZE = 10;
+
     /**
-     * 页码
+     * 页码, 从 0 开始
      */
     @Positive
-    private int p = 1;
+    private int p = DEFAULT_PAGE;
     /**
      * 页幅
      */
     @Positive
-    private int s = 10;
-
-    /**
-     * @return 跳过的条目数, 用于 limit 查询
-     */
-    public long calcSkip() {
-        return ((long) s) * (p - 1);
-    }
-
-    public PageRequest toPageRequest(Sort sort) {
-        return PageRequest.of(p - 1, s, sort);
-    }
-
-    public PageRequest toPageRequest() {
-        return toPageRequest(Sort.unsorted());
-    }
-
-    public PageRequest toPageRequest(SortType sort, String... properties) {
-        return toPageRequest(Sort.by(sort.direction(), properties));
-    }
-
-    /**
-     * 默认升序
-     */
-    public PageRequest toPageRequest(String... properties) {
-        return toPageRequest(SortType.ASC, properties);
-    }
+    private int s = DEFAULT_SIZE;
 }

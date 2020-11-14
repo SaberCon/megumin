@@ -2,7 +2,7 @@ package cn.sabercon.main.manager;
 
 import cn.hutool.core.util.RandomUtil;
 import cn.sabercon.common.data.RedisHelper;
-import cn.sabercon.common.util.Env;
+import cn.sabercon.common.util.ContextHolder;
 import cn.sabercon.main.enums.type.SmsType;
 import com.aliyuncs.CommonRequest;
 import com.aliyuncs.IAcsClient;
@@ -67,7 +67,7 @@ public class SmsManager {
      * @return 短信验证码是否正确
      */
     public boolean checkCode(SmsType type, String phone, String code) {
-        if (Env.isNotProd() && "1234".equals(code)) {
+        if (ContextHolder.isNotProd() && "1234".equals(code)) {
             // 非生产环境 1234 为万能校验码
             return true;
         }

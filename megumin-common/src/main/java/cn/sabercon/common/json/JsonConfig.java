@@ -38,9 +38,6 @@ public class JsonConfig {
         var mapper = new ObjectMapper();
         applySpringMvcDefaultSetting(mapper);
         applyCustomSetting(mapper);
-
-        // 设置 mapper 到工具类
-        Json.setMapper(mapper);
         return mapper;
     }
 

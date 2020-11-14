@@ -1,8 +1,8 @@
 package cn.sabercon.main.advice;
 
 import cn.sabercon.common.data.RedisHelper;
-import cn.sabercon.common.util.Assert;
-import cn.sabercon.common.util.HttpUtils;
+import cn.sabercon.common.util.Asserts;
+import cn.sabercon.common.util.Requests;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
@@ -36,9 +36,9 @@ public class LoginInterceptor implements HandlerInterceptor {
         if (HttpMethod.OPTIONS.matches(request.getMethod())) {
             return true;
         }
-        var userId = HttpUtils.getUserId();
-        Assert.notNull(userId, UNAUTHORIZED);
-        Assert.isTrue(redisHelper.exists(buildRedisKey(LOGIN_USER_PREFIX, userId)), UNAUTHORIZED);
+        var userId = Requests.getUserId();
+        Asserts.notNull(userId, UNAUTHORIZED);
+        Asserts.isTrue(redisHelper.exists(buildRedisKey(LOGIN_USER_PREFIX, userId)), UNAUTHORIZED);
         return true;
     }
 }

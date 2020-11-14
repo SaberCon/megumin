@@ -1,5 +1,7 @@
 package cn.sabercon.common.json;
 
+import cn.sabercon.common.util.Asserts;
+import cn.sabercon.common.util.ContextHolder;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,15 +24,13 @@ public class Json {
 
     private static ObjectMapper mapper;
 
-    public static ObjectMapper getMapper() {
-        return mapper;
+    static {
+        // 设置好 mapper 注入的回调
+        ContextHolder.addCallBack(context -> mapper = context.getBean(ObjectMapper.class));
     }
 
-    /**
-     * 设置 json 处理工具, 需要在容器启动期间设置好
-     */
-    static void setMapper(ObjectMapper mapper) {
-        Json.mapper = mapper;
+    public static ObjectMapper getMapper() {
+        return Asserts.notNull(mapper, "the object mapper has not been set, please access this method after the context is ready");
     }
 
     /**
@@ -38,7 +38,7 @@ public class Json {
      */
     @SneakyThrows
     public static String write(Object value) {
-        return mapper.writeValueAsString(value);
+        return getMapper().writeValueAsString(value);
 
     }
 
@@ -47,7 +47,7 @@ public class Json {
      */
     @SneakyThrows
     public static <T> T read(String content, TypeReference<T> valueTypeRef) {
-        return mapper.readValue(content, valueTypeRef);
+        return getMapper().readValue(content, valueTypeRef);
     }
 
     /**
@@ -55,7 +55,7 @@ public class Json {
      */
     @SneakyThrows
     public static <T> T read(String content, Class<T> valueType) {
-        return mapper.readValue(content, valueType);
+        return getMapper().readValue(content, valueType);
 
     }
 
@@ -64,7 +64,7 @@ public class Json {
      */
     @SneakyThrows
     public static JsonNode read(String content) {
-        return mapper.readTree(content);
+        return getMapper().readTree(content);
     }
 
     /**
@@ -72,8 +72,8 @@ public class Json {
      */
     @SneakyThrows
     public static <T> List<T> readList(String content, Class<T> valueType) {
-        var collectionType = mapper.getTypeFactory().constructCollectionType(List.class, valueType);
-        return mapper.readValue(content, collectionType);
+        var collectionType = getMapper().getTypeFactory().constructCollectionType(List.class, valueType);
+        return getMapper().readValue(content, collectionType);
     }
 
     /**
@@ -83,6 +83,6 @@ public class Json {
      * @param toValueType 目标对象类型
      */
     public static <T> T convert(Object fromValue, Class<T> toValueType) {
-        return mapper.convertValue(fromValue, toValueType);
+        return getMapper().convertValue(fromValue, toValueType);
     }
 }

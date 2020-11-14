@@ -4,7 +4,6 @@ import lombok.Value;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -34,10 +33,5 @@ public class PageModel<T> {
 
     public <U> PageModel<U> map(Function<? super T, ? extends U> converter) {
         return new PageModel<>(total, list.stream().map(converter).collect(Collectors.toList()));
-    }
-
-    public PageModel<T> foreach(Consumer<? super T> action) {
-        list.forEach(action);
-        return this;
     }
 }

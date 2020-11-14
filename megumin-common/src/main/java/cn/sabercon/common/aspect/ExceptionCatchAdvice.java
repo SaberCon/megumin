@@ -27,29 +27,14 @@ import static cn.sabercon.common.enums.CommonCode.UNKNOWN_ERROR;
 @RestControllerAdvice
 public class ExceptionCatchAdvice {
 
-    private static String buildErrorMsg(Collection<FieldError> errors) {
-        return errors.stream().map(e -> e.getField() + ":" + e.getDefaultMessage())
-                .collect(Collectors.joining(","));
-    }
-
-    private static String buildViolationMsg(Collection<ConstraintViolation<?>> violations) {
-        return violations.stream().map(v -> {
-            var field = "";
-            for (var node : v.getPropertyPath()) {
-                // 取最后一个结点即为参数的名称
-                field = node.getName();
-            }
-            return field + ":" + v.getMessage();
-        }).collect(Collectors.joining(","));
-    }
-
-    @ExceptionHandler(value = Throwable.class)
+    @ExceptionHandler(Throwable.class)
     public Result<Void> handleException(Throwable e) {
         log.error(e.getMessage(), e);
+        // todo 发送邮件
         return Result.fail(UNKNOWN_ERROR.code(), e.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
     }
 
-    @ExceptionHandler(value = ServiceException.class)
+    @ExceptionHandler(ServiceException.class)
     public Result<Void> handleServiceException(ServiceException e) {
         log.warn("catch ServiceException: {}", e.getMessage());
         return Result.fail(e.getCode(), e.getLocalizedMessage());
@@ -58,7 +43,7 @@ public class ExceptionCatchAdvice {
     /**
      * 统一处理请求参数校验 (普通传参)
      */
-    @ExceptionHandler(value = ConstraintViolationException.class)
+    @ExceptionHandler(ConstraintViolationException.class)
     public Result<Void> handleConstraintViolationException(ConstraintViolationException e) {
         log.warn("catch ConstraintViolationException: {}", e.getMessage());
         return Result.fail(PARAM_WRONG.code(), buildViolationMsg(e.getConstraintViolations()));
@@ -80,5 +65,21 @@ public class ExceptionCatchAdvice {
     public Result<Void> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.warn("catch MethodArgumentNotValidException: {}", e.getMessage());
         return Result.fail(PARAM_WRONG.code(), buildErrorMsg(e.getBindingResult().getFieldErrors()));
+    }
+
+    private static String buildErrorMsg(Collection<FieldError> errors) {
+        return errors.stream().map(e -> e.getField() + ":" + e.getDefaultMessage())
+                .collect(Collectors.joining(","));
+    }
+
+    private static String buildViolationMsg(Collection<ConstraintViolation<?>> violations) {
+        return violations.stream().map(v -> {
+            var field = "";
+            for (var node : v.getPropertyPath()) {
+                // 取最后一个结点即为参数的名称
+                field = node.getName();
+            }
+            return field + ":" + v.getMessage();
+        }).collect(Collectors.joining(","));
     }
 }
