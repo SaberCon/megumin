@@ -11,5 +11,5 @@ import org.springframework.data.domain.Pageable;
  */
 public interface ReplyRepo extends BaseJpaRepository<Reply> {
 
-    Page<Reply> findByCommentIdOrderByCtimeDesc(Long commentId, Pageable pageable);
+    Page<Reply> findByCommentId(Long commentId, Pageable pageable);
 }

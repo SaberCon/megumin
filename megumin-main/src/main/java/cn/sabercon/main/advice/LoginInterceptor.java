@@ -36,7 +36,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         if (HttpMethod.OPTIONS.matches(request.getMethod())) {
             return true;
         }
-        var userId = Requests.getUserId();
+        var userId = Requests.userId();
         Asserts.notNull(userId, UNAUTHORIZED);
         Asserts.isTrue(redisHelper.exists(buildRedisKey(LOGIN_USER_PREFIX, userId)), UNAUTHORIZED);
         return true;

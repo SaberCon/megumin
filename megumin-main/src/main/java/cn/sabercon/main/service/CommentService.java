@@ -1,12 +1,12 @@
 package cn.sabercon.main.service;
 
-import cn.sabercon.common.domian.PageModel;
-import cn.sabercon.common.domian.PageQuery;
 import cn.sabercon.common.json.Json;
+import cn.sabercon.common.util.Requests;
 import cn.sabercon.main.domain.entity.Comment;
 import cn.sabercon.main.domain.model.CommentModel;
 import cn.sabercon.main.repo.CommentRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,8 +21,8 @@ public class CommentService {
 
     private final UserService userService;
 
-    public PageModel<CommentModel> list(Long postId, PageQuery pageQuery) {
-        return PageModel.from(repo.findByPostIdOrderByLevel(postId, pageQuery.toPageRequest())).map(this::convert);
+    public Page<CommentModel> list(Long postId) {
+        return repo.findByPostId(postId, Requests.ascPageable(Comment.Fields.level)).map(this::convert);
     }
 
     public CommentModel get(Long id) {
@@ -30,7 +30,7 @@ public class CommentService {
     }
 
     private CommentModel convert(Comment comment) {
-        CommentModel model = Json.convert(comment, CommentModel.class);
+        var model = Json.convert(comment, CommentModel.class);
         model.setUser(userService.getSimpleInfo(comment.getUserId()));
         return model;
     }

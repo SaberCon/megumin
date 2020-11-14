@@ -87,27 +87,38 @@ public class Requests {
     }
 
     /**
-     * @param defaultSize 默认页幅
      * @return 由请求头中分页参数生成的分页请求, 分页参数不存在时会采用默认参数
      */
-    public static Pageable getPage(Sort sort, int defaultSize) {
-        int page = getIntParam(PageQuery.Fields.p).orElse(PageQuery.DEFAULT_PAGE);
-        int size = getIntParam(PageQuery.Fields.s).orElse(defaultSize);
+    public static Pageable pageable(Sort sort) {
+        int page = getIntParam(PageQuery.Fields.p).filter(p -> p >= 0).orElse(PageQuery.DEFAULT_PAGE);
+        int size = getIntParam(PageQuery.Fields.s).filter(s -> s > 0).orElse(PageQuery.DEFAULT_SIZE);
         return PageRequest.of(page, size, sort);
     }
 
-    public static Pageable getPage(Sort sort) {
-        return getPage(sort, PageQuery.DEFAULT_SIZE);
+    /**
+     * @param properties 要排序的字段
+     * @return 升序查询的分页请求
+     */
+    public static Pageable ascPageable(String... properties) {
+        return pageable(Sort.by(Sort.Direction.ASC, properties));
     }
 
-    public static Pageable getPage() {
-        return getPage(Sort.unsorted());
+    /**
+     * @param properties 要排序的字段
+     * @return 降序查询的分页请求
+     */
+    public static Pageable descPageable(String... properties) {
+        return pageable(Sort.by(Sort.Direction.DESC, properties));
+    }
+
+    public static Pageable pageable() {
+        return pageable(Sort.unsorted());
     }
 
     /**
      * @return token 中的用户 id, 没有时返回 null
      */
-    public static Long getUserId() {
+    public static Long userId() {
         var tokenOpt = getHeader(TOKEN_HEADER);
         if (ContextHolder.isNotProd() && tokenOpt.stream().anyMatch(NumberUtil::isLong)) {
             // 非生产环境 token 直接为用户 id 时可通过
@@ -120,7 +131,7 @@ public class Requests {
      * @return token 中的用户 id, 没有时抛出异常
      */
     @NotNull
-    public static Long getUserIdOrError() {
-        return Asserts.notNull(getUserId(), UNAUTHORIZED);
+    public static Long userIdOrUnAuth() {
+        return Asserts.notNull(userId(), UNAUTHORIZED);
     }
 }

@@ -1,17 +1,15 @@
 package cn.sabercon.main.ctrl;
 
 import cn.sabercon.common.anno.ServiceController;
-import cn.sabercon.common.domian.PageModel;
-import cn.sabercon.common.domian.PageQuery;
 import cn.sabercon.main.domain.model.CommunityListModel;
 import cn.sabercon.main.domain.model.CommunityModel;
 import cn.sabercon.main.service.CommunityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -27,8 +25,8 @@ public class CommunityCtrl {
 
     @GetMapping("hot")
     @ApiModelProperty("热门分页查询")
-    public PageModel<CommunityListModel> listHot(@Valid PageQuery pageQuery) {
-        return service.listHot(pageQuery);
+    public Page<CommunityListModel> listHot() {
+        return service.listHot();
     }
 
     @GetMapping

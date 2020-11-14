@@ -11,5 +11,5 @@ import org.springframework.data.domain.Pageable;
  */
 public interface PostRepo extends BaseJpaRepository<Post> {
 
-    Page<Post> findByCommunityIdOrderByMtimeDesc(Long communityId, Pageable pageable);
+    Page<Post> findByCommunityId(Long communityId, Pageable pageable);
 }

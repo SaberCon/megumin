@@ -1,16 +1,14 @@
 package cn.sabercon.main.ctrl;
 
 import cn.sabercon.common.anno.ServiceController;
-import cn.sabercon.common.domian.PageModel;
-import cn.sabercon.common.domian.PageQuery;
 import cn.sabercon.main.domain.model.PostModel;
 import cn.sabercon.main.service.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -26,8 +24,8 @@ public class PostCtrl {
 
     @GetMapping("recent")
     @ApiModelProperty("最新更新分页查询")
-    public PageModel<PostModel> listRecent(@NotNull Long communityId, @Valid PageQuery pageQuery) {
-        return service.listRecent(communityId, pageQuery);
+    public Page<PostModel> listRecent(@NotNull Long communityId) {
+        return service.listRecent(communityId);
     }
 
     @GetMapping

@@ -1,12 +1,13 @@
 package cn.sabercon.main.service;
 
-import cn.sabercon.common.domian.PageModel;
-import cn.sabercon.common.domian.PageQuery;
+import cn.sabercon.common.domian.BaseEntity;
 import cn.sabercon.common.json.Json;
+import cn.sabercon.common.util.Requests;
 import cn.sabercon.main.domain.entity.Reply;
 import cn.sabercon.main.domain.model.ReplyModel;
 import cn.sabercon.main.repo.ReplyRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,8 +22,8 @@ public class ReplyService {
 
     private final UserService userService;
 
-    public PageModel<ReplyModel> list(Long commentId, PageQuery pageQuery) {
-        return PageModel.from(repo.findByCommentIdOrderByCtimeDesc(commentId, pageQuery.toPageRequest())).map(this::convert);
+    public Page<ReplyModel> list(Long commentId) {
+        return repo.findByCommentId(commentId, Requests.descPageable(BaseEntity.Fields.ctime)).map(this::convert);
     }
 
     public ReplyModel get(Long id) {
@@ -30,7 +31,7 @@ public class ReplyService {
     }
 
     private ReplyModel convert(Reply reply) {
-        ReplyModel model = Json.convert(reply, ReplyModel.class);
+        var model = Json.convert(reply, ReplyModel.class);
         model.setUser(userService.getSimpleInfo(reply.getUserId()));
         return model;
     }

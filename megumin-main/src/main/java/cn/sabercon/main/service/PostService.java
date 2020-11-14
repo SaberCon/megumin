@@ -1,12 +1,13 @@
 package cn.sabercon.main.service;
 
-import cn.sabercon.common.domian.PageModel;
-import cn.sabercon.common.domian.PageQuery;
+import cn.sabercon.common.domian.BaseEntity;
 import cn.sabercon.common.json.Json;
+import cn.sabercon.common.util.Requests;
 import cn.sabercon.main.domain.entity.Post;
 import cn.sabercon.main.domain.model.PostModel;
 import cn.sabercon.main.repo.PostRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,8 +22,8 @@ public class PostService {
 
     private final UserService userService;
 
-    public PageModel<PostModel> listRecent(Long communityId, PageQuery pageQuery) {
-        return PageModel.from(repo.findByCommunityIdOrderByMtimeDesc(communityId, pageQuery.toPageRequest())).map(this::convert);
+    public Page<PostModel> listRecent(Long communityId) {
+        return repo.findByCommunityId(communityId, Requests.descPageable(BaseEntity.Fields.mtime)).map(this::convert);
     }
 
     public PostModel get(Long id) {
@@ -30,7 +31,7 @@ public class PostService {
     }
 
     private PostModel convert(Post post) {
-        PostModel model = Json.convert(post, PostModel.class);
+        var model = Json.convert(post, PostModel.class);
         model.setUser(userService.getSimpleInfo(post.getUserId()));
         return model;
     }

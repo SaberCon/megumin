@@ -46,7 +46,7 @@ public class UserService {
     private final SmsManager smsManager;
 
     public LoginUserInfo getLoginInfo() {
-        var userId = Requests.getUserIdOrError();
+        var userId = Requests.userIdOrUnAuth();
         return redisHelper.get(buildRedisKey(LOGIN_USER_PREFIX, userId), LoginUserInfo.class);
     }
 
@@ -91,7 +91,7 @@ public class UserService {
         Asserts.isTrue(smsManager.checkCode(SmsType.UNBIND_PHONE, oldPhone, unbindCode), SMS_CODE_WRONG);
         Asserts.isTrue(smsManager.checkCode(SmsType.BIND_PHONE, newPhone, bindCode), SMS_CODE_WRONG);
         Asserts.isTrue(Objects.equals(oldPhone, newPhone) || !repo.existsByPhone(newPhone), PHONE_ALREADY_BOUND);
-        var user = repo.getOne(Requests.getUserId());
+        var user = repo.getOne(Requests.userId());
         user.setPhone(newPhone);
         refreshUserInfoCache(user);
     }
@@ -99,13 +99,13 @@ public class UserService {
     @Tx
     public void updatePwd(String newPwd, String code) {
         Asserts.isTrue(smsManager.checkCode(SmsType.UPDATE_PWD, getLoginInfo().getPhone(), code), SMS_CODE_WRONG);
-        var user = repo.getOne(Requests.getUserId());
+        var user = repo.getOne(Requests.userId());
         user.setPassword(SecureUtil.md5(newPwd));
     }
 
     @Tx
     public void update(UpdateUserParam param) {
-        var user = repo.getOne(Requests.getUserId());
+        var user = repo.getOne(Requests.userId());
         Asserts.isTrue(Objects.equals(user.getUsername(), param.getUsername()) || !repo.existsByUsername(param.getUsername()), USERNAME_EXISTS);
         BeanUtil.copyProperties(param, user, CopyOptions.create().ignoreNullValue());
         refreshUserInfoCache(user);
