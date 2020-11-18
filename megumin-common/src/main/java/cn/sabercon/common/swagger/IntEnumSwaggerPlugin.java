@@ -1,8 +1,7 @@
 package cn.sabercon.common.swagger;
 
 import cn.sabercon.common.enums.IntEnum;
-import com.fasterxml.classmate.ResolvedType;
-import com.fasterxml.jackson.databind.introspect.AnnotatedField;
+import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +22,6 @@ import springfox.documentation.spi.service.contexts.ResponseContext;
 import springfox.documentation.swagger.common.SwaggerPluginSupport;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -41,17 +39,12 @@ public class IntEnumSwaggerPlugin implements ModelPropertyBuilderPlugin, Expande
      */
     @Override
     public void apply(ModelPropertyContext context) {
-        var definitionOptional = context.getBeanPropertyDefinition();
-        if (definitionOptional.isEmpty()) {
-            return;
-        }
-        AnnotatedField type = definitionOptional.get().getField();
-        if (!IntEnum.class.isAssignableFrom(type.getRawType())) {
-            return;
-        }
-        var builder = context.getSpecificationBuilder();
-        builder.type(new ModelSpecificationBuilder().copyOf(builder.build().getType()).scalarModel(ScalarType.INTEGER).build());
-        builder.description(buildDesc(builder.build().getDescription(), type.getRawType()));
+        context.getBeanPropertyDefinition().map(BeanPropertyDefinition::getField)
+                .filter(field -> IntEnum.class.isAssignableFrom(field.getRawType())).ifPresent(field -> {
+            var builder = context.getSpecificationBuilder();
+            builder.type(new ModelSpecificationBuilder().copyOf(builder.build().getType()).scalarModel(ScalarType.INTEGER).build());
+            builder.description(buildDesc(builder.build().getDescription(), field.getRawType()));
+        });
     }
 
     /**
@@ -60,12 +53,12 @@ public class IntEnumSwaggerPlugin implements ModelPropertyBuilderPlugin, Expande
      */
     @Override
     public void apply(ParameterExpansionContext context) {
-        ResolvedType type = context.getFieldType();
+        var type = context.getFieldType();
         if (!type.isInstanceOf(IntEnum.class)) {
             return;
         }
         var builder = context.getRequestParameterBuilder();
-        List<String> valueList = Arrays.stream(type.getErasedType().getEnumConstants())
+        var valueList = Arrays.stream(type.getErasedType().getEnumConstants())
                 .map(IntEnum.class::cast).map(IntEnum::val).map(String::valueOf).collect(Collectors.toList());
         builder.query(p -> p.model(c -> c.scalarModel(ScalarType.INTEGER))
                 .enumerationFacet(e -> e.allowedValues(new AllowableListValues(valueList, "LIST"))));
@@ -79,7 +72,7 @@ public class IntEnumSwaggerPlugin implements ModelPropertyBuilderPlugin, Expande
      */
     @Override
     public void apply(ParameterContext parameterContext) {
-        ResolvedType type = parameterContext.resolvedMethodParameter().getParameterType();
+        var type = parameterContext.resolvedMethodParameter().getParameterType();
         if (!type.isInstanceOf(IntEnum.class)) {
             return;
         }
@@ -93,7 +86,7 @@ public class IntEnumSwaggerPlugin implements ModelPropertyBuilderPlugin, Expande
      */
     @Override
     public void apply(ResponseContext responseContext) {
-        ResolvedType type = responseContext.getOperationContext().getReturnType();
+        var type = responseContext.getOperationContext().getReturnType();
         if (!type.isInstanceOf(IntEnum.class)) {
             return;
         }
@@ -111,7 +104,7 @@ public class IntEnumSwaggerPlugin implements ModelPropertyBuilderPlugin, Expande
      * 拼接模型参数说明文档, 可包含枚举信息
      */
     private String buildDesc(String baseDesc, Class<?> enumClass) {
-        StringBuilder noteBuilder = new StringBuilder();
+        var noteBuilder = new StringBuilder();
         if (StringUtils.hasText(baseDesc)) {
             noteBuilder.append(baseDesc).append(" ");
         }

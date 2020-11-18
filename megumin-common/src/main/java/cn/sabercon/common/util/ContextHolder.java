@@ -75,11 +75,11 @@ public class ContextHolder implements ApplicationContextAware, DisposableBean {
     }
 
     private static void assertEnvironmentInjected() {
-        Asserts.notNull(environment, "environment is not ready yet");
+        Assert.notNull(environment, "environment is not ready yet");
     }
 
     private static void assertContextInjected() {
-        Asserts.notNull(context, "application context is not ready yet");
+        Assert.notNull(context, "application context is not ready yet");
     }
 
     @Override

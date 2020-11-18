@@ -1,7 +1,7 @@
 package cn.sabercon.main.service;
 
 import cn.sabercon.common.json.Json;
-import cn.sabercon.common.util.Requests;
+import cn.sabercon.common.util.HttpUtils;
 import cn.sabercon.main.domain.entity.Comment;
 import cn.sabercon.main.domain.model.CommentModel;
 import cn.sabercon.main.repo.CommentRepo;
@@ -22,7 +22,7 @@ public class CommentService {
     private final UserService userService;
 
     public Page<CommentModel> list(Long postId) {
-        return repo.findByPostId(postId, Requests.ascPageable(Comment.Fields.level)).map(this::convert);
+        return repo.findByPostId(postId, HttpUtils.ascPageable(Comment.Fields.level)).map(this::convert);
     }
 
     public CommentModel get(Long id) {

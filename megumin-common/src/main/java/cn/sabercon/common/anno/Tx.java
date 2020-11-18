@@ -12,9 +12,9 @@ import java.lang.annotation.*;
  * @author SaberCon
  * @since 1.0.0
  */
+@Documented
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-@Documented
 @Transactional(rollbackFor = Exception.class)
 public @interface Tx {
 

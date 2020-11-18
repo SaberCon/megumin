@@ -18,13 +18,13 @@ import java.lang.annotation.*;
  * @see ResultWrapAdvice
  * @since 1.0.0
  */
+@Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Documented
 @Validated
 @RequestMapping
 @RestController
-public @interface ServiceController {
+public @interface Ctrl {
 
     @AliasFor(annotation = RequestMapping.class)
     String[] value() default {};

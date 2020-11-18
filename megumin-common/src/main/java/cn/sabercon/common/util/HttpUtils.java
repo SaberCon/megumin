@@ -27,18 +27,18 @@ import static cn.sabercon.common.enums.CommonCode.UNAUTHORIZED;
  * @since 1.0.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class Requests {
+public class HttpUtils {
 
     private static final String TOKEN_HEADER = "jwt-token";
 
     public static HttpServletRequest getRequest() {
         var attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        return Asserts.notNull(attributes.getRequest());
+        return Assert.notNull(attributes.getRequest());
     }
 
     public static HttpServletResponse getResponse() {
         var attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        return Asserts.notNull(attributes.getResponse());
+        return Assert.notNull(attributes.getResponse());
     }
 
     public static void addCookie(Cookie cookie) {
@@ -132,6 +132,6 @@ public class Requests {
      */
     @NotNull
     public static Long userIdOrUnAuth() {
-        return Asserts.notNull(userId(), UNAUTHORIZED);
+        return Assert.notNull(userId(), UNAUTHORIZED);
     }
 }

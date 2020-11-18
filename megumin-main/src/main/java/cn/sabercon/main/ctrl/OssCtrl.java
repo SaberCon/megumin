@@ -1,6 +1,6 @@
 package cn.sabercon.main.ctrl;
 
-import cn.sabercon.common.anno.ServiceController;
+import cn.sabercon.common.anno.Ctrl;
 import cn.sabercon.main.domain.model.OssToken;
 import cn.sabercon.main.enums.type.FileType;
 import cn.sabercon.main.manager.OssManager;
@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
  * @since 1.0.0
  */
 @Api(tags = "OSS 相关接口")
-@ServiceController("oss")
+@Ctrl("oss")
 @RequiredArgsConstructor
 public class OssCtrl {
 

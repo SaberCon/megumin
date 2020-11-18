@@ -1,6 +1,6 @@
 package cn.sabercon.main.ctrl;
 
-import cn.sabercon.common.anno.ServiceController;
+import cn.sabercon.common.anno.Ctrl;
 import cn.sabercon.main.domain.model.ReplyModel;
 import cn.sabercon.main.service.ReplyService;
 import io.swagger.annotations.Api;
@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
  * @since 1.0.0
  */
 @Api(tags = "回复相关接口")
-@ServiceController("reply")
+@Ctrl("reply")
 @RequiredArgsConstructor
 public class ReplyCtrl {
 

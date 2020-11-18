@@ -1,6 +1,7 @@
 package cn.sabercon.common.domian;
 
-import lombok.Data;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Value;
 import lombok.experimental.FieldNameConstants;
 
 import javax.validation.constraints.Positive;
@@ -11,7 +12,7 @@ import javax.validation.constraints.Positive;
  * @author SaberCon
  * @since 1.0.0
  */
-@Data
+@Value
 @FieldNameConstants
 public class PageQuery {
 
@@ -19,14 +20,11 @@ public class PageQuery {
 
     public static final int DEFAULT_SIZE = 10;
 
-    /**
-     * 页码, 从 0 开始
-     */
     @Positive
-    private int p = DEFAULT_PAGE;
-    /**
-     * 页幅
-     */
+    @ApiModelProperty("页码, 从 0 开始")
+    int p = DEFAULT_PAGE;
+
     @Positive
-    private int s = DEFAULT_SIZE;
+    @ApiModelProperty("页幅")
+    int s = DEFAULT_SIZE;
 }

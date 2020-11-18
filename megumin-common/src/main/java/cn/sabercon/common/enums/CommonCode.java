@@ -22,7 +22,7 @@ public enum CommonCode implements ResultCode {
     UNKNOWN_ERROR("C0001", "unknown error occurred"),
     ASSERTION_FAILURE("C0002", "the assertion failed"),
     SERVER_NOT_AVAILABLE("C0003", "the server is not available"),
-    REMOTE_SERVICE_NOT_AVAILABLE("D0001", "the remote server is not available"),
+    REMOTE_SERVER_NOT_AVAILABLE("D0001", "the remote server is not available"),
     ;
 
     private final String code;

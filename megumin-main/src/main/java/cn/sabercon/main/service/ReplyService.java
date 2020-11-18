@@ -2,7 +2,7 @@ package cn.sabercon.main.service;
 
 import cn.sabercon.common.domian.BaseEntity;
 import cn.sabercon.common.json.Json;
-import cn.sabercon.common.util.Requests;
+import cn.sabercon.common.util.HttpUtils;
 import cn.sabercon.main.domain.entity.Reply;
 import cn.sabercon.main.domain.model.ReplyModel;
 import cn.sabercon.main.repo.ReplyRepo;
@@ -23,7 +23,7 @@ public class ReplyService {
     private final UserService userService;
 
     public Page<ReplyModel> list(Long commentId) {
-        return repo.findByCommentId(commentId, Requests.descPageable(BaseEntity.Fields.ctime)).map(this::convert);
+        return repo.findByCommentId(commentId, HttpUtils.descPageable(BaseEntity.Fields.ctime)).map(this::convert);
     }
 
     public ReplyModel get(Long id) {

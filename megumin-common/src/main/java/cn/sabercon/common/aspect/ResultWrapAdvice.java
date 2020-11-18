@@ -1,6 +1,6 @@
 package cn.sabercon.common.aspect;
 
-import cn.sabercon.common.anno.ServiceController;
+import cn.sabercon.common.anno.Ctrl;
 import cn.sabercon.common.domian.PageModel;
 import cn.sabercon.common.domian.Result;
 import org.springframework.core.MethodParameter;
@@ -21,12 +21,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 @ControllerAdvice
 public class ResultWrapAdvice implements ResponseBodyAdvice<Object> {
 
-    /**
-     * @return 是否是处理业务请求的方法
-     */
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
-        return returnType.getDeclaringClass().isAnnotationPresent(ServiceController.class);
+        // 只处理自定义控制器的方法
+        return returnType.getDeclaringClass().isAnnotationPresent(Ctrl.class);
     }
 
     @Override

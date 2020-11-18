@@ -1,6 +1,6 @@
 package cn.sabercon.main.ctrl;
 
-import cn.sabercon.common.anno.ServiceController;
+import cn.sabercon.common.anno.Ctrl;
 import cn.sabercon.main.domain.model.LoginUserInfo;
 import cn.sabercon.main.domain.model.UserInfo;
 import cn.sabercon.main.domain.param.LoginParam;
@@ -24,7 +24,7 @@ import static cn.sabercon.common.util.StrUtils.maskPhoneNumber;
  * @since 1.0.0
  */
 @Api(tags = "用户相关接口")
-@ServiceController("user")
+@Ctrl("user")
 @RequiredArgsConstructor
 public class UserCtrl {
 
