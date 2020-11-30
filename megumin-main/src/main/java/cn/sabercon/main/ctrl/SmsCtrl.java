@@ -1,6 +1,6 @@
 package cn.sabercon.main.ctrl;
 
-import cn.sabercon.common.anno.Ctrl;
+import cn.sabercon.common.anno.CommonController;
 import cn.sabercon.main.enums.type.SmsType;
 import cn.sabercon.main.manager.SmsManager;
 import cn.sabercon.main.service.UserService;
@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
  * @since 1.0.0
  */
 @Api(tags = "短信相关接口")
-@Ctrl("sms")
+@CommonController("sms")
 @RequiredArgsConstructor
 public class SmsCtrl {
 

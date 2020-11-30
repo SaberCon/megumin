@@ -37,8 +37,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         // 避免 string 先被 StringHttpMessageConverter 处理导致无法返回 json 包装类, 将他们移到最后
-        List<HttpMessageConverter<?>> stringConverters = converters.stream()
-                .filter(c -> c instanceof StringHttpMessageConverter).collect(Collectors.toList());
+        var stringConverters = converters.stream().filter(c -> c instanceof StringHttpMessageConverter).collect(Collectors.toList());
         converters.removeIf(c -> c instanceof StringHttpMessageConverter);
         converters.addAll(stringConverters);
     }

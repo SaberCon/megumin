@@ -19,9 +19,14 @@ import java.util.Map;
 public class Jwt {
 
     /**
-     * 加密密钥
+     * 加密密钥, 可通过配置文件配置
      */
-    private static final String SECRET = "SaberCon";
+    private static String secret;
+
+    static {
+        // 设置好 jwt 加密密钥
+        ContextHolder.addCallBack(() -> secret = ContextHolder.getProperty("sabercon.jwt-key", "SaberCon"));
+    }
 
     /**
      * 根据负载生成 token
@@ -29,7 +34,7 @@ public class Jwt {
     private static String generateToken(Map<String, Object> claims) {
         return Jwts.builder()
                 .setClaims(claims)
-                .signWith(SignatureAlgorithm.HS512, SECRET)
+                .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
 
@@ -47,18 +52,14 @@ public class Jwt {
      * 从 token 中获取负载
      */
     private static Claims getClaimsFromToken(String token) {
-        return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 
     /**
      * 从 token 中获取登录用户 id，过期或失败时返回 null
      */
     public static Long getIdFromToken(String token) {
-        try {
-            var claims = getClaimsFromToken(token);
-            return claims.getExpiration().after(new Date()) ? Long.valueOf(claims.getId()) : null;
-        } catch (Exception e) {
-            return null;
-        }
+        var claims = getClaimsFromToken(token);
+        return claims.getExpiration().after(new Date()) ? Long.valueOf(claims.getId()) : null;
     }
 }

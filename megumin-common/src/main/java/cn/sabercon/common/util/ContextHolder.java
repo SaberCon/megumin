@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.function.Consumer;
 
 /**
  * spring 上下文环境工具类
@@ -25,22 +24,23 @@ public class ContextHolder implements ApplicationContextAware, DisposableBean {
 
     private static Environment environment;
 
-    private static final Queue<Consumer<ApplicationContext>> CALL_BACKS = new ConcurrentLinkedQueue<>();
+    private static final Queue<Task> CALL_BACKS = new ConcurrentLinkedQueue<>();
 
     private static boolean isContextReady;
 
     /**
      * 针对某些需要 context 的初始化方法提交回调, 回调会在 context 初始化后执行, 如果提交时已初始化完成则会立即执行
      */
-    public static void addCallBack(Consumer<ApplicationContext> callback) {
+    public static void addCallBack(Task callback) {
         if (isContextReady) {
-            callback.accept(context);
+            callback.run();
         } else {
             CALL_BACKS.add(callback);
         }
     }
 
     public static boolean isProd() {
+        assertEnvironmentInjected();
         return Arrays.stream(environment.getActiveProfiles()).anyMatch("prod"::equalsIgnoreCase);
     }
 
@@ -88,7 +88,7 @@ public class ContextHolder implements ApplicationContextAware, DisposableBean {
         environment = applicationContext.getBean(Environment.class);
         isContextReady = true;
         while (!CALL_BACKS.isEmpty()) {
-            CALL_BACKS.poll().accept(context);
+            CALL_BACKS.poll().run();
         }
     }
 

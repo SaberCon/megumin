@@ -24,7 +24,7 @@ import java.lang.annotation.*;
 @Validated
 @RequestMapping
 @RestController
-public @interface Ctrl {
+public @interface CommonController {
 
     @AliasFor(annotation = RequestMapping.class)
     String[] value() default {};

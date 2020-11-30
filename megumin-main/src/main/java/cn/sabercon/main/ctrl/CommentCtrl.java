@@ -1,6 +1,6 @@
 package cn.sabercon.main.ctrl;
 
-import cn.sabercon.common.anno.Ctrl;
+import cn.sabercon.common.anno.CommonController;
 import cn.sabercon.main.domain.model.CommentModel;
 import cn.sabercon.main.service.CommentService;
 import io.swagger.annotations.Api;
@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
  * @since 1.0.0
  */
 @Api(tags = "评论相关接口")
-@Ctrl("comment")
+@CommonController("comment")
 @RequiredArgsConstructor
 public class CommentCtrl {
 

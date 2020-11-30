@@ -1,6 +1,6 @@
 package cn.sabercon.common.aspect;
 
-import cn.sabercon.common.anno.Ctrl;
+import cn.sabercon.common.anno.CommonController;
 import cn.sabercon.common.domian.PageModel;
 import cn.sabercon.common.domian.Result;
 import org.springframework.core.MethodParameter;
@@ -24,7 +24,7 @@ public class ResultWrapAdvice implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
         // 只处理自定义控制器的方法
-        return returnType.getDeclaringClass().isAnnotationPresent(Ctrl.class);
+        return returnType.getDeclaringClass().isAnnotationPresent(CommonController.class);
     }
 
     @Override

@@ -26,7 +26,7 @@ public class Json {
 
     static {
         // 设置好 mapper 注入的回调
-        ContextHolder.addCallBack(context -> mapper = context.getBean(ObjectMapper.class));
+        ContextHolder.addCallBack(() -> mapper = ContextHolder.getBean(ObjectMapper.class));
     }
 
     public static ObjectMapper getMapper() {
