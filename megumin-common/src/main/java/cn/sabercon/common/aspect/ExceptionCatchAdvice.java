@@ -31,7 +31,6 @@ public class ExceptionCatchAdvice {
     public Result<Void> handleException(Throwable e) {
         log.error(e.getMessage(), e);
         // todo 发送邮件
-        // todo 异步异常也用此方法处理
         return Result.fail(UNKNOWN_ERROR.code(), e.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
     }
 
