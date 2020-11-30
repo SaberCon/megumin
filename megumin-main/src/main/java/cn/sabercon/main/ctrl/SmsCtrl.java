@@ -1,8 +1,8 @@
 package cn.sabercon.main.ctrl;
 
 import cn.sabercon.common.anno.CommonController;
+import cn.sabercon.main.component.SmsManager;
 import cn.sabercon.main.enums.type.SmsType;
-import cn.sabercon.main.manager.SmsManager;
 import cn.sabercon.main.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

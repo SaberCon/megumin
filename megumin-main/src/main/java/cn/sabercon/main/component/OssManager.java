@@ -1,4 +1,4 @@
-package cn.sabercon.main.manager;
+package cn.sabercon.main.component;
 
 import cn.sabercon.main.domain.model.OssToken;
 import cn.sabercon.main.enums.type.FileType;

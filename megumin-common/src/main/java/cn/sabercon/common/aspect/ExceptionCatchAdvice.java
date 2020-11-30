@@ -1,7 +1,10 @@
 package cn.sabercon.common.aspect;
 
+import cn.sabercon.common.component.MailHelper;
 import cn.sabercon.common.domian.Result;
 import cn.sabercon.common.exception.ServiceException;
+import cn.sabercon.common.util.ContextHolder;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -25,12 +28,17 @@ import static cn.sabercon.common.enums.CommonCode.UNKNOWN_ERROR;
  */
 @Slf4j
 @RestControllerAdvice
+@RequiredArgsConstructor
 public class ExceptionCatchAdvice {
+
+    private final MailHelper mailHelper;
 
     @ExceptionHandler(Throwable.class)
     public Result<Void> handleException(Throwable e) {
         log.error(e.getMessage(), e);
-        // todo 发送邮件
+        if (ContextHolder.isProd()) {
+            mailHelper.sendErrorDetail("RestExceptionCatcher", e);
+        }
         return Result.fail(UNKNOWN_ERROR.code(), e.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
     }
 

@@ -1,9 +1,9 @@
 package cn.sabercon.main.ctrl;
 
 import cn.sabercon.common.anno.CommonController;
+import cn.sabercon.main.component.OssManager;
 import cn.sabercon.main.domain.model.OssToken;
 import cn.sabercon.main.enums.type.FileType;
-import cn.sabercon.main.manager.OssManager;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

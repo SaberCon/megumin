@@ -11,6 +11,11 @@
       "type": "java.lang.String",
       "description": "setup the secret key of jwt util",
       "defaultValue": "SaberCon"
+    },
+    {
+      "name": "sabercon.error-mail",
+      "type": "java.lang.String",
+      "description": "the mail to receive uncaught exception detail"
     }
   ]
 }

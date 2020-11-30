@@ -20,6 +20,17 @@ spring:
   redis:
     host: www.sabercon.cn
     port: 6379
+  mail:
+    host: smtp.qq.com
+    username: 894876785@qq.com
+    password: XXX
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 management:
   endpoints:
     web:

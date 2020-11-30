@@ -1,4 +1,4 @@
-package cn.sabercon.main.manager;
+package cn.sabercon.main.component;
 
 import cn.hutool.core.util.RandomUtil;
 import cn.sabercon.common.data.RedisHelper;
