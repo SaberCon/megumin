@@ -46,8 +46,7 @@ public class UserService {
     private final SmsManager smsManager;
 
     public LoginUserInfo getLoginInfo() {
-        var userId = HttpUtils.userIdOrUnAuth();
-        return redisHelper.get(buildRedisKey(LOGIN_USER_PREFIX, userId), LoginUserInfo.class);
+        return redisHelper.get(buildRedisKey(LOGIN_USER_PREFIX, HttpUtils.userId()), LoginUserInfo.class);
     }
 
     @Tx
