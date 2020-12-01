@@ -8,7 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.validation.constraints.NotNull;
@@ -28,7 +28,7 @@ public class SmsCtrl {
     @GetMapping
     @ApiOperation("发送短信验证码")
     public void sendCode(@NotNull SmsType type, @ApiParam("为空时表示当前登录用户的手机号") String phone) {
-        if (StringUtils.isEmpty(phone)) {
+        if (ObjectUtils.isEmpty(phone)) {
             phone = userService.getLoginInfo().getPhone();
         }
         manager.sendCode(type, phone);
@@ -37,7 +37,7 @@ public class SmsCtrl {
     @GetMapping("check")
     @ApiOperation("校验短信验证码是否正确")
     public boolean checkCode(@NotNull SmsType type, @ApiParam("为空时表示当前登录用户的手机号") String phone, @NotNull String code) {
-        if (StringUtils.isEmpty(phone)) {
+        if (ObjectUtils.isEmpty(phone)) {
             phone = userService.getLoginInfo().getPhone();
         }
         return manager.checkCode(type, phone, code);

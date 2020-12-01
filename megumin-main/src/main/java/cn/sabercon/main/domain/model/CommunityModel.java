@@ -19,7 +19,7 @@ public class CommunityModel {
 
     private String banner;
 
-    private String desc;
+    private String about;
 
     private LocalDateTime ctime;
 

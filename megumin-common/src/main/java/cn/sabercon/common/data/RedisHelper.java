@@ -5,7 +5,7 @@ import cn.sabercon.common.json.Json;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -52,17 +52,17 @@ public class RedisHelper {
 
     public Boolean getAsBool(String key) {
         var value = get(key);
-        return StringUtils.isEmpty(value) ? null : Boolean.parseBoolean(value);
+        return ObjectUtils.isEmpty(value) ? null : Boolean.parseBoolean(value);
     }
 
     public Integer getAsInt(String key) {
         var value = get(key);
-        return StringUtils.isEmpty(value) ? null : Integer.parseInt(value);
+        return ObjectUtils.isEmpty(value) ? null : Integer.parseInt(value);
     }
 
     public Long getAsLong(String key) {
         var value = get(key);
-        return StringUtils.isEmpty(value) ? null : Long.parseLong(value);
+        return ObjectUtils.isEmpty(value) ? null : Long.parseLong(value);
     }
 
     /**
@@ -70,7 +70,7 @@ public class RedisHelper {
      */
     public <T> T get(String key, Class<T> beanType) {
         var value = get(key);
-        return StringUtils.isEmpty(value) ? null : Json.read(value, beanType);
+        return ObjectUtils.isEmpty(value) ? null : Json.read(value, beanType);
     }
 
     /**

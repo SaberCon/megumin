@@ -24,9 +24,9 @@ class TestUtils {
     private static void encrypt() {
         var scanner = new Scanner(System.in);
         System.out.println("请输入要加密的字符串:");
-        var text = scanner.nextLine();
+        var text = scanner.nextLine().trim();
         System.out.println("请输入密钥:");
-        var password = scanner.nextLine();
+        var password = scanner.nextLine().trim();
         System.out.printf("Encrypted message: %s", stringEncryptor(password).encrypt(text));
     }
 

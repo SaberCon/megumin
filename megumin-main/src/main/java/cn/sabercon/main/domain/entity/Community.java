@@ -27,7 +27,7 @@ public class Community extends BaseEntity {
 
     private String banner;
 
-    private String desc;
+    private String about;
 
     /**
      * 关注人数

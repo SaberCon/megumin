@@ -4,9 +4,9 @@ import cn.sabercon.common.enums.CommonCode;
 import cn.sabercon.common.enums.ResultCode;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.util.ObjectUtils;
 
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -90,35 +90,19 @@ public class Assert {
         return notNull(obj, CommonCode.ASSERTION_FAILURE);
     }
 
-    public static void notEmpty(String str, ResultCode resultCode, String msg) {
-        isTrue(Objects.nonNull(str) && !str.isEmpty(), resultCode, msg);
+    public static void notEmpty(Object obj, ResultCode resultCode, String msg) {
+        isTrue(!ObjectUtils.isEmpty(obj), resultCode, msg);
     }
 
-    public static void notEmpty(String str, ResultCode resultCode) {
-        notEmpty(str, resultCode, resultCode.msg());
+    public static void notEmpty(Object obj, ResultCode resultCode) {
+        notEmpty(obj, resultCode, resultCode.msg());
     }
 
-    public static void notEmpty(String str, String msg) {
-        notEmpty(str, CommonCode.FAILURE, msg);
+    public static void notEmpty(Object obj, String msg) {
+        notEmpty(obj, CommonCode.FAILURE, msg);
     }
 
-    public static void notEmpty(String str) {
-        notEmpty(str, CommonCode.ASSERTION_FAILURE);
-    }
-
-    public static void notEmpty(Collection<?> coll, ResultCode resultCode, String msg) {
-        isTrue(Objects.nonNull(coll) && !coll.isEmpty(), resultCode, msg);
-    }
-
-    public static void notEmpty(Collection<?> coll, ResultCode resultCode) {
-        notEmpty(coll, resultCode, resultCode.msg());
-    }
-
-    public static void notEmpty(Collection<?> coll, String msg) {
-        notEmpty(coll, CommonCode.FAILURE, msg);
-    }
-
-    public static void notEmpty(Collection<?> coll) {
-        notEmpty(coll, CommonCode.ASSERTION_FAILURE);
+    public static void notEmpty(Object obj) {
+        notEmpty(obj, CommonCode.ASSERTION_FAILURE);
     }
 }
