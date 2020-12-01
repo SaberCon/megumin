@@ -25,7 +25,8 @@ public class Jwt {
 
     static {
         // 设置好 jwt 加密密钥
-        ContextHolder.addCallBack(() -> secret = ContextHolder.getProperty("sabercon.jwt-key", "SaberCon"));
+        ContextHolder.addCallBack(() -> secret = Assert.notNull(ContextHolder.getProperty("sabercon.jwt-key"),
+                "the property sabercon.jwt-key must not be null"));
     }
 
     /**

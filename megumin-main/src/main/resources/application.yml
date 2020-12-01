@@ -4,6 +4,7 @@ spring:
 sabercon:
   enable-common: true
   error-mail: 894876785@qq.com
+  jwt-key: SaberCon
 jasypt:
   encryptor:
     password: sabercon
