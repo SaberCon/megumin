@@ -2,6 +2,8 @@ package cn.sabercon.main.domain.model;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
  * 社区
  *
@@ -11,8 +13,6 @@ import lombok.Data;
 @Data
 public class CommunityModel {
 
-    private Long id;
-
     private String name;
 
     private String logo;
@@ -21,5 +21,7 @@ public class CommunityModel {
 
     private String desc;
 
-    private Long memberCount;
+    private LocalDateTime ctime;
+
+    private Long members;
 }

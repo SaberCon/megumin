@@ -11,11 +11,9 @@ import lombok.Data;
 @Data
 public class CommunityListModel {
 
-    private Long id;
-
     private String name;
 
     private String logo;
 
-    private Long memberCount;
+    private Long members;
 }

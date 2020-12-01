@@ -1,6 +1,5 @@
 package cn.sabercon.main.domain.model;
 
-import cn.sabercon.common.enums.type.Gender;
 import lombok.Data;
 
 /**
@@ -10,15 +9,7 @@ import lombok.Data;
  * @since 1.0.0
  */
 @Data
-public class LoginUserInfo {
+public class LoginUserInfo extends UserInfo {
 
     private String phone;
-
-    private String username;
-
-    private String avatar;
-
-    private Gender gender;
-
-    private String profile;
 }

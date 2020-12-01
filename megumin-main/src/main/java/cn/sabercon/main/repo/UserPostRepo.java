@@ -1,7 +1,7 @@
 package cn.sabercon.main.repo;
 
 import cn.sabercon.common.orm.BaseJpaRepository;
-import cn.sabercon.main.domain.entity.Post;
+import cn.sabercon.main.domain.entity.UserPost;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
  * @author SaberCon
  * @since 1.0.0
  */
-public interface PostRepo extends BaseJpaRepository<Post> {
+public interface UserPostRepo extends BaseJpaRepository<UserPost> {
 
-    Page<Post> findByCommunityName(String communityName, Pageable pageable);
+    Page<UserPost> findByUserId(Long userId, Pageable pageable);
 }

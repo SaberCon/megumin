@@ -23,7 +23,6 @@ import javax.validation.constraints.NotNull;
 public class SmsCtrl {
 
     private final SmsManager manager;
-
     private final UserService userService;
 
     @GetMapping

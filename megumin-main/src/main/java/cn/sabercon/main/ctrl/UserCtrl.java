@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -30,7 +29,7 @@ public class UserCtrl {
 
     private final UserService service;
 
-    @GetMapping
+    @GetMapping("current")
     @ApiOperation("获取当前登录用户的信息")
     public LoginUserInfo getLoginInfo() {
         var info = service.getLoginInfo();
@@ -40,7 +39,7 @@ public class UserCtrl {
 
     @PostMapping("login")
     @ApiOperation("用户登录(未注册会直接注册), 返回 token")
-    public String login(@RequestBody @Valid LoginParam param) {
+    public String login(@Valid LoginParam param) {
         return service.login(param);
     }
 

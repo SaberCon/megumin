@@ -32,5 +32,5 @@ public class Community extends BaseEntity {
     /**
      * 关注人数
      */
-    private Long memberCount;
+    private Long members;
 }

@@ -20,5 +20,11 @@ public class UserInfo {
 
     private Gender gender;
 
-    private String profile;
+    private String about;
+
+    private Long karma;
+
+    private Long up;
+
+    private Long down;
 }

@@ -6,9 +6,12 @@ import cn.sabercon.main.domain.model.CommunityModel;
 import cn.sabercon.main.service.CommunityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.constraints.NotNull;
 
@@ -29,8 +32,19 @@ public class CommunityCtrl {
         return service.listHot();
     }
 
+    @GetMapping("join")
+    @ApiModelProperty("已加入分页查询")
+    public Page<CommunityListModel> listJoin() {
+        return service.listJoin();
+    }
+
     @GetMapping
-    public CommunityModel get(@NotNull Long id) {
-        return service.get(id);
+    public CommunityModel get(@NotNull String name) {
+        return service.get(name);
+    }
+
+    @PostMapping("join")
+    public void join(@NotNull String name, @ApiParam("是否取消") @RequestParam(defaultValue = "0") Boolean un) {
+        service.join(name, un);
     }
 }

@@ -71,6 +71,9 @@ public class UserService {
         user.setUsername(generateUsername());
         user.setAvatar(DEFAULT_AVATAR);
         user.setGender(Gender.UNKNOWN);
+        user.setKarma(0L);
+        user.setUp(0L);
+        user.setDown(0L);
         repo.save(user);
         return user;
     }
@@ -90,7 +93,7 @@ public class UserService {
         Assert.isTrue(smsManager.checkCode(SmsType.UNBIND_PHONE, oldPhone, unbindCode), SMS_CODE_WRONG);
         Assert.isTrue(smsManager.checkCode(SmsType.BIND_PHONE, newPhone, bindCode), SMS_CODE_WRONG);
         Assert.isTrue(Objects.equals(oldPhone, newPhone) || !repo.existsByPhone(newPhone), PHONE_ALREADY_BOUND);
-        var user = repo.getOne(HttpUtils.userId());
+        var user = repo.findById(HttpUtils.userId()).orElseThrow();
         user.setPhone(newPhone);
         refreshUserInfoCache(user);
     }
@@ -98,13 +101,13 @@ public class UserService {
     @Tx
     public void updatePwd(String newPwd, String code) {
         Assert.isTrue(smsManager.checkCode(SmsType.UPDATE_PWD, getLoginInfo().getPhone(), code), SMS_CODE_WRONG);
-        var user = repo.getOne(HttpUtils.userId());
+        var user = repo.findById(HttpUtils.userId()).orElseThrow();
         user.setPassword(SecureUtil.md5(newPwd));
     }
 
     @Tx
     public void update(UpdateUserParam param) {
-        var user = repo.getOne(HttpUtils.userId());
+        var user = repo.findById(HttpUtils.userId()).orElseThrow();
         Assert.isTrue(Objects.equals(user.getUsername(), param.getUsername()) || !repo.existsByUsername(param.getUsername()), USERNAME_EXISTS);
         BeanUtil.copyProperties(param, user, CopyOptions.create().ignoreNullValue());
         refreshUserInfoCache(user);

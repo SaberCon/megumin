@@ -3,8 +3,6 @@ package cn.sabercon.main.domain.param;
 import cn.sabercon.common.enums.type.Gender;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * 修改用户信息参数
  *
@@ -14,14 +12,11 @@ import javax.validation.constraints.NotNull;
 @Data
 public class UpdateUserParam {
 
-    @NotNull
     private String username;
 
-    @NotNull
     private String avatar;
 
-    @NotNull
     private Gender gender;
 
-    private String profile;
+    private String about;
 }

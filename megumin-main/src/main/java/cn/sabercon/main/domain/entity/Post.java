@@ -1,8 +1,11 @@
 package cn.sabercon.main.domain.entity;
 
 import cn.sabercon.common.domian.BaseEntity;
+import cn.sabercon.common.enums.IntEnumType;
+import cn.sabercon.main.enums.type.TextType;
 import lombok.Data;
 import lombok.experimental.FieldNameConstants;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -19,31 +22,21 @@ import javax.persistence.Table;
 @FieldNameConstants
 public class Post extends BaseEntity {
 
-    /**
-     * 楼主 id
-     */
-    private Long userId;
+    private String communityName;
 
-    private Long communityId;
+    private Long createdBy;
+
+    private Long LastRepliedBy;
 
     private String title;
 
-    private String content;
+    private String text;
+
+    @Type(type = IntEnumType.CLASS_FULL_NAME)
+    private TextType type;
 
     /**
-     * 网页链接
+     * 评论数量
      */
-    private String link;
-
-    /**
-     * 视频链接
-     */
-    private String video;
-
-    /**
-     * 图片列表, 逗号分隔
-     */
-    private String imgList;
-
-    private Long commentCount;
+    private Long comments;
 }

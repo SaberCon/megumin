@@ -1,8 +1,11 @@
 package cn.sabercon.main.domain.entity;
 
 import cn.sabercon.common.domian.BaseEntity;
+import cn.sabercon.common.enums.IntEnumType;
+import cn.sabercon.main.enums.type.TextType;
 import lombok.Data;
 import lombok.experimental.FieldNameConstants;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -19,24 +22,22 @@ import javax.persistence.Table;
 @FieldNameConstants
 public class Comment extends BaseEntity {
 
-    /**
-     * 评论者 id
-     */
-    private Long userId;
+    private Long createdBy;
 
     private Long postId;
 
     /**
      * 楼层数
      */
-    private Long level;
+    private Integer sn;
 
-    private String content;
+    private String text;
+
+    @Type(type = IntEnumType.CLASS_FULL_NAME)
+    private TextType type;
 
     /**
-     * 图片列表, 逗号分隔
+     * 回复数量
      */
-    private String imgList;
-
-    private Long replyCount;
+    private Long replies;
 }

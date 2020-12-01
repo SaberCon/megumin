@@ -8,27 +8,18 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * 回复
+ * 用户关注帖子表
  *
  * @author SaberCon
  * @since 1.0.0
  */
 @Data
 @Entity
-@Table(name = "t_reply")
+@Table(name = "t_user_post")
 @FieldNameConstants
-public class Reply extends BaseEntity {
+public class UserPost extends BaseEntity {
 
-    private Long createdBy;
+    private Long userId;
 
     private Long postId;
-
-    private Long commentId;
-
-    private String text;
-
-    /**
-     * 被回复的用户
-     */
-    private Long repliedUser;
 }

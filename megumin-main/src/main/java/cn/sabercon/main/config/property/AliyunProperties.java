@@ -5,6 +5,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
+ * 阿里云配置参数类
+ *
  * @author SaberCon
  * @since 1.0.0
  */

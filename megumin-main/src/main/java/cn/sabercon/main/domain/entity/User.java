@@ -39,5 +39,20 @@ public class User extends BaseEntity {
     /**
      * 个人简介
      */
-    private String profile;
+    private String about;
+
+    /**
+     * 经验值
+     */
+    private Long karma;
+
+    /**
+     * 点赞数
+     */
+    private Long up;
+
+    /**
+     * 拉黑数
+     */
+    private Long down;
 }
