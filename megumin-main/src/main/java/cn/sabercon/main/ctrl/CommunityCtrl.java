@@ -34,8 +34,8 @@ public class CommunityCtrl {
 
     @GetMapping("join")
     @ApiModelProperty("已加入分页查询")
-    public Page<CommunityListModel> listJoin() {
-        return service.listJoin();
+    public Page<CommunityListModel> listJoined() {
+        return service.listJoined();
     }
 
     @GetMapping

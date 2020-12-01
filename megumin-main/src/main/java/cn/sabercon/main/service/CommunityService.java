@@ -32,7 +32,7 @@ public class CommunityService {
         return repo.findAll(HttpUtils.descPageable(Community.Fields.members)).map(e -> Json.convert(e, CommunityListModel.class));
     }
 
-    public Page<CommunityListModel> listJoin() {
+    public Page<CommunityListModel> listJoined() {
         return userCommunityRepo.findByUserId(HttpUtils.userId(), HttpUtils.descPageable(BaseEntity.Fields.ctime))
                 .map(e -> Json.convert(repo.findByName(e.getCommunityName()).orElseThrow(), CommunityListModel.class));
     }
@@ -46,11 +46,11 @@ public class CommunityService {
         UserCommunity example = new UserCommunity();
         example.setUserId(HttpUtils.userId());
         example.setCommunityName(name);
-        Optional<UserCommunity> joinOpt = userCommunityRepo.findOne(Example.of(example));
-        if (joinOpt.isPresent() && un) {
-            userCommunityRepo.delete(joinOpt.get());
+        Optional<UserCommunity> joinedOpt = userCommunityRepo.findOne(Example.of(example));
+        if (joinedOpt.isPresent() && un) {
+            userCommunityRepo.delete(joinedOpt.get());
         }
-        if (joinOpt.isEmpty() && !un) {
+        if (joinedOpt.isEmpty() && !un) {
             userCommunityRepo.save(example);
         }
     }

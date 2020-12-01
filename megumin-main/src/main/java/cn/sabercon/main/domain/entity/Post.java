@@ -26,7 +26,7 @@ public class Post extends BaseEntity {
 
     private Long createdBy;
 
-    private Long LastRepliedBy;
+    private Long lastRepliedBy;
 
     private String title;
 

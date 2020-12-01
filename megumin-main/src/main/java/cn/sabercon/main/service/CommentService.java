@@ -22,7 +22,7 @@ public class CommentService {
     private final UserService userService;
 
     public Page<CommentModel> list(Long postId) {
-        return repo.findByPostId(postId, HttpUtils.ascPageable(Comment.Fields.level)).map(this::convert);
+        return repo.findByPostId(postId, HttpUtils.ascPageable(Comment.Fields.sn)).map(this::convert);
     }
 
     public CommentModel get(Long id) {
@@ -31,7 +31,7 @@ public class CommentService {
 
     private CommentModel convert(Comment comment) {
         var model = Json.convert(comment, CommentModel.class);
-        model.setUser(userService.getSimpleInfo(comment.getUserId()));
+        model.setCreatedBy(userService.getSimpleInfo(comment.getCreatedBy()));
         return model;
     }
 }

@@ -32,7 +32,7 @@ public class ReplyService {
 
     private ReplyModel convert(Reply reply) {
         var model = Json.convert(reply, ReplyModel.class);
-        model.setUser(userService.getSimpleInfo(reply.getUserId()));
+        model.setCreatedBy(userService.getSimpleInfo(reply.getCreatedBy()));
         return model;
     }
 }

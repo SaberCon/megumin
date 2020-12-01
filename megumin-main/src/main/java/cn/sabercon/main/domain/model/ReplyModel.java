@@ -18,11 +18,11 @@ public class ReplyModel {
 
     private LocalDateTime ctime;
 
-    private UserSimpleInfo user;
+    private UserSimpleInfo createdBy;
 
     private Long postId;
 
     private Long commentId;
 
-    private String content;
+    private String text;
 }
