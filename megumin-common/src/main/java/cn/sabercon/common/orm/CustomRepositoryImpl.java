@@ -7,10 +7,10 @@ import javax.persistence.PersistenceContext;
  * @author SaberCon
  * @since 1.0.0
  */
-public class CustomRepositoryImpl implements CustomRepository {
+public class CustomRepositoryImpl<T> implements CustomRepository<T> {
 
     @PersistenceContext
-    private EntityManager entityManager;
+    private EntityManager em;
 
     @Override
     public void increment(Long id, String field) {

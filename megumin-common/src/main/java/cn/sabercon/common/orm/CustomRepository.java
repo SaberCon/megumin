@@ -6,7 +6,7 @@ package cn.sabercon.common.orm;
  * @author SaberCon
  * @since 1.0.0
  */
-public interface CustomRepository {
+public interface CustomRepository<T> {
 
     /**
      * 对实体的某一个字段进行自增一操作
