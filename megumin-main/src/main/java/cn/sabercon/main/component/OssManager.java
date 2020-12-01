@@ -1,5 +1,6 @@
 package cn.sabercon.main.component;
 
+import cn.sabercon.main.config.property.AliyunProperties;
 import cn.sabercon.main.domain.model.OssToken;
 import cn.sabercon.main.enums.type.FileType;
 import com.aliyun.oss.OSS;
@@ -11,7 +12,6 @@ import com.google.common.base.Joiner;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,14 +32,7 @@ public class OssManager {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
     private final OSS oss;
     private final IAcsClient acsClient;
-    @Value("${aliyun.oss.endpoint}")
-    private String endpoint;
-    @Value("${aliyun.oss.bucket}")
-    private String bucket;
-    @Value("${aliyun.oss.role-arn}")
-    private String roleArn;
-    @Value("${aliyun.oss.access-domain}")
-    private String accessDomain;
+    private final AliyunProperties properties;
 
     /**
      * 上传文件
@@ -52,8 +45,8 @@ public class OssManager {
         var metadata = new ObjectMetadata();
         metadata.setContentType(file.getContentType());
         metadata.setContentDisposition(type.contentDisposition());
-        oss.putObject(bucket, fullName, file.getInputStream(), metadata);
-        return Joiner.on("/").join(accessDomain, fullName);
+        oss.putObject(properties.getOss().getBucket(), fullName, file.getInputStream(), metadata);
+        return Joiner.on("/").join(properties.getOss().getAccessDomain(), fullName);
     }
 
     /**
@@ -63,7 +56,7 @@ public class OssManager {
     public OssToken getToken(FileType type) {
         var request = new AssumeRoleRequest();
         request.setSysMethod(MethodType.POST);
-        request.setRoleArn(roleArn);
+        request.setRoleArn(properties.getOss().getRoleArn());
         request.setRoleSessionName("sabercon");
         request.setDurationSeconds(3600L);
         var credentials = acsClient.getAcsResponse(request).getCredentials();
@@ -71,7 +64,9 @@ public class OssManager {
                 .accessKeySecret(credentials.getAccessKeySecret())
                 .securityToken(credentials.getSecurityToken())
                 .expiration(credentials.getExpiration())
-                .endpoint(endpoint).bucket(bucket).accessDomain(accessDomain)
+                .endpoint(properties.getOss().getEndpoint())
+                .bucket(properties.getOss().getBucket())
+                .accessDomain(properties.getOss().getAccessDomain())
                 .dir(Joiner.on("/").join(type.dir(), FORMATTER.format(LocalDate.now()))).build();
     }
 }

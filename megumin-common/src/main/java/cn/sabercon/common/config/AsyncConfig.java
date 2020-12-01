@@ -26,17 +26,17 @@ import java.util.concurrent.ThreadPoolExecutor;
 @RequiredArgsConstructor
 public class AsyncConfig implements AsyncConfigurer {
 
-    private final ThreadPoolProperties config;
+    private final ThreadPoolProperties properties;
 
     private final MailHelper mailHelper;
 
     @Override
     public Executor getAsyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(config.getCorePoolSize());
-        executor.setMaxPoolSize(config.getMaxPoolSize());
-        executor.setKeepAliveSeconds(config.getKeepAliveSeconds());
-        executor.setQueueCapacity(config.getQueueCapacity());
+        executor.setCorePoolSize(properties.getCorePoolSize());
+        executor.setMaxPoolSize(properties.getMaxPoolSize());
+        executor.setKeepAliveSeconds(properties.getKeepAliveSeconds());
+        executor.setQueueCapacity(properties.getQueueCapacity());
         executor.setThreadNamePrefix("sc-async-");
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         executor.initialize();

@@ -3,6 +3,7 @@ package cn.sabercon.main.component;
 import cn.hutool.core.util.RandomUtil;
 import cn.sabercon.common.data.RedisHelper;
 import cn.sabercon.common.util.ContextHolder;
+import cn.sabercon.main.config.property.AliyunProperties;
 import cn.sabercon.main.enums.type.SmsType;
 import com.aliyuncs.CommonRequest;
 import com.aliyuncs.IAcsClient;
@@ -10,7 +11,6 @@ import com.aliyuncs.http.MethodType;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
@@ -34,10 +34,7 @@ public class SmsManager {
     private static final String SMS_CODE_PREFIX = "sms:code";
     private final RedisHelper redisHelper;
     private final IAcsClient acsClient;
-    @Value("${aliyun.sms.sign-name}")
-    private String signName;
-    @Value("${aliyun.sms.template-code}")
-    private String templateCode;
+    private final AliyunProperties properties;
 
     /**
      * 发送短信验证码
@@ -52,8 +49,8 @@ public class SmsManager {
         request.setSysVersion("2017-05-25");
         request.setSysAction("SendSms");
         request.putQueryParameter("PhoneNumbers", phone);
-        request.putQueryParameter("SignName", signName);
-        request.putQueryParameter("TemplateCode", templateCode);
+        request.putQueryParameter("SignName", properties.getSms().getSignName());
+        request.putQueryParameter("TemplateCode", properties.getSms().getTemplateCode());
         request.putQueryParameter("TemplateParam", "{\"code\":\"" + code + "\"}");
         var response = acsClient.getCommonResponse(request);
         log.debug("aliyun sms code sending result: {}", response.getData());
