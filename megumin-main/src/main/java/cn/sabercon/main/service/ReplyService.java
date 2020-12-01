@@ -1,14 +1,23 @@
 package cn.sabercon.main.service;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.sabercon.common.anno.Tx;
 import cn.sabercon.common.domian.BaseEntity;
 import cn.sabercon.common.json.Json;
 import cn.sabercon.common.util.HttpUtils;
+import cn.sabercon.main.domain.entity.Comment;
+import cn.sabercon.main.domain.entity.Post;
 import cn.sabercon.main.domain.entity.Reply;
 import cn.sabercon.main.domain.model.ReplyModel;
+import cn.sabercon.main.domain.param.ReplyParam;
+import cn.sabercon.main.repo.CommentRepo;
+import cn.sabercon.main.repo.PostRepo;
 import cn.sabercon.main.repo.ReplyRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 /**
  * @author SaberCon
@@ -19,7 +28,8 @@ import org.springframework.stereotype.Service;
 public class ReplyService {
 
     private final ReplyRepo repo;
-
+    private final CommentRepo commentRepo;
+    private final PostRepo postRepo;
     private final UserService userService;
 
     public Page<ReplyModel> list(Long commentId) {
@@ -33,6 +43,22 @@ public class ReplyService {
     private ReplyModel convert(Reply reply) {
         var model = Json.convert(reply, ReplyModel.class);
         model.setCreatedBy(userService.getSimpleInfo(reply.getCreatedBy()));
+        if (Objects.nonNull(reply.getRepliedUser())) {
+            model.setRepliedUser(userService.getSimpleInfo(reply.getRepliedUser()));
+        }
         return model;
+    }
+
+    @Tx
+    public void publish(ReplyParam param) {
+        var reply = new Reply();
+        BeanUtil.copyProperties(param, reply);
+        reply.setCreatedBy(HttpUtils.userId());
+        var comment = commentRepo.findById(param.getCommentId()).orElseThrow();
+        reply.setPostId(comment.getPostId());
+        repo.save(reply);
+
+        commentRepo.increment(comment.getId(), Comment.Fields.replies);
+        postRepo.increment(comment.getPostId(), Post.Fields.comments);
     }
 }

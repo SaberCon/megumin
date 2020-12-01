@@ -36,7 +36,12 @@ public class Post extends BaseEntity {
     private TextType type;
 
     /**
-     * 评论数量
+     * 当前楼层最大数
+     */
+    private Long maxSn;
+
+    /**
+     * 评论与回复数量
      */
     private Long comments;
 }

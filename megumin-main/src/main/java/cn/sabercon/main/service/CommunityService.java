@@ -15,8 +15,6 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 /**
  * @author SaberCon
  * @since 1.0.0
@@ -43,14 +41,17 @@ public class CommunityService {
 
     @Tx
     public void join(String name, Boolean un) {
-        UserCommunity example = new UserCommunity();
+        var example = new UserCommunity();
         example.setUserId(HttpUtils.userId());
         example.setCommunityName(name);
-        Optional<UserCommunity> joinedOpt = userCommunityRepo.findOne(Example.of(example));
+        var joinedOpt = userCommunityRepo.findOne(Example.of(example));
+        var community = repo.findByName(name).orElseThrow();
         if (joinedOpt.isPresent() && un) {
+            community.setMembers(community.getMembers() - 1);
             userCommunityRepo.delete(joinedOpt.get());
         }
         if (joinedOpt.isEmpty() && !un) {
+            community.setMembers(community.getMembers() + 1);
             userCommunityRepo.save(example);
         }
     }

@@ -2,12 +2,16 @@ package cn.sabercon.main.ctrl;
 
 import cn.sabercon.common.anno.CommonController;
 import cn.sabercon.main.domain.model.ReplyModel;
+import cn.sabercon.main.domain.param.ReplyParam;
 import cn.sabercon.main.service.ReplyService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -29,5 +33,10 @@ public class ReplyCtrl {
     @GetMapping
     public ReplyModel get(@NotNull Long id) {
         return service.get(id);
+    }
+
+    @PostMapping
+    public void publish(@RequestBody @Valid ReplyParam param) {
+        service.publish(param);
     }
 }

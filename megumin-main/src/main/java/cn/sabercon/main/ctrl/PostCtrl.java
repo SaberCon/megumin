@@ -2,6 +2,7 @@ package cn.sabercon.main.ctrl;
 
 import cn.sabercon.common.anno.CommonController;
 import cn.sabercon.main.domain.model.PostModel;
+import cn.sabercon.main.domain.param.PostParam;
 import cn.sabercon.main.service.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
@@ -10,8 +11,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -45,5 +48,10 @@ public class PostCtrl {
     @PostMapping("follow")
     public void follow(@NotNull Long id, @ApiParam("是否取消") @RequestParam(defaultValue = "0") Boolean un) {
         service.follow(id, un);
+    }
+
+    @PostMapping
+    public void publish(@RequestBody @Valid PostParam param) {
+        service.publish(param);
     }
 }

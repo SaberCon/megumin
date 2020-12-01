@@ -29,7 +29,7 @@ public class Comment extends BaseEntity {
     /**
      * 楼层数
      */
-    private Integer sn;
+    private Long sn;
 
     private String text;
 

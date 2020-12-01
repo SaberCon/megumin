@@ -1,5 +1,6 @@
 package cn.sabercon.main.service;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.sabercon.common.anno.Tx;
 import cn.sabercon.common.domian.BaseEntity;
 import cn.sabercon.common.json.Json;
@@ -7,6 +8,7 @@ import cn.sabercon.common.util.HttpUtils;
 import cn.sabercon.main.domain.entity.Post;
 import cn.sabercon.main.domain.entity.UserPost;
 import cn.sabercon.main.domain.model.PostModel;
+import cn.sabercon.main.domain.param.PostParam;
 import cn.sabercon.main.repo.PostRepo;
 import cn.sabercon.main.repo.UserPostRepo;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +16,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.Objects;
 
 /**
  * @author SaberCon
@@ -44,21 +46,33 @@ public class PostService {
     private PostModel convert(Post post) {
         var model = Json.convert(post, PostModel.class);
         model.setCreatedBy(userService.getSimpleInfo(post.getCreatedBy()));
-        model.setLastRepliedBy(userService.getSimpleInfo(post.getLastRepliedBy()));
+        if (Objects.nonNull(post.getLastRepliedBy())) {
+            model.setLastRepliedBy(userService.getSimpleInfo(post.getLastRepliedBy()));
+        }
         return model;
     }
 
     @Tx
     public void follow(Long id, Boolean un) {
-        UserPost example = new UserPost();
+        var example = new UserPost();
         example.setUserId(HttpUtils.userId());
         example.setPostId(id);
-        Optional<UserPost> followedOpt = userPostRepo.findOne(Example.of(example));
+        var followedOpt = userPostRepo.findOne(Example.of(example));
         if (followedOpt.isPresent() && un) {
             userPostRepo.delete(followedOpt.get());
         }
         if (followedOpt.isEmpty() && !un) {
             userPostRepo.save(example);
         }
+    }
+
+    @Tx
+    public void publish(PostParam param) {
+        var post = new Post();
+        BeanUtil.copyProperties(param, post);
+        post.setCreatedBy(HttpUtils.userId());
+        post.setMaxSn(0L);
+        post.setComments(0L);
+        repo.save(post);
     }
 }

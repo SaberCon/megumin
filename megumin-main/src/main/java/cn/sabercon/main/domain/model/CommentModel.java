@@ -23,7 +23,7 @@ public class CommentModel {
 
     private Long postId;
 
-    private Integer sn;
+    private Long sn;
 
     private String text;
 

@@ -20,6 +20,8 @@ public class ReplyModel {
 
     private UserSimpleInfo createdBy;
 
+    private UserSimpleInfo repliedUser;
+
     private Long postId;
 
     private Long commentId;
