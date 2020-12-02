@@ -23,7 +23,7 @@ import cn.sabercon.main.enums.type.SmsType;
 import cn.sabercon.main.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -52,7 +52,7 @@ public class UserService {
     @Tx
     public String login(LoginParam param) {
         User user;
-        if (StringUtils.isEmpty(param.getCode())) {
+        if (ObjectUtils.isEmpty(param.getCode())) {
             // 密码登录
             user = repo.findByPhone(param.getPhone()).orElseThrow(LOGIN_ERROR::exception);
             Assert.isTrue(Objects.equals(user.getPassword(), SecureUtil.md5(param.getPassword())), LOGIN_ERROR);

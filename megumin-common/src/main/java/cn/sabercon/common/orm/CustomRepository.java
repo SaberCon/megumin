@@ -13,6 +13,7 @@ public interface CustomRepository<T> {
      *
      * @param id    实体 id
      * @param field 要增加的字段, 类型为 int 或 long
+     * @return 更新成功的行数
      */
-    void increment(Long id, String field);
+    int increment(Long id, String field);
 }
