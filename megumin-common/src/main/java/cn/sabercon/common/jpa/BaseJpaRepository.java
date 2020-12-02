@@ -1,4 +1,4 @@
-package cn.sabercon.common.orm;
+package cn.sabercon.common.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -12,4 +12,13 @@ import org.springframework.data.repository.NoRepositoryBean;
  */
 @NoRepositoryBean
 public interface BaseJpaRepository<T> extends JpaRepository<T, Long>, JpaSpecificationExecutor<T> {
+
+    /**
+     * 对实体的某一个字段进行自增一操作
+     *
+     * @param id    实体 id
+     * @param field 要增加的字段, 类型为 int 或 long
+     * @return 更新成功的行数
+     */
+    int increment(Long id, String field);
 }

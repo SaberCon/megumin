@@ -1,4 +1,4 @@
-package cn.sabercon.common.config;
+package cn.sabercon.common.data;
 
 import cn.sabercon.common.enums.IntEnum;
 import lombok.RequiredArgsConstructor;
