@@ -18,7 +18,7 @@ public class PageQuery {
 
     public static final int DEFAULT_PAGE = 0;
 
-    public static final int DEFAULT_SIZE = 10;
+    public static final int DEFAULT_SIZE = 20;
 
     @Positive
     @ApiModelProperty("页码, 从 0 开始")

@@ -80,7 +80,7 @@ public class HttpUtils {
      * @return 升序查询的分页请求
      */
     public static Pageable ascPageable(String... properties) {
-        return pageable(Sort.by(Sort.Direction.ASC, properties));
+        return pageable(Sort.by(properties).ascending());
     }
 
     /**
@@ -88,7 +88,7 @@ public class HttpUtils {
      * @return 降序查询的分页请求
      */
     public static Pageable descPageable(String... properties) {
-        return pageable(Sort.by(Sort.Direction.DESC, properties));
+        return pageable(Sort.by(properties).descending());
     }
 
     /**
