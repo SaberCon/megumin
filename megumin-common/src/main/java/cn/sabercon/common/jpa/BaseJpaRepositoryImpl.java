@@ -20,6 +20,7 @@ public class BaseJpaRepositoryImpl<T> extends SimpleJpaRepository<T, Long> imple
     /**
      * 参考了官方示例的实现
      */
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public BaseJpaRepositoryImpl(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
         super(entityInformation, entityManager);
         this.entityInformation = entityInformation;
