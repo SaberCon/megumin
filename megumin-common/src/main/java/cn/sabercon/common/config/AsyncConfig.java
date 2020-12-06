@@ -48,7 +48,7 @@ public class AsyncConfig implements AsyncConfigurer {
         return (throwable, method, params) -> {
             log.error("uncaught exception when executing async method: {}, params: {}", method.getName(), params);
             if (ContextHolder.isProd()) {
-                mailHelper.sendErrorDetail("AsyncExceptionCatcher", throwable);
+                mailHelper.sendErrorDetail(throwable);
             }
             log.error(throwable.getMessage(), throwable);
         };

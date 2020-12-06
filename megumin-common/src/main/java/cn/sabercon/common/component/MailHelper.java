@@ -28,19 +28,20 @@ public class MailHelper {
     @Value("${sabercon.error-mail}")
     private String errorReceiver;
 
+    @Value("${spring.mail.username}")
+    private String from;
+
     /**
      * 发送异常信息到设置的接收邮箱
-     *
-     * @param from 异常来源
      */
-    public void sendErrorDetail(String from, Throwable e) {
-        sendSimpleEmail(from, errorReceiver, e.getMessage(), ExceptionUtil.stacktraceToString(e));
+    public void sendErrorDetail(Throwable e) {
+        sendSimpleEmail(errorReceiver, e.getMessage(), ExceptionUtil.stacktraceToString(e));
     }
 
     /**
      * @param content 普通文本内容
      */
-    public void sendSimpleEmail(String from, String to, String subject, String content) {
+    public void sendSimpleEmail(String to, String subject, String content) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(from);
         message.setTo(to);
@@ -55,7 +56,7 @@ public class MailHelper {
      * @param attachment     附件资源, 可为 null
      */
     @SneakyThrows
-    public void sendHtmlEmail(String from, String to, String subject, String content, String attachmentName, InputStreamSource attachment) {
+    public void sendHtmlEmail(String to, String subject, String content, String attachmentName, InputStreamSource attachment) {
         MimeMessage message = jms.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setFrom(from);
@@ -69,8 +70,8 @@ public class MailHelper {
     }
 
     @SneakyThrows
-    public void sendHtmlEmail(String from, String to, String subject, String content) {
-        sendHtmlEmail(from, to, subject, content, null, null);
+    public void sendHtmlEmail(String to, String subject, String content) {
+        sendHtmlEmail(to, subject, content, null, null);
     }
 
 }

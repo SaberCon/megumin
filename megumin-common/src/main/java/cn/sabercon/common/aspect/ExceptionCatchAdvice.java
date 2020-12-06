@@ -37,7 +37,7 @@ public class ExceptionCatchAdvice {
     public Result<Void> handleException(Throwable e) {
         log.error(e.getMessage(), e);
         if (ContextHolder.isProd()) {
-            mailHelper.sendErrorDetail("RestExceptionCatcher", e);
+            mailHelper.sendErrorDetail(e);
         }
         return Result.fail(UNKNOWN_ERROR.code(), e.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
     }
