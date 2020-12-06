@@ -3,15 +3,15 @@ package cn.sabercon.main.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.sabercon.common.anno.Tx;
 import cn.sabercon.common.data.RedisHelper;
 import cn.sabercon.common.enums.type.Gender;
-import cn.sabercon.common.json.Json;
 import cn.sabercon.common.util.Assert;
 import cn.sabercon.common.util.HttpUtils;
 import cn.sabercon.common.util.Jwt;
+import cn.sabercon.common.util.PojoUtils;
 import cn.sabercon.main.component.SmsManager;
 import cn.sabercon.main.domain.dto.UserSimpleInfo;
 import cn.sabercon.main.domain.entity.User;
@@ -82,7 +82,7 @@ public class UserService {
         // 防止随机名称重复
         String username;
         do {
-            username = "user" + IdUtil.simpleUUID();
+            username = "user" + RandomUtil.randomNumbers(8);
         } while (repo.existsByUsername(username));
         return username;
     }
@@ -114,15 +114,15 @@ public class UserService {
     }
 
     private void refreshUserInfoCache(User user) {
-        var userInfo = Json.convert(user, LoginUserInfo.class);
+        var userInfo = PojoUtils.convert(user, LoginUserInfo.class);
         redisHelper.set(buildRedisKey(LOGIN_USER_PREFIX, user.getId()), userInfo, 30, TimeUnit.DAYS);
     }
 
     public UserInfo getInfo(Long id) {
-        return repo.findById(id).map(e -> Json.convert(e, UserInfo.class)).orElse(null);
+        return repo.findById(id).map(e -> PojoUtils.convert(e, UserInfo.class)).orElse(null);
     }
 
     public UserSimpleInfo getSimpleInfo(Long id) {
-        return repo.findById(id).map(e -> Json.convert(e, UserSimpleInfo.class)).orElse(null);
+        return repo.findById(id).map(e -> PojoUtils.convert(e, UserSimpleInfo.class)).orElse(null);
     }
 }

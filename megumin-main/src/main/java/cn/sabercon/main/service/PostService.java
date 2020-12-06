@@ -3,8 +3,8 @@ package cn.sabercon.main.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.sabercon.common.anno.Tx;
 import cn.sabercon.common.domian.BaseEntity;
-import cn.sabercon.common.json.Json;
 import cn.sabercon.common.util.HttpUtils;
+import cn.sabercon.common.util.PojoUtils;
 import cn.sabercon.main.domain.entity.Post;
 import cn.sabercon.main.domain.entity.UserPost;
 import cn.sabercon.main.domain.model.PostModel;
@@ -15,8 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 /**
  * @author SaberCon
@@ -44,16 +42,13 @@ public class PostService {
     }
 
     private PostModel convert(Post post) {
-        var model = Json.convert(post, PostModel.class);
+        var model = PojoUtils.convert(post, PostModel.class);
         model.setCreatedBy(userService.getSimpleInfo(post.getCreatedBy()));
-        if (Objects.nonNull(post.getLastRepliedBy())) {
-            model.setLastRepliedBy(userService.getSimpleInfo(post.getLastRepliedBy()));
-        }
         return model;
     }
 
     @Tx
-    public void follow(Long id, Boolean un) {
+    public void follow(Long id, boolean un) {
         var example = new UserPost();
         example.setUserId(HttpUtils.userId());
         example.setPostId(id);

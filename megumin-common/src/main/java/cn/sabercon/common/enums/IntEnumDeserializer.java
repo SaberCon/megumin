@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -27,8 +28,9 @@ public class IntEnumDeserializer extends JsonDeserializer<IntEnum> {
             // 非整型不解析
             return null;
         }
-        var targetClass = p.getParsingContext().getCurrentValue().getClass()
-                .getDeclaredField(p.getParsingContext().getCurrentName()).getType();
+        var targetClass = Objects.requireNonNull(BeanUtils.getPropertyDescriptor(
+                p.getParsingContext().getCurrentValue().getClass(),
+                p.getParsingContext().getCurrentName())).getPropertyType();
         if (!Enum.class.isAssignableFrom(targetClass) || !IntEnum.class.isAssignableFrom(targetClass)) {
             return null;
         }

@@ -1,10 +1,9 @@
 package cn.sabercon.main.service;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.sabercon.common.anno.Tx;
 import cn.sabercon.common.domian.BaseEntity;
-import cn.sabercon.common.json.Json;
 import cn.sabercon.common.util.HttpUtils;
+import cn.sabercon.common.util.PojoUtils;
 import cn.sabercon.main.domain.entity.Comment;
 import cn.sabercon.main.domain.entity.Post;
 import cn.sabercon.main.domain.entity.Reply;
@@ -41,7 +40,7 @@ public class ReplyService {
     }
 
     private ReplyModel convert(Reply reply) {
-        var model = Json.convert(reply, ReplyModel.class);
+        var model = PojoUtils.convert(reply, ReplyModel.class);
         model.setCreatedBy(userService.getSimpleInfo(reply.getCreatedBy()));
         if (Objects.nonNull(reply.getRepliedUser())) {
             model.setRepliedUser(userService.getSimpleInfo(reply.getRepliedUser()));
@@ -51,8 +50,7 @@ public class ReplyService {
 
     @Tx
     public void publish(ReplyParam param) {
-        var reply = new Reply();
-        BeanUtil.copyProperties(param, reply);
+        var reply = PojoUtils.convert(param, Reply.class);
         reply.setCreatedBy(HttpUtils.userId());
         var comment = commentRepo.findById(param.getCommentId()).orElseThrow();
         reply.setPostId(comment.getPostId());

@@ -2,8 +2,8 @@ package cn.sabercon.main.service;
 
 import cn.sabercon.common.anno.Tx;
 import cn.sabercon.common.domian.BaseEntity;
-import cn.sabercon.common.json.Json;
 import cn.sabercon.common.util.HttpUtils;
+import cn.sabercon.common.util.PojoUtils;
 import cn.sabercon.main.domain.entity.Community;
 import cn.sabercon.main.domain.entity.UserCommunity;
 import cn.sabercon.main.domain.model.CommunityListModel;
@@ -27,20 +27,20 @@ public class CommunityService {
     private final UserCommunityRepo userCommunityRepo;
 
     public Page<CommunityListModel> listHot() {
-        return repo.findAll(HttpUtils.descPageable(Community.Fields.members)).map(e -> Json.convert(e, CommunityListModel.class));
+        return repo.findAll(HttpUtils.descPageable(Community.Fields.members)).map(e -> PojoUtils.convert(e, CommunityListModel.class));
     }
 
     public Page<CommunityListModel> listJoined() {
         return userCommunityRepo.findByUserId(HttpUtils.userId(), HttpUtils.descPageable(BaseEntity.Fields.ctime))
-                .map(e -> Json.convert(repo.findByName(e.getCommunityName()).orElseThrow(), CommunityListModel.class));
+                .map(e -> PojoUtils.convert(repo.findByName(e.getCommunityName()).orElseThrow(), CommunityListModel.class));
     }
 
     public CommunityModel get(String name) {
-        return repo.findByName(name).map(e -> Json.convert(e, CommunityModel.class)).orElse(null);
+        return repo.findByName(name).map(e -> PojoUtils.convert(e, CommunityModel.class)).orElse(null);
     }
 
     @Tx
-    public void join(String name, Boolean un) {
+    public void join(String name, boolean un) {
         var example = new UserCommunity();
         example.setUserId(HttpUtils.userId());
         example.setCommunityName(name);

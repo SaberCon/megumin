@@ -75,14 +75,4 @@ public class Json {
         var collectionType = getMapper().getTypeFactory().constructCollectionType(List.class, valueType);
         return getMapper().readValue(content, collectionType);
     }
-
-    /**
-     * 通过 json 转化拷贝源对象的属性到一个新的对象
-     *
-     * @param fromValue   源对象
-     * @param toValueType 目标对象类型
-     */
-    public static <T> T convert(Object fromValue, Class<T> toValueType) {
-        return getMapper().convertValue(fromValue, toValueType);
-    }
 }

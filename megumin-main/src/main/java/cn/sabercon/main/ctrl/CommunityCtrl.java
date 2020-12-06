@@ -44,7 +44,7 @@ public class CommunityCtrl {
     }
 
     @PostMapping("join")
-    public void join(@NotNull String name, @ApiParam("是否取消") @RequestParam(defaultValue = "0") Boolean un) {
+    public void join(@RequestParam String name, @ApiParam("是否取消") @RequestParam(defaultValue = "0") Boolean un) {
         service.join(name, un);
     }
 }

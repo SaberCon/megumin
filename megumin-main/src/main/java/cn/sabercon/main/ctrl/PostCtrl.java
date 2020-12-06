@@ -46,7 +46,7 @@ public class PostCtrl {
     }
 
     @PostMapping("follow")
-    public void follow(@NotNull Long id, @ApiParam("是否取消") @RequestParam(defaultValue = "0") Boolean un) {
+    public void follow(@RequestParam Long id, @ApiParam("是否取消") @RequestParam(defaultValue = "0") Boolean un) {
         service.follow(id, un);
     }
 

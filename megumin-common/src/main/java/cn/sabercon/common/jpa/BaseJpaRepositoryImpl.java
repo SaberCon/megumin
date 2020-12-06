@@ -33,7 +33,7 @@ public class BaseJpaRepositoryImpl<T> extends SimpleJpaRepository<T, Long> imple
     public int increment(Long id, String field) {
         var cb = em.getCriteriaBuilder();
         var update = cb.createCriteriaUpdate(entityInformation.getJavaType());
-        var root = update.getRoot();
+        var root = update.from(entityInformation.getJavaType());
         update.set(root.<Number>get(field), cb.sum(root.get(field), 1))
                 .where(cb.equal(root.get(entityInformation.getIdAttribute()), id));
         return em.createQuery(update).executeUpdate();

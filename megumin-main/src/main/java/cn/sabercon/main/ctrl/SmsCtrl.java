@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
  * @author SaberCon
  * @since 1.0.0
  */
-@Api(tags = "短信相关接口")
+@Api(tags = "SMS 相关接口")
 @CommonController("sms")
 @RequiredArgsConstructor
 public class SmsCtrl {

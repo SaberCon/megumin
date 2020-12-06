@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -45,13 +46,13 @@ public class UserCtrl {
 
     @PutMapping("phone")
     @ApiOperation("换绑手机")
-    public void updatePhone(@NotNull String newPhone, @NotNull String unbindCode, @NotNull String bindCode) {
+    public void updatePhone(@RequestParam String newPhone, @RequestParam String unbindCode, @RequestParam String bindCode) {
         service.updatePhone(newPhone, unbindCode, bindCode);
     }
 
     @PutMapping("pwd")
     @ApiOperation("修改密码")
-    public void updatePwd(@NotNull String newPwd, @NotNull String code) {
+    public void updatePwd(@RequestParam String newPwd, @RequestParam String code) {
         service.updatePwd(newPwd, code);
     }
 

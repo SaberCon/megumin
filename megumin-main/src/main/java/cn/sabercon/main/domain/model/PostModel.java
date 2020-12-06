@@ -19,11 +19,7 @@ public class PostModel {
 
     private LocalDateTime ctime;
 
-    private LocalDateTime mtime;
-
     private UserSimpleInfo createdBy;
-
-    private UserSimpleInfo lastRepliedBy;
 
     private String communityName;
 

@@ -2,6 +2,7 @@ package cn.sabercon.main.advice;
 
 import cn.sabercon.common.data.RedisHelper;
 import cn.sabercon.common.util.Assert;
+import cn.sabercon.common.util.ContextHolder;
 import cn.sabercon.common.util.HttpUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
@@ -32,6 +33,10 @@ public class LoginInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // 非正式环境不校验
+        if (ContextHolder.isNotProd()) {
+            return true;
+        }
         // 跨域预请求放行
         if (HttpMethod.OPTIONS.matches(request.getMethod())) {
             return true;

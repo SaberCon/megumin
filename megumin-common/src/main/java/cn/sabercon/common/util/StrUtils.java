@@ -27,6 +27,6 @@ public class StrUtils {
      * @return 中间四位替换为 * 的手机号
      */
     public static String maskPhoneNumber(String phone) {
-        return StrUtil.replace(phone, 4, 8, '*');
+        return StrUtil.replace(phone, 3, 7, '*');
     }
 }
