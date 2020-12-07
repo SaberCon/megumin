@@ -2,19 +2,16 @@ package cn.sabercon.common.swagger;
 
 import cn.sabercon.common.CommonConstant;
 import cn.sabercon.common.domian.PageModel;
+import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
-import org.springframework.core.ResolvableType;
 import org.springframework.data.domain.Page;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.RequestParameterBuilder;
-import springfox.documentation.schema.AlternateTypeRule;
-import springfox.documentation.schema.AlternateTypeRuleConvention;
-import springfox.documentation.schema.AlternateTypeRules;
-import springfox.documentation.schema.ScalarType;
+import springfox.documentation.schema.*;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ParameterType;
 import springfox.documentation.service.RequestParameter;
@@ -69,8 +66,11 @@ public class SwaggerConfig {
                 .build();
     }
 
+    /**
+     * @return 配置 {@link Page} 映射到 {@link PageModel} 的规则
+     */
     @Bean
-    public AlternateTypeRuleConvention pageConvention() {
+    public AlternateTypeRuleConvention pageConvention(TypeResolver resolver) {
         return new AlternateTypeRuleConvention() {
             @Override
             public int getOrder() {
@@ -79,7 +79,8 @@ public class SwaggerConfig {
 
             @Override
             public List<AlternateTypeRule> rules() {
-                return List.of(AlternateTypeRules.newRule(ResolvableType.forClass(Page.class).getType(), ResolvableType.forClass(PageModel.class).getType()));
+                return List.of(AlternateTypeRules.newRule(resolver.resolve(Page.class, WildcardType.class),
+                        resolver.resolve(PageModel.class, WildcardType.class)));
             }
         };
     }
