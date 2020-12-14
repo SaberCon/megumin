@@ -26,7 +26,7 @@ import static cn.sabercon.common.util.StrUtils.buildRedisKey;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class SmsManager {
+public class SmsHelper {
 
     /**
      * 保存到 redis 的验证码的键名前缀
@@ -68,7 +68,6 @@ public class SmsManager {
             // 非生产环境 1234 为万能校验码
             return true;
         }
-        var key = buildRedisKey(SMS_CODE_PREFIX, type.val(), phone);
-        return code.equals(redisHelper.get(key));
+        return code.equals(redisHelper.get(buildRedisKey(SMS_CODE_PREFIX, type.val(), phone)));
     }
 }

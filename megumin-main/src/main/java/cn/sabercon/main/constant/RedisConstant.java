@@ -6,5 +6,5 @@ package cn.sabercon.main.constant;
  */
 public interface RedisConstant {
 
-    String LOGIN_USER_PREFIX = "user:login:cache";
+    String LOGIN_USER_PREFIX = "user:login";
 }

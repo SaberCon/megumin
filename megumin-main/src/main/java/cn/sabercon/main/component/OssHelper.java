@@ -27,7 +27,7 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class OssManager {
+public class OssHelper {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
     private final OSS oss;
@@ -40,11 +40,11 @@ public class OssManager {
     @SneakyThrows
     public String upload(MultipartFile file, FileType type, String filename) {
         // 拼接文件全路径名
-        var fullName = Joiner.on("/").join(type.dir(), FORMATTER.format(LocalDate.now()), filename);
+        var fullName = Joiner.on("/").join(type.dir, FORMATTER.format(LocalDate.now()), filename);
 
         var metadata = new ObjectMetadata();
         metadata.setContentType(file.getContentType());
-        metadata.setContentDisposition(type.contentDisposition());
+        metadata.setContentDisposition(type.contentDisposition);
         oss.putObject(properties.getOss().getBucket(), fullName, file.getInputStream(), metadata);
         return Joiner.on("/").join(properties.getOss().getAccessDomain(), fullName);
     }
@@ -67,6 +67,6 @@ public class OssManager {
                 .endpoint(properties.getOss().getEndpoint())
                 .bucket(properties.getOss().getBucket())
                 .accessDomain(properties.getOss().getAccessDomain())
-                .dir(Joiner.on("/").join(type.dir(), FORMATTER.format(LocalDate.now()))).build();
+                .dir(Joiner.on("/").join(type.dir, FORMATTER.format(LocalDate.now()))).build();
     }
 }

@@ -1,6 +1,6 @@
 package cn.sabercon.main.domain.model;
 
-import cn.sabercon.common.enums.type.Gender;
+import cn.sabercon.main.domain.entity.User;
 import lombok.Data;
 
 /**
@@ -18,7 +18,7 @@ public class UserInfo {
 
     private String avatar;
 
-    private Gender gender;
+    private User.Gender gender;
 
     private String about;
 

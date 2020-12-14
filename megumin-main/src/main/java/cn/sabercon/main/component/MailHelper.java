@@ -1,9 +1,8 @@
-package cn.sabercon.common.component;
+package cn.sabercon.main.component;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.core.io.InputStreamSource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -21,7 +20,6 @@ import java.util.Objects;
  */
 @Component
 @RequiredArgsConstructor
-@ConditionalOnClass(JavaMailSender.class)
 public class MailHelper {
 
     private final JavaMailSender jms;

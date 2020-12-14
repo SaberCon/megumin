@@ -1,15 +1,10 @@
 package cn.sabercon.main.domain.entity;
 
 import cn.sabercon.common.domian.BaseEntity;
-import cn.sabercon.common.enums.IntEnumType;
-import cn.sabercon.common.enums.type.Gender;
 import lombok.Data;
 import lombok.experimental.FieldNameConstants;
-import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * 用户
@@ -33,7 +28,7 @@ public class User extends BaseEntity {
 
     private String avatar;
 
-    @Type(type = IntEnumType.CLASS_FULL_NAME)
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     /**
@@ -55,4 +50,8 @@ public class User extends BaseEntity {
      * 拉黑数
      */
     private Long down;
+
+    public enum Gender {
+        UNKNOWN, BOY, GIRL
+    }
 }

@@ -1,7 +1,7 @@
 package cn.sabercon.main.ctrl;
 
 import cn.sabercon.common.anno.CustomController;
-import cn.sabercon.main.component.SmsManager;
+import cn.sabercon.main.component.SmsHelper;
 import cn.sabercon.main.enums.type.SmsType;
 import cn.sabercon.main.service.UserService;
 import io.swagger.annotations.Api;
@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 @RequiredArgsConstructor
 public class SmsCtrl {
 
-    private final SmsManager manager;
+    private final SmsHelper manager;
     private final UserService userService;
 
     @GetMapping

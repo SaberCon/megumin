@@ -7,12 +7,11 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.sabercon.common.anno.Tx;
 import cn.sabercon.common.data.RedisHelper;
-import cn.sabercon.common.enums.type.Gender;
 import cn.sabercon.common.util.Checker;
 import cn.sabercon.common.util.HttpUtils;
 import cn.sabercon.common.util.Jwt;
 import cn.sabercon.common.util.PojoUtils;
-import cn.sabercon.main.component.SmsManager;
+import cn.sabercon.main.component.SmsHelper;
 import cn.sabercon.main.domain.dto.UserSimpleInfo;
 import cn.sabercon.main.domain.entity.User;
 import cn.sabercon.main.domain.model.LoginUserInfo;
@@ -43,7 +42,7 @@ public class UserService {
     private static final String DEFAULT_AVATAR = "http://oss.sabercon.cn/base/takagi.jpg";
     private final UserRepo repo;
     private final RedisHelper redisHelper;
-    private final SmsManager smsManager;
+    private final SmsHelper smsHelper;
 
     public LoginUserInfo getLoginInfo() {
         return redisHelper.get(buildRedisKey(LOGIN_USER_PREFIX, HttpUtils.userId()), LoginUserInfo.class);
@@ -58,7 +57,7 @@ public class UserService {
             Checker.isTrue(Objects.equals(user.getPassword(), SecureUtil.md5(param.getPassword())), LOGIN_ERROR);
         } else {
             // 验证码登录
-            Checker.isTrue(smsManager.checkCode(SmsType.LOGIN, param.getPhone(), param.getCode()), SMS_CODE_WRONG);
+            Checker.isTrue(smsHelper.checkCode(SmsType.LOGIN, param.getPhone(), param.getCode()), SMS_CODE_WRONG);
             user = repo.findByPhone(param.getPhone()).orElseGet(() -> register(param.getPhone()));
         }
         refreshUserInfoCache(user);
@@ -70,7 +69,7 @@ public class UserService {
         user.setPhone(phone);
         user.setUsername(generateUsername());
         user.setAvatar(DEFAULT_AVATAR);
-        user.setGender(Gender.UNKNOWN);
+        user.setGender(User.Gender.UNKNOWN);
         user.setKarma(0L);
         user.setUp(0L);
         user.setDown(0L);
@@ -90,8 +89,8 @@ public class UserService {
     @Tx
     public void updatePhone(String newPhone, String unbindCode, String bindCode) {
         var oldPhone = getLoginInfo().getPhone();
-        Checker.isTrue(smsManager.checkCode(SmsType.UNBIND_PHONE, oldPhone, unbindCode), SMS_CODE_WRONG);
-        Checker.isTrue(smsManager.checkCode(SmsType.BIND_PHONE, newPhone, bindCode), SMS_CODE_WRONG);
+        Checker.isTrue(smsHelper.checkCode(SmsType.UNBIND_PHONE, oldPhone, unbindCode), SMS_CODE_WRONG);
+        Checker.isTrue(smsHelper.checkCode(SmsType.BIND_PHONE, newPhone, bindCode), SMS_CODE_WRONG);
         Checker.isTrue(Objects.equals(oldPhone, newPhone) || !repo.existsByPhone(newPhone), PHONE_ALREADY_BOUND);
         var user = repo.findById(HttpUtils.userId()).orElseThrow();
         user.setPhone(newPhone);
@@ -100,7 +99,7 @@ public class UserService {
 
     @Tx
     public void updatePwd(String newPwd, String code) {
-        Checker.isTrue(smsManager.checkCode(SmsType.UPDATE_PWD, getLoginInfo().getPhone(), code), SMS_CODE_WRONG);
+        Checker.isTrue(smsHelper.checkCode(SmsType.UPDATE_PWD, getLoginInfo().getPhone(), code), SMS_CODE_WRONG);
         var user = repo.findById(HttpUtils.userId()).orElseThrow();
         user.setPassword(SecureUtil.md5(newPwd));
     }

@@ -1,6 +1,6 @@
 package cn.sabercon.main.domain.param;
 
-import cn.sabercon.common.enums.type.Gender;
+import cn.sabercon.main.domain.entity.User;
 import lombok.Data;
 
 /**
@@ -16,7 +16,7 @@ public class UpdateUserParam {
 
     private String avatar;
 
-    private Gender gender;
+    private User.Gender gender;
 
     private String about;
 }
