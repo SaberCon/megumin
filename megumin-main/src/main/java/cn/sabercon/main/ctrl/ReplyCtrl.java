@@ -1,6 +1,6 @@
 package cn.sabercon.main.ctrl;
 
-import cn.sabercon.common.anno.CommonController;
+import cn.sabercon.common.anno.CustomController;
 import cn.sabercon.main.domain.model.ReplyModel;
 import cn.sabercon.main.domain.param.ReplyParam;
 import cn.sabercon.main.service.ReplyService;
@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
  * @since 1.0.0
  */
 @Api(tags = "回复相关接口")
-@CommonController("reply")
+@CustomController("reply")
 @RequiredArgsConstructor
 public class ReplyCtrl {
 

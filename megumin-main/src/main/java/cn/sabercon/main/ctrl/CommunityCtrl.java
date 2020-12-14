@@ -1,6 +1,6 @@
 package cn.sabercon.main.ctrl;
 
-import cn.sabercon.common.anno.CommonController;
+import cn.sabercon.common.anno.CustomController;
 import cn.sabercon.main.domain.model.CommunityListModel;
 import cn.sabercon.main.domain.model.CommunityModel;
 import cn.sabercon.main.service.CommunityService;
@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
  * @since 1.0.0
  */
 @Api(tags = "社区相关接口")
-@CommonController("community")
+@CustomController("community")
 @RequiredArgsConstructor
 public class CommunityCtrl {
 

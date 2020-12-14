@@ -30,7 +30,7 @@ public class BaseJpaRepositoryImpl<T> extends SimpleJpaRepository<T, Long> imple
 
     @Tx
     @Override
-    public int increment(Long id, String field) {
+    public int incr(Long id, String field) {
         var cb = em.getCriteriaBuilder();
         var update = cb.createCriteriaUpdate(entityInformation.getJavaType());
         var root = update.from(entityInformation.getJavaType());

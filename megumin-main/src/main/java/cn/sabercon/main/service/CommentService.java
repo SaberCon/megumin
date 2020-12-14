@@ -50,7 +50,7 @@ public class CommentService {
         comment.setSn(post.getMaxSn() + 1);
         repo.save(comment);
 
-        postRepo.increment(post.getId(), Post.Fields.maxSn);
-        postRepo.increment(post.getId(), Post.Fields.comments);
+        postRepo.incr(post.getId(), Post.Fields.maxSn);
+        postRepo.incr(post.getId(), Post.Fields.comments);
     }
 }

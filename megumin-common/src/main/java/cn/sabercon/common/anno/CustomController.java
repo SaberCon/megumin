@@ -24,7 +24,7 @@ import java.lang.annotation.*;
 @Validated
 @RequestMapping
 @RestController
-public @interface CommonController {
+public @interface CustomController {
 
     @AliasFor(annotation = RequestMapping.class)
     String[] value() default {};

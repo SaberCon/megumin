@@ -1,6 +1,5 @@
 package cn.sabercon.common.domian;
 
-import cn.sabercon.common.enums.CommonCode;
 import lombok.Value;
 
 import java.util.Objects;
@@ -14,18 +13,14 @@ import java.util.Objects;
 @Value
 public class Result<T> {
 
-    private static final Result<?> DEFAULT_SUCCESS = new Result<>(CommonCode.SUCCESS.code(), null, null);
-    /**
-     * 状态码
-     */
-    String code;
-    /**
-     * 状态信息
-     */
-    String msg;
-    /**
-     * 返回数据
-     */
+    private static final Result<?> DEFAULT_SUCCESS = new Result<>(true, null, null, null);
+
+    boolean success;
+
+    String errorCode;
+
+    String errorMessage;
+
     T data;
 
     /**
@@ -40,10 +35,10 @@ public class Result<T> {
         if (Objects.isNull(data)) {
             return ok();
         }
-        return new Result<>(CommonCode.SUCCESS.code(), null, data);
+        return new Result<>(true, null, null, data);
     }
 
     public static <T> Result<T> fail(String code, String msg) {
-        return new Result<>(code, msg, null);
+        return new Result<>(false, code, msg, null);
     }
 }

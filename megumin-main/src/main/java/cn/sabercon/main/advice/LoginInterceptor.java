@@ -1,7 +1,7 @@
 package cn.sabercon.main.advice;
 
 import cn.sabercon.common.data.RedisHelper;
-import cn.sabercon.common.util.Assert;
+import cn.sabercon.common.util.Checker;
 import cn.sabercon.common.util.ContextHolder;
 import cn.sabercon.common.util.HttpUtils;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static cn.sabercon.common.enums.CommonCode.UNAUTHORIZED;
+import static cn.sabercon.common.enums.BaseCode.UNAUTHORIZED;
 import static cn.sabercon.common.util.StrUtils.buildRedisKey;
 import static cn.sabercon.main.constant.RedisConstant.LOGIN_USER_PREFIX;
 
@@ -41,8 +41,8 @@ public class LoginInterceptor implements HandlerInterceptor {
         if (HttpMethod.OPTIONS.matches(request.getMethod())) {
             return true;
         }
-        var userId = Assert.notNull(HttpUtils.userId(), UNAUTHORIZED);
-        Assert.isTrue(redisHelper.exists(buildRedisKey(LOGIN_USER_PREFIX, userId)), UNAUTHORIZED);
+        var userId = Checker.notNull(HttpUtils.userId(), UNAUTHORIZED);
+        Checker.isTrue(redisHelper.exists(buildRedisKey(LOGIN_USER_PREFIX, userId)), UNAUTHORIZED);
         return true;
     }
 }

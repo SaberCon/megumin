@@ -1,6 +1,6 @@
 package cn.sabercon.main.enums.code;
 
-import cn.sabercon.common.enums.ResultCode;
+import cn.sabercon.common.enums.ErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 @Getter
 @AllArgsConstructor
 @Accessors(fluent = true)
-public enum MainCode implements ResultCode {
+public enum MainCode implements ErrorCode {
 
     SMS_CODE_WRONG("B0101", "the sms code is wrong"),
     LOGIN_ERROR("B0102", "the phone or password is wrong"),

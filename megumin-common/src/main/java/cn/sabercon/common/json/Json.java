@@ -1,6 +1,6 @@
 package cn.sabercon.common.json;
 
-import cn.sabercon.common.util.Assert;
+import cn.sabercon.common.util.Checker;
 import cn.sabercon.common.util.ContextHolder;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -30,7 +30,7 @@ public class Json {
     }
 
     public static ObjectMapper getMapper() {
-        return Assert.notNull(mapper, "the object mapper has not been set, please access this method after the context is ready");
+        return Checker.notNull(mapper, "the object mapper has not been set, please access this method after the context is ready");
     }
 
     /**

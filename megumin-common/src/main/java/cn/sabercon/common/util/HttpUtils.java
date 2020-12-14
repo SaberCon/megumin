@@ -29,12 +29,12 @@ public class HttpUtils {
 
     public static HttpServletRequest getRequest() {
         var attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        return Assert.notNull(attributes.getRequest());
+        return attributes.getRequest();
     }
 
     public static HttpServletResponse getResponse() {
         var attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        return Assert.notNull(attributes.getResponse());
+        return attributes.getResponse();
     }
 
     public static void addCookie(Cookie cookie) {

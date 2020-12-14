@@ -1,10 +1,7 @@
 package cn.sabercon.common.aspect;
 
-import cn.sabercon.common.component.MailHelper;
 import cn.sabercon.common.domian.Result;
 import cn.sabercon.common.exception.ServiceException;
-import cn.sabercon.common.util.ContextHolder;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -17,8 +14,8 @@ import javax.validation.ConstraintViolationException;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import static cn.sabercon.common.enums.CommonCode.PARAM_WRONG;
-import static cn.sabercon.common.enums.CommonCode.UNKNOWN_ERROR;
+import static cn.sabercon.common.enums.BaseCode.PARAM_WRONG;
+import static cn.sabercon.common.enums.BaseCode.UNKNOWN_ERROR;
 
 /**
  * 通用的全局异常处理器
@@ -28,23 +25,17 @@ import static cn.sabercon.common.enums.CommonCode.UNKNOWN_ERROR;
  */
 @Slf4j
 @RestControllerAdvice
-@RequiredArgsConstructor
 public class ExceptionCatchAdvice {
-
-    private final MailHelper mailHelper;
 
     @ExceptionHandler(Throwable.class)
     public Result<Void> handleException(Throwable e) {
         log.error(e.getMessage(), e);
-        if (ContextHolder.isProd()) {
-            mailHelper.sendErrorDetail(e);
-        }
         return Result.fail(UNKNOWN_ERROR.code(), e.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
     }
 
     @ExceptionHandler(ServiceException.class)
     public Result<Void> handleServiceException(ServiceException e) {
-        log.warn("catch ServiceException: {}", e.getMessage());
+        warn(e);
         return Result.fail(e.getCode(), e.getLocalizedMessage());
     }
 
@@ -53,7 +44,7 @@ public class ExceptionCatchAdvice {
      */
     @ExceptionHandler(ConstraintViolationException.class)
     public Result<Void> handleConstraintViolationException(ConstraintViolationException e) {
-        log.warn("catch ConstraintViolationException: {}", e.getMessage());
+        warn(e);
         return Result.fail(PARAM_WRONG.code(), buildViolationMsg(e.getConstraintViolations()));
     }
 
@@ -62,7 +53,7 @@ public class ExceptionCatchAdvice {
      */
     @ExceptionHandler(BindException.class)
     public Result<Void> handleBindException(BindException e) {
-        log.warn("catch BindException: {}", e.getMessage());
+        warn(e);
         return Result.fail(PARAM_WRONG.code(), buildErrorMsg(e.getBindingResult().getFieldErrors()));
     }
 
@@ -71,8 +62,12 @@ public class ExceptionCatchAdvice {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Result<Void> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        log.warn("catch MethodArgumentNotValidException: {}", e.getMessage());
+        warn(e);
         return Result.fail(PARAM_WRONG.code(), buildErrorMsg(e.getBindingResult().getFieldErrors()));
+    }
+
+    private void warn(Exception e) {
+        log.warn("catch {}: {}", e.getClass().getSimpleName(), e.getMessage());
     }
 
     private static String buildErrorMsg(Collection<FieldError> errors) {

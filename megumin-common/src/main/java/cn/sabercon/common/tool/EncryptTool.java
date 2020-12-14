@@ -1,4 +1,4 @@
-package cn.sabercon.common.util;
+package cn.sabercon.common.tool;
 
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
@@ -7,12 +7,12 @@ import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
 import java.util.Scanner;
 
 /**
- * 运行各种小任务的工具类
+ * 运行加密方法的工具类
  *
  * @author SaberCon
  * @since 1.0.0
  */
-class TestUtils {
+class EncryptTool {
 
     public static void main(String[] args) {
         encrypt();

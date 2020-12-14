@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.Map;
@@ -25,8 +26,10 @@ public class Jwt {
 
     static {
         // 设置好 jwt 加密密钥
-        ContextHolder.addCallBack(() -> secret = Assert.notNull(ContextHolder.getProperty("sabercon.jwt-key"),
-                "the property sabercon.jwt-key must not be null"));
+        ContextHolder.addCallBack(() -> {
+            secret = ContextHolder.getProperty("sabercon.jwt-key");
+            Assert.state(secret != null, "the property sabercon.jwt-key must not be null");
+        });
     }
 
     /**

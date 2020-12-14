@@ -1,6 +1,6 @@
 package cn.sabercon.main.ctrl;
 
-import cn.sabercon.common.anno.CommonController;
+import cn.sabercon.common.anno.CustomController;
 import cn.sabercon.main.domain.model.PostModel;
 import cn.sabercon.main.domain.param.PostParam;
 import cn.sabercon.main.service.PostService;
@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
  * @since 1.0.0
  */
 @Api(tags = "帖子相关接口")
-@CommonController("post")
+@CustomController("post")
 @RequiredArgsConstructor
 public class PostCtrl {
 

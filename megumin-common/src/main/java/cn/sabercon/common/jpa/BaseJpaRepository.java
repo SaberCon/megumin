@@ -20,5 +20,5 @@ public interface BaseJpaRepository<T> extends JpaRepository<T, Long>, JpaSpecifi
      * @param field 要增加的字段, 类型为 int 或 long
      * @return 更新成功的行数
      */
-    int increment(Long id, String field);
+    int incr(Long id, String field);
 }

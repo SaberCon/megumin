@@ -56,7 +56,7 @@ public class ReplyService {
         reply.setPostId(comment.getPostId());
         repo.save(reply);
 
-        commentRepo.increment(comment.getId(), Comment.Fields.replies);
-        postRepo.increment(comment.getPostId(), Post.Fields.comments);
+        commentRepo.incr(comment.getId(), Comment.Fields.replies);
+        postRepo.incr(comment.getPostId(), Post.Fields.comments);
     }
 }

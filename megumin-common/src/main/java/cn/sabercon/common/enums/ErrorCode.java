@@ -3,21 +3,15 @@ package cn.sabercon.common.enums;
 import cn.sabercon.common.exception.ServiceException;
 
 /**
- * 结果状态码枚举类实现接口
+ * 错误码枚举类实现接口
  *
  * @author SaberCon
  * @since 1.0.0
  */
-public interface ResultCode {
+public interface ErrorCode {
 
-    /**
-     * @return 状态码
-     */
     String code();
 
-    /**
-     * @return 状态信息
-     */
     default String msg() {
         return null;
     }

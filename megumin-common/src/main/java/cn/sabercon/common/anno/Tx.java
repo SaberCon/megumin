@@ -1,7 +1,6 @@
 package cn.sabercon.common.anno;
 
 
-import org.springframework.core.annotation.AliasFor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.annotation.*;
@@ -17,7 +16,4 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Transactional(rollbackFor = Exception.class)
 public @interface Tx {
-
-    @AliasFor(annotation = Transactional.class)
-    String value() default "";
 }

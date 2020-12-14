@@ -1,9 +1,9 @@
 package cn.sabercon.common.component;
 
-import cn.hutool.core.exceptions.ExceptionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.core.io.InputStreamSource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -21,22 +21,13 @@ import java.util.Objects;
  */
 @Component
 @RequiredArgsConstructor
+@ConditionalOnClass(JavaMailSender.class)
 public class MailHelper {
 
     private final JavaMailSender jms;
 
-    @Value("${sabercon.error-mail}")
-    private String errorReceiver;
-
     @Value("${spring.mail.username}")
     private String from;
-
-    /**
-     * 发送异常信息到设置的接收邮箱
-     */
-    public void sendErrorDetail(Throwable e) {
-        sendSimpleEmail(errorReceiver, e.getMessage(), ExceptionUtil.stacktraceToString(e));
-    }
 
     /**
      * @param content 普通文本内容

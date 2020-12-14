@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import java.util.Arrays;
 import java.util.Queue;
@@ -75,11 +76,11 @@ public class ContextHolder implements ApplicationContextAware, DisposableBean {
     }
 
     private static void assertEnvironmentInjected() {
-        Assert.notNull(environment, "environment is not ready yet");
+        Assert.state(environment != null, "environment is not ready yet");
     }
 
     private static void assertContextInjected() {
-        Assert.notNull(context, "application context is not ready yet");
+        Assert.state(context != null, "application context is not ready yet");
     }
 
     @Override

@@ -1,8 +1,6 @@
 package cn.sabercon.common.config;
 
-import cn.sabercon.common.component.MailHelper;
 import cn.sabercon.common.config.property.ThreadPoolProperties;
-import cn.sabercon.common.util.ContextHolder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
@@ -28,8 +26,6 @@ public class AsyncConfig implements AsyncConfigurer {
 
     private final ThreadPoolProperties properties;
 
-    private final MailHelper mailHelper;
-
     @Override
     public Executor getAsyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
@@ -47,9 +43,6 @@ public class AsyncConfig implements AsyncConfigurer {
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
         return (throwable, method, params) -> {
             log.error("uncaught exception when executing async method: {}, params: {}", method.getName(), params);
-            if (ContextHolder.isProd()) {
-                mailHelper.sendErrorDetail(throwable);
-            }
             log.error(throwable.getMessage(), throwable);
         };
     }
