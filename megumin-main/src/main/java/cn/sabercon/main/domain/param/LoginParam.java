@@ -16,7 +16,13 @@ public class LoginParam {
     @NotNull
     private String phone;
 
-    private String password;
-
+    @NotNull
     private String code;
+
+    @NotNull
+    private Type type;
+
+    public enum Type {
+        PWD, SMS
+    }
 }

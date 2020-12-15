@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 
 /**
- * 状态码
+ * 错误码
  *
  * @author SaberCon
  * @since 1.0.0

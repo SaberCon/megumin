@@ -1,7 +1,5 @@
 package cn.sabercon.main.service;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.SecureUtil;
@@ -12,9 +10,7 @@ import cn.sabercon.common.util.HttpUtils;
 import cn.sabercon.common.util.Jwt;
 import cn.sabercon.common.util.PojoUtils;
 import cn.sabercon.main.component.SmsHelper;
-import cn.sabercon.main.domain.dto.UserSimpleInfo;
 import cn.sabercon.main.domain.entity.User;
-import cn.sabercon.main.domain.model.LoginUserInfo;
 import cn.sabercon.main.domain.model.UserInfo;
 import cn.sabercon.main.domain.param.LoginParam;
 import cn.sabercon.main.domain.param.UpdateUserParam;
@@ -22,7 +18,6 @@ import cn.sabercon.main.enums.type.SmsType;
 import cn.sabercon.main.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -44,17 +39,17 @@ public class UserService {
     private final RedisHelper redisHelper;
     private final SmsHelper smsHelper;
 
-    public LoginUserInfo getLoginInfo() {
-        return redisHelper.get(buildRedisKey(LOGIN_USER_PREFIX, HttpUtils.userId()), LoginUserInfo.class);
+    public UserInfo getLoginInfo() {
+        return redisHelper.get(buildRedisKey(LOGIN_USER_PREFIX, HttpUtils.userId()), UserInfo.class);
     }
 
     @Tx
     public String login(LoginParam param) {
         User user;
-        if (ObjectUtils.isEmpty(param.getCode())) {
+        if (param.getType() == LoginParam.Type.PWD) {
             // 密码登录
             user = repo.findByPhone(param.getPhone()).orElseThrow(LOGIN_ERROR::exception);
-            Checker.isTrue(Objects.equals(user.getPassword(), SecureUtil.md5(param.getPassword())), LOGIN_ERROR);
+            Checker.isTrue(Objects.equals(user.getPassword(), SecureUtil.md5(param.getCode())), LOGIN_ERROR);
         } else {
             // 验证码登录
             Checker.isTrue(smsHelper.checkCode(SmsType.LOGIN, param.getPhone(), param.getCode()), SMS_CODE_WRONG);
@@ -70,9 +65,6 @@ public class UserService {
         user.setUsername(generateUsername());
         user.setAvatar(DEFAULT_AVATAR);
         user.setGender(User.Gender.UNKNOWN);
-        user.setKarma(0L);
-        user.setUp(0L);
-        user.setDown(0L);
         repo.save(user);
         return user;
     }
@@ -108,20 +100,16 @@ public class UserService {
     public void update(UpdateUserParam param) {
         var user = repo.findById(HttpUtils.userId()).orElseThrow();
         Checker.isTrue(Objects.equals(user.getUsername(), param.getUsername()) || !repo.existsByUsername(param.getUsername()), USERNAME_EXISTS);
-        BeanUtil.copyProperties(param, user, CopyOptions.create().ignoreNullValue());
+        PojoUtils.copy(param, user);
         refreshUserInfoCache(user);
     }
 
     private void refreshUserInfoCache(User user) {
-        var userInfo = PojoUtils.convert(user, LoginUserInfo.class);
+        var userInfo = PojoUtils.convert(user, UserInfo.class);
         redisHelper.set(buildRedisKey(LOGIN_USER_PREFIX, user.getId()), userInfo, 30, TimeUnit.DAYS);
     }
 
     public UserInfo getInfo(Long id) {
         return repo.findById(id).map(e -> PojoUtils.convert(e, UserInfo.class)).orElse(null);
-    }
-
-    public UserSimpleInfo getSimpleInfo(Long id) {
-        return repo.findById(id).map(e -> PojoUtils.convert(e, UserSimpleInfo.class)).orElse(null);
     }
 }

@@ -1,7 +1,6 @@
 package cn.sabercon.main.domain.model;
 
-import cn.sabercon.main.domain.dto.UserSimpleInfo;
-import cn.sabercon.main.enums.type.TextType;
+import cn.sabercon.main.enums.type.ContentType;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -19,15 +18,15 @@ public class PostModel {
 
     private LocalDateTime ctime;
 
-    private UserSimpleInfo createdBy;
+    private UserInfo creator;
 
-    private String communityName;
+    private Long communityId;
 
     private String title;
 
     private String text;
 
-    private TextType type;
+    private ContentType type;
 
-    private Long comments;
+    private Long replies;
 }

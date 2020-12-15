@@ -14,17 +14,13 @@ public class UserInfo {
 
     private Long id;
 
+    private String phone;
+
     private String username;
 
     private String avatar;
 
-    private User.Gender gender;
-
     private String about;
 
-    private Long karma;
-
-    private Long up;
-
-    private Long down;
+    private User.Gender gender;
 }

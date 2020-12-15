@@ -2,7 +2,6 @@ package cn.sabercon.main.domain.entity;
 
 import cn.sabercon.common.domian.BaseEntity;
 import lombok.Data;
-import lombok.experimental.FieldNameConstants;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +16,6 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "t_community")
-@FieldNameConstants
 public class Community extends BaseEntity {
 
     @Column(unique = true)
@@ -29,8 +27,5 @@ public class Community extends BaseEntity {
 
     private String about;
 
-    /**
-     * 关注人数
-     */
     private Long members;
 }

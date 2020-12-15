@@ -2,7 +2,6 @@ package cn.sabercon.main.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.sabercon.common.anno.Tx;
-import cn.sabercon.common.domian.BaseEntity;
 import cn.sabercon.common.util.HttpUtils;
 import cn.sabercon.common.util.PojoUtils;
 import cn.sabercon.main.domain.entity.Post;
@@ -14,7 +13,10 @@ import cn.sabercon.main.repo.UserPostRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import static cn.sabercon.common.data.QueryUtils.pagination;
 
 /**
  * @author SaberCon
@@ -28,12 +30,12 @@ public class PostService {
     private final UserPostRepo userPostRepo;
     private final UserService userService;
 
-    public Page<PostModel> listRecent(String communityName) {
-        return repo.findByCommunityName(communityName, HttpUtils.descPageable(BaseEntity.Fields.mtime)).map(this::convert);
+    public Page<PostModel> listRecent(Long cid) {
+        return repo.findByCommunityId(cid, pagination(Sort.sort(Post.class).by(Post::getMtime).descending())).map(this::convert);
     }
 
     public Page<PostModel> listFollowed() {
-        return userPostRepo.findByUserId(HttpUtils.userId(), HttpUtils.descPageable(BaseEntity.Fields.ctime))
+        return userPostRepo.findByUserId(HttpUtils.userId(), pagination(Sort.sort(Post.class).by(Post::getCtime).descending()))
                 .map(e -> repo.findById(e.getPostId()).orElseThrow()).map(this::convert);
     }
 
@@ -43,7 +45,7 @@ public class PostService {
 
     private PostModel convert(Post post) {
         var model = PojoUtils.convert(post, PostModel.class);
-        model.setCreatedBy(userService.getSimpleInfo(post.getCreatedBy()));
+        model.setCreator(userService.getInfo(post.getCreator()));
         return model;
     }
 
@@ -65,9 +67,8 @@ public class PostService {
     public void publish(PostParam param) {
         var post = new Post();
         BeanUtil.copyProperties(param, post);
-        post.setCreatedBy(HttpUtils.userId());
-        post.setMaxSn(0L);
-        post.setComments(0L);
+        post.setCreator(HttpUtils.userId());
+        post.setReplies(0L);
         repo.save(post);
     }
 }

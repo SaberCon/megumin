@@ -11,5 +11,5 @@ import org.springframework.data.domain.Pageable;
  */
 public interface PostRepo extends BaseJpaRepository<Post> {
 
-    Page<Post> findByCommunityName(String communityName, Pageable pageable);
+    Page<Post> findByCommunityId(Long communityId, Pageable pageable);
 }

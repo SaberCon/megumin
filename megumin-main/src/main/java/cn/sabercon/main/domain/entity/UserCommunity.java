@@ -21,5 +21,5 @@ public class UserCommunity extends BaseEntity {
 
     private Long userId;
 
-    private String communityName;
+    private Long communityId;
 }

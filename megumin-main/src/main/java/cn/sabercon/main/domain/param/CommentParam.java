@@ -1,6 +1,6 @@
 package cn.sabercon.main.domain.param;
 
-import cn.sabercon.main.enums.type.TextType;
+import cn.sabercon.main.enums.type.ContentType;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -21,5 +21,5 @@ public class CommentParam {
     private String text;
 
     @NotNull
-    private TextType type;
+    private ContentType type;
 }

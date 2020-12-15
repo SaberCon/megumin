@@ -1,11 +1,7 @@
 package cn.sabercon.common.util;
 
-import cn.sabercon.common.domian.PageQuery;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -60,35 +56,6 @@ public class HttpUtils {
 
     public static Optional<String> getParam(String key) {
         return Optional.ofNullable(getRequest().getParameter(key));
-    }
-
-    /**
-     * @return 由请求头中分页参数生成的分页请求, 分页参数不存在时会采用默认参数
-     */
-    public static Pageable pageable(Sort sort, int defaultPage, int defaultSize) {
-        int page = getParam(PageQuery.Fields.p).map(Integer::parseInt).filter(p -> p >= 0).orElse(defaultPage);
-        int size = getParam(PageQuery.Fields.s).map(Integer::parseInt).filter(s -> s > 0).orElse(defaultSize);
-        return PageRequest.of(page, size, sort);
-    }
-
-    public static Pageable pageable(Sort sort) {
-        return pageable(sort, PageQuery.DEFAULT_PAGE, PageQuery.DEFAULT_SIZE);
-    }
-
-    /**
-     * @param properties 要排序的字段
-     * @return 升序查询的分页请求
-     */
-    public static Pageable ascPageable(String... properties) {
-        return pageable(Sort.by(properties).ascending());
-    }
-
-    /**
-     * @param properties 要排序的字段
-     * @return 降序查询的分页请求
-     */
-    public static Pageable descPageable(String... properties) {
-        return pageable(Sort.by(properties).descending());
     }
 
     /**

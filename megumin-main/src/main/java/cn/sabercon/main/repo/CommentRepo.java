@@ -11,5 +11,7 @@ import org.springframework.data.domain.Pageable;
  */
 public interface CommentRepo extends BaseJpaRepository<Comment> {
 
-    Page<Comment> findByPostId(Long postId, Pageable pageable);
+    Page<Comment> findByPostIdAndQuoteId(Long postId, Long quoteId, Pageable pageable);
+
+    Page<Comment> findByQuoteId(Long quoteId, Pageable pageable);
 }

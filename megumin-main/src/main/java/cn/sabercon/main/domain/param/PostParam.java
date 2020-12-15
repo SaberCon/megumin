@@ -1,6 +1,6 @@
 package cn.sabercon.main.domain.param;
 
-import cn.sabercon.main.enums.type.TextType;
+import cn.sabercon.main.enums.type.ContentType;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 public class PostParam {
 
     @NotNull
-    private String communityName;
+    private Long communityId;
 
     @NotNull
     private String title;
@@ -24,5 +24,5 @@ public class PostParam {
     private String text;
 
     @NotNull
-    private TextType type;
+    private ContentType type;
 }

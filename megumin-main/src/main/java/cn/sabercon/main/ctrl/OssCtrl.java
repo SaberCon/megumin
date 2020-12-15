@@ -4,8 +4,6 @@ import cn.sabercon.common.anno.CustomController;
 import cn.sabercon.main.component.OssHelper;
 import cn.sabercon.main.domain.model.OssToken;
 import cn.sabercon.main.enums.type.FileType;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +17,6 @@ import javax.validation.constraints.NotNull;
  * @author SaberCon
  * @since 1.0.0
  */
-@Api(tags = "OSS 相关接口")
 @CustomController("oss")
 @RequiredArgsConstructor
 public class OssCtrl {
@@ -27,7 +24,6 @@ public class OssCtrl {
     private final OssHelper helper;
 
     @PostMapping
-    @ApiOperation("上传文件")
     public String upload(@RequestPart MultipartFile file, FileType type, String filename) {
         if (ObjectUtils.isEmpty(filename)) {
             filename = file.getOriginalFilename();
@@ -36,7 +32,6 @@ public class OssCtrl {
     }
 
     @GetMapping
-    @ApiOperation("获取临时 token")
     public OssToken getToken(@NotNull FileType type) {
         return helper.getToken(type);
     }

@@ -4,7 +4,6 @@ import cn.sabercon.common.anno.CustomController;
 import cn.sabercon.main.domain.model.CommentModel;
 import cn.sabercon.main.domain.param.CommentParam;
 import cn.sabercon.main.service.CommentService;
-import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,16 +17,20 @@ import javax.validation.constraints.NotNull;
  * @author SaberCon
  * @since 1.0.0
  */
-@Api(tags = "评论相关接口")
 @CustomController("comment")
 @RequiredArgsConstructor
 public class CommentCtrl {
 
     private final CommentService service;
 
-    @GetMapping("list")
-    public Page<CommentModel> list(@NotNull Long postId) {
-        return service.list(postId);
+    @GetMapping("post")
+    public Page<CommentModel> listByPostId(@NotNull Long postId) {
+        return service.listByPostId(postId);
+    }
+
+    @GetMapping("quote")
+    public Page<CommentModel> listByQuoteId(@NotNull Long quoteId) {
+        return service.listByQuoteId(quoteId);
     }
 
     @GetMapping

@@ -1,19 +1,20 @@
 package cn.sabercon.main.service;
 
 import cn.sabercon.common.anno.Tx;
-import cn.sabercon.common.domian.BaseEntity;
 import cn.sabercon.common.util.HttpUtils;
 import cn.sabercon.common.util.PojoUtils;
 import cn.sabercon.main.domain.entity.Community;
 import cn.sabercon.main.domain.entity.UserCommunity;
-import cn.sabercon.main.domain.model.CommunityListModel;
 import cn.sabercon.main.domain.model.CommunityModel;
 import cn.sabercon.main.repo.CommunityRepo;
 import cn.sabercon.main.repo.UserCommunityRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import static cn.sabercon.common.data.QueryUtils.pagination;
 
 /**
  * @author SaberCon
@@ -26,26 +27,27 @@ public class CommunityService {
     private final CommunityRepo repo;
     private final UserCommunityRepo userCommunityRepo;
 
-    public Page<CommunityListModel> listHot() {
-        return repo.findAll(HttpUtils.descPageable(Community.Fields.members)).map(e -> PojoUtils.convert(e, CommunityListModel.class));
+    public Page<CommunityModel> listHot() {
+        return repo.findAll(pagination(Sort.sort(Community.class).by(Community::getMembers).descending()))
+                .map(e -> PojoUtils.convert(e, CommunityModel.class));
     }
 
-    public Page<CommunityListModel> listJoined() {
-        return userCommunityRepo.findByUserId(HttpUtils.userId(), HttpUtils.descPageable(BaseEntity.Fields.ctime))
-                .map(e -> PojoUtils.convert(repo.findByName(e.getCommunityName()).orElseThrow(), CommunityListModel.class));
+    public Page<CommunityModel> listJoined() {
+        return userCommunityRepo.findByUserId(HttpUtils.userId(), pagination(Sort.sort(Community.class).by(Community::getCtime).descending()))
+                .map(e -> PojoUtils.convert(repo.findById(e.getCommunityId()).orElseThrow(), CommunityModel.class));
     }
 
-    public CommunityModel get(String name) {
-        return repo.findByName(name).map(e -> PojoUtils.convert(e, CommunityModel.class)).orElse(null);
+    public CommunityModel get(Long id) {
+        return repo.findById(id).map(e -> PojoUtils.convert(e, CommunityModel.class)).orElse(null);
     }
 
     @Tx
-    public void join(String name, boolean un) {
+    public void join(Long id, boolean un) {
         var example = new UserCommunity();
         example.setUserId(HttpUtils.userId());
-        example.setCommunityName(name);
+        example.setCommunityId(id);
         var joinedOpt = userCommunityRepo.findOne(Example.of(example));
-        var community = repo.findByName(name).orElseThrow();
+        var community = repo.findById(id).orElseThrow();
         if (joinedOpt.isPresent() && un) {
             community.setMembers(community.getMembers() - 1);
             userCommunityRepo.delete(joinedOpt.get());
