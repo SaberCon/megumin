@@ -1,6 +1,5 @@
 package cn.sabercon.main.service;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.sabercon.common.anno.Tx;
 import cn.sabercon.common.util.HttpUtils;
 import cn.sabercon.common.util.PojoUtils;
@@ -11,12 +10,10 @@ import cn.sabercon.main.domain.param.PostParam;
 import cn.sabercon.main.repo.PostRepo;
 import cn.sabercon.main.repo.UserPostRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import static cn.sabercon.common.data.QueryUtils.pagination;
+import static cn.sabercon.common.data.QueryUtils.*;
 
 /**
  * @author SaberCon
@@ -31,11 +28,11 @@ public class PostService {
     private final UserService userService;
 
     public Page<PostModel> listRecent(Long cid) {
-        return repo.findByCommunityId(cid, pagination(Sort.sort(Post.class).by(Post::getMtime).descending())).map(this::convert);
+        return repo.findByCommunityId(cid, pagination(DESC_MTIME)).map(this::convert);
     }
 
     public Page<PostModel> listFollowed() {
-        return userPostRepo.findByUserId(HttpUtils.userId(), pagination(Sort.sort(Post.class).by(Post::getCtime).descending()))
+        return userPostRepo.findByUserId(HttpUtils.userId(), pagination(DESC_CTIME))
                 .map(e -> repo.findById(e.getPostId()).orElseThrow()).map(this::convert);
     }
 
@@ -50,23 +47,16 @@ public class PostService {
     }
 
     @Tx
-    public void follow(Long id, boolean un) {
-        var example = new UserPost();
-        example.setUserId(HttpUtils.userId());
-        example.setPostId(id);
-        var followedOpt = userPostRepo.findOne(Example.of(example));
-        if (followedOpt.isPresent() && un) {
-            userPostRepo.delete(followedOpt.get());
-        }
-        if (followedOpt.isEmpty() && !un) {
-            userPostRepo.save(example);
-        }
+    public void follow(Long id, boolean undo) {
+        var userPost = new UserPost();
+        userPost.setUserId(HttpUtils.userId());
+        userPost.setPostId(id);
+        userPostRepo.addRelation(userPost, undo);
     }
 
     @Tx
     public void publish(PostParam param) {
-        var post = new Post();
-        BeanUtil.copyProperties(param, post);
+        var post = PojoUtils.convert(param, Post.class);
         post.setCreator(HttpUtils.userId());
         post.setReplies(0L);
         repo.save(post);

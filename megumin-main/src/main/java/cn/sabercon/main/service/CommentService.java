@@ -11,9 +11,9 @@ import cn.sabercon.main.repo.CommentRepo;
 import cn.sabercon.main.repo.PostRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import static cn.sabercon.common.data.QueryUtils.DESC_CTIME;
 import static cn.sabercon.common.data.QueryUtils.pagination;
 
 /**
@@ -31,12 +31,12 @@ public class CommentService {
     private final UserService userService;
 
     public Page<CommentModel> listByPostId(Long postId) {
-        return repo.findByPostIdAndQuoteId(postId, Comment.TOP_COMMENT, pagination(Sort.sort(Comment.class).by(Comment::getCtime).descending()))
+        return repo.findByPostIdAndQuoteId(postId, Comment.TOP_COMMENT, pagination(DESC_CTIME))
                 .map(this::convert);
     }
 
     public Page<CommentModel> listByQuoteId(Long quoteId) {
-        return repo.findByQuoteId(quoteId, pagination(Sort.sort(Comment.class).by(Comment::getCtime).descending())).map(this::convert);
+        return repo.findByQuoteId(quoteId, pagination(DESC_CTIME)).map(this::convert);
     }
 
     public CommentModel get(Long id) {
@@ -55,7 +55,7 @@ public class CommentService {
         comment.setCreator(HttpUtils.userId());
         comment.setReplies(0L);
         repo.save(comment);
-        repo.incr(param.getQuoteId(), Comment.Fields.replies);
-        postRepo.incr(param.getPostId(), Post.Fields.replies);
+        repo.inc(param.getQuoteId(), Comment::getReplies, 1);
+        postRepo.inc(param.getPostId(), Post::getReplies, 1);
     }
 }

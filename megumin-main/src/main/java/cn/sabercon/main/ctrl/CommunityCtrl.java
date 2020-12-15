@@ -37,7 +37,7 @@ public class CommunityCtrl {
     }
 
     @PostMapping("join")
-    public void join(@NotNull Long id, @RequestParam(defaultValue = "0") Boolean un) {
-        service.join(id, un);
+    public void join(@NotNull Long id, @RequestParam(defaultValue = "0") Boolean undo) {
+        service.join(id, undo);
     }
 }

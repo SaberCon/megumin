@@ -3,7 +3,6 @@ package cn.sabercon.main.domain.entity;
 import cn.sabercon.common.domian.BaseEntity;
 import cn.sabercon.main.enums.type.ContentType;
 import lombok.Data;
-import lombok.experimental.FieldNameConstants;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -19,7 +18,6 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "t_comment")
-@FieldNameConstants
 public class Comment extends BaseEntity {
 
     public static final long TOP_COMMENT = 0;

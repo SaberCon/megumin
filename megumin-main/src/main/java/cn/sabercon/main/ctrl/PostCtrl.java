@@ -40,8 +40,8 @@ public class PostCtrl {
     }
 
     @PostMapping("follow")
-    public void follow(@NotNull Long id, @RequestParam(defaultValue = "0") Boolean un) {
-        service.follow(id, un);
+    public void follow(@NotNull Long id, @RequestParam(defaultValue = "0") Boolean undo) {
+        service.follow(id, undo);
     }
 
     @PostMapping

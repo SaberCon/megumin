@@ -1,5 +1,6 @@
 package cn.sabercon.common.data;
 
+import cn.sabercon.common.domian.BaseEntity;
 import cn.sabercon.common.util.HttpUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,10 @@ public class QueryUtils {
 
     public static final String PAGE_PARAM = "p";
     public static final String SIZE_PARAM = "s";
+    public static final Sort ASC_CTIME = Sort.sort(BaseEntity.class).by(BaseEntity::getCtime).ascending();
+    public static final Sort DESC_CTIME = Sort.sort(BaseEntity.class).by(BaseEntity::getCtime).descending();
+    public static final Sort ASC_MTIME = Sort.sort(BaseEntity.class).by(BaseEntity::getMtime).ascending();
+    public static final Sort DESC_MTIME = Sort.sort(BaseEntity.class).by(BaseEntity::getMtime).descending();
 
     /**
      * @return 由请求头中分页参数生成的分页请求, 分页参数不存在时会采用默认参数

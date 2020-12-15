@@ -2,7 +2,6 @@ package cn.sabercon.main.domain.entity;
 
 import cn.sabercon.common.domian.BaseEntity;
 import lombok.Data;
-import lombok.experimental.FieldNameConstants;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -16,7 +15,6 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "t_user_post")
-@FieldNameConstants
 public class UserPost extends BaseEntity {
 
     private Long userId;
