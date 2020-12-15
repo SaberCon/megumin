@@ -55,6 +55,7 @@ public class CommentService {
         comment.setCreator(HttpUtils.userId());
         comment.setReplies(0L);
         repo.save(comment);
+        repo.incr(param.getQuoteId(), Comment.Fields.replies);
         postRepo.incr(param.getPostId(), Post.Fields.replies);
     }
 }
