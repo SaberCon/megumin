@@ -44,6 +44,7 @@ public class BaseJpaRepositoryImpl<T> extends SimpleJpaRepository<T, Long> imple
         return em.createQuery(update).executeUpdate();
     }
 
+    @Tx
     @Override
     public boolean addRelation(T entity, boolean undo) {
         var relationOpt = findOne(Example.of(entity));
