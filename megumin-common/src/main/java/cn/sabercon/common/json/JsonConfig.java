@@ -1,10 +1,7 @@
 package cn.sabercon.common.json;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -36,14 +33,12 @@ public class JsonConfig {
     @Bean
     @Primary
     public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
-        // todo
+        applySpringMvcDefaultSettings(builder);
         return builder.modulesToInstall(timeModule()).serializationInclusion(JsonInclude.Include.NON_NULL).build();
     }
 
-    private void applySpringMvcDefaultSetting(ObjectMapper mapper) {
-        mapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false);
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    private void applySpringMvcDefaultSettings(Jackson2ObjectMapperBuilder builder) {
+        builder.defaultViewInclusion(false).failOnUnknownProperties(false);
     }
 
     private SimpleModule timeModule() {
