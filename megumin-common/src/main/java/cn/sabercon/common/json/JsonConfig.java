@@ -16,6 +16,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,22 +35,15 @@ public class JsonConfig {
 
     @Bean
     @Primary
-    public ObjectMapper objectMapper() {
-        var mapper = new ObjectMapper();
-        applySpringMvcDefaultSetting(mapper);
-        applyCustomSetting(mapper);
-        return mapper;
+    public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
+        // todo
+        return builder.modulesToInstall(timeModule()).serializationInclusion(JsonInclude.Include.NON_NULL).build();
     }
 
     private void applySpringMvcDefaultSetting(ObjectMapper mapper) {
         mapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false);
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-    }
-
-    private void applyCustomSetting(ObjectMapper mapper) {
-        mapper.registerModule(timeModule());
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
     private SimpleModule timeModule() {

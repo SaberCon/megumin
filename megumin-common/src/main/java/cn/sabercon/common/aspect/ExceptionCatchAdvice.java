@@ -1,5 +1,6 @@
 package cn.sabercon.common.aspect;
 
+import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.sabercon.common.domian.Result;
 import cn.sabercon.common.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,10 @@ public class ExceptionCatchAdvice {
     @ExceptionHandler(Throwable.class)
     public Result<Void> handleException(Throwable e) {
         log.error(e.getMessage(), e);
+        if (log.isDebugEnabled()) {
+            return Result.fail(UNKNOWN_ERROR.code(), e.getClass().getSimpleName() + ": " + e.getLocalizedMessage(),
+                    ExceptionUtil.stacktraceToString(e));
+        }
         return Result.fail(UNKNOWN_ERROR.code(), e.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
     }
 

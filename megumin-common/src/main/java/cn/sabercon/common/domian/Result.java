@@ -13,13 +13,15 @@ import java.util.Objects;
 @Value
 public class Result<T> {
 
-    private static final Result<?> DEFAULT_SUCCESS = new Result<>(true, null, null, null);
+    private static final Result<?> DEFAULT_SUCCESS = new Result<>(true, null, null, null, null);
 
     boolean success;
 
     String errorCode;
 
     String errorMessage;
+
+    String debugMessage;
 
     T data;
 
@@ -35,10 +37,14 @@ public class Result<T> {
         if (Objects.isNull(data)) {
             return ok();
         }
-        return new Result<>(true, null, null, data);
+        return new Result<>(true, null, null, null, data);
+    }
+
+    public static <T> Result<T> fail(String code, String msg, String debugMsg) {
+        return new Result<>(false, code, msg, debugMsg, null);
     }
 
     public static <T> Result<T> fail(String code, String msg) {
-        return new Result<>(false, code, msg, null);
+        return fail(code, msg, null);
     }
 }
