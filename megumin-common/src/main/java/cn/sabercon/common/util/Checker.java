@@ -22,7 +22,7 @@ public class Checker {
         if (condition) {
             return;
         }
-        throw resultCode.exceptionWithMsg(msg);
+        throw resultCode.exception(msg);
     }
 
     public static void isTrue(boolean condition, ErrorCode resultCode) {

@@ -20,7 +20,6 @@ public enum BaseCode implements ErrorCode {
     UNAUTHORIZED("10003", "unauthorized"),
     UNKNOWN_ERROR("20001", "unknown error occurred"),
     SERVER_NOT_AVAILABLE("20002", "the server is not available"),
-    REMOTE_SERVER_NOT_AVAILABLE("20003", "the remote server is not available"),
     ;
 
     private final String code;

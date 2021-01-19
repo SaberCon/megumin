@@ -46,7 +46,7 @@ public class HttpUtils {
                 .findFirst().map(Cookie::getValue);
     }
 
-    public static void addHeader(String key, String value) {
+    public static void setHeader(String key, String value) {
         getResponse().setHeader(key, value);
     }
 

@@ -2,7 +2,6 @@ package cn.sabercon.common.anno;
 
 
 import cn.sabercon.common.aspect.ResultWrapAdvice;
-import cn.sabercon.common.domian.Result;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +11,7 @@ import java.lang.annotation.*;
 
 /**
  * 集成 controller 注解, 默认开启参数校验
- * 此注解的返回值会被包装成 {@link Result}
+ * 此注解的类的方法返回值会被特殊处理
  *
  * @author SaberCon
  * @see ResultWrapAdvice

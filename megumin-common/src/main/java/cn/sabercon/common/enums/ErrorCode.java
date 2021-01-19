@@ -16,18 +16,11 @@ public interface ErrorCode {
         return null;
     }
 
-    /**
-     * @return 多语言资源键值
-     */
-    default String key() {
-        return null;
+    default ServiceException exception(String msg) {
+        return new ServiceException(msg, code());
     }
 
-    default ServiceException exceptionWithMsg(String msg, Object... args) {
-        return new ServiceException(msg, code(), key(), args);
-    }
-
-    default ServiceException exception(Object... args) {
-        return exceptionWithMsg(msg(), args);
+    default ServiceException exception() {
+        return exception(msg());
     }
 }

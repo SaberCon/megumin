@@ -31,7 +31,7 @@ public interface BaseJpaRepository<T> extends JpaRepository<T, Long>, JpaSpecifi
      *
      * @param entity 要添加或取消的关系
      * @param undo   是否取消
-     * @return 是否操作成功
+     * @return 是否有更新操作
      */
     boolean addRelation(T entity, boolean undo);
 

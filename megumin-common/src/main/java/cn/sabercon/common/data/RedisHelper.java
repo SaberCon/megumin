@@ -47,7 +47,7 @@ public class RedisHelper {
     }
 
     public String get(String key) {
-        return template.boundValueOps(key).get();
+        return template.opsForValue().get(key);
     }
 
     public Boolean getAsBool(String key) {
@@ -83,7 +83,7 @@ public class RedisHelper {
         } else {
             valueStr = Json.write(value);
         }
-        template.boundValueOps(key).set(valueStr, timeout, unit);
+        template.opsForValue().set(key, valueStr, timeout, unit);
     }
 
     /**

@@ -21,6 +21,9 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Json {
 
+    /**
+     * spring context 启动后会注入带有配置的 mapper, 在此之前使用的是默认 mapper
+     */
     private static ObjectMapper mapper = new ObjectMapper();
 
     static {
