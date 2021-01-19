@@ -53,7 +53,7 @@ public class OssHelper {
      * @return 临时 token
      */
     @SneakyThrows
-    public OssToken getToken(FileType type) {
+    public OssToken getToken() {
         var request = new AssumeRoleRequest();
         request.setSysMethod(MethodType.POST);
         request.setRoleArn(properties.getOss().getRoleArn());
@@ -66,7 +66,6 @@ public class OssHelper {
                 .expiration(credentials.getExpiration())
                 .endpoint(properties.getOss().getEndpoint())
                 .bucket(properties.getOss().getBucket())
-                .accessDomain(properties.getOss().getAccessDomain())
-                .dir(Joiner.on("/").join(type.dir, FORMATTER.format(LocalDate.now()))).build();
+                .accessDomain(properties.getOss().getAccessDomain()).build();
     }
 }

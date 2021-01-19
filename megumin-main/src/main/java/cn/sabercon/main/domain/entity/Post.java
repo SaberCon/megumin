@@ -31,5 +31,5 @@ public class Post extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ContentType type;
 
-    private Long replies;
+    private Long replies = 0L;
 }

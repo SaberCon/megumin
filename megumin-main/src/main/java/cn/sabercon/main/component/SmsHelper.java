@@ -55,9 +55,8 @@ public class SmsHelper {
         var response = acsClient.getCommonResponse(request);
         log.debug("aliyun sms code sending result: {}", response.getData());
         // 保存验证码到redis中，保存时间五分钟
-        var key = buildRedisKey(SMS_CODE_PREFIX, type.val(), phone);
-        redisHelper.set(key, code, 5, TimeUnit.MINUTES);
-        log.debug("set sms code to redis, phone number:{}, code:{}", phone, code);
+        redisHelper.set(buildRedisKey(SMS_CODE_PREFIX, type.val(), phone), code, 5, TimeUnit.MINUTES);
+        log.debug("set sms code to redis, phone number: {}, code: {}", phone, code);
     }
 
     /**

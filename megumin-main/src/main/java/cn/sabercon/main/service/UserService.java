@@ -64,7 +64,6 @@ public class UserService {
         user.setPhone(phone);
         user.setUsername(generateUsername());
         user.setAvatar(DEFAULT_AVATAR);
-        user.setGender(User.Gender.UNKNOWN);
         repo.save(user);
         return user;
     }
@@ -83,7 +82,7 @@ public class UserService {
         var oldPhone = getLoginInfo().getPhone();
         Checker.isTrue(smsHelper.checkCode(SmsType.UNBIND_PHONE, oldPhone, unbindCode), SMS_CODE_WRONG);
         Checker.isTrue(smsHelper.checkCode(SmsType.BIND_PHONE, newPhone, bindCode), SMS_CODE_WRONG);
-        Checker.isTrue(Objects.equals(oldPhone, newPhone) || !repo.existsByPhone(newPhone), PHONE_ALREADY_BOUND);
+        Checker.isTrue(!repo.existsByPhone(newPhone), PHONE_ALREADY_BOUND);
         var user = repo.findById(HttpUtils.userId()).orElseThrow();
         user.setPhone(newPhone);
         refreshUserInfoCache(user);
@@ -94,6 +93,7 @@ public class UserService {
         Checker.isTrue(smsHelper.checkCode(SmsType.UPDATE_PWD, getLoginInfo().getPhone(), code), SMS_CODE_WRONG);
         var user = repo.findById(HttpUtils.userId()).orElseThrow();
         user.setPassword(SecureUtil.md5(newPwd));
+        redisHelper.delete(buildRedisKey(LOGIN_USER_PREFIX, user.getId()));
     }
 
     @Tx

@@ -58,7 +58,6 @@ public class PostService {
     public void publish(PostParam param) {
         var post = PojoUtils.convert(param, Post.class);
         post.setCreator(HttpUtils.userId());
-        post.setReplies(0L);
         repo.save(post);
     }
 }

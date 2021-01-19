@@ -26,6 +26,4 @@ public class OssToken {
     private String bucket;
 
     private String accessDomain;
-
-    private String dir;
 }

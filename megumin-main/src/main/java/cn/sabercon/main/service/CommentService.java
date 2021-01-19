@@ -53,7 +53,6 @@ public class CommentService {
     public void publish(CommentParam param) {
         var comment = PojoUtils.convert(param, Comment.class);
         comment.setCreator(HttpUtils.userId());
-        comment.setReplies(0L);
         repo.save(comment);
         repo.inc(param.getQuoteId(), Comment::getReplies, 1);
         postRepo.inc(param.getPostId(), Post::getReplies, 1);

@@ -29,7 +29,7 @@ public class User extends BaseEntity {
     private String about;
 
     @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private Gender gender = Gender.UNKNOWN;
 
     public enum Gender {
         UNKNOWN, BOY, GIRL

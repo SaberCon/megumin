@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * @author SaberCon
  * @since 1.0.0
@@ -32,8 +30,8 @@ public class OssCtrl {
     }
 
     @GetMapping
-    public OssToken getToken(@NotNull FileType type) {
-        return helper.getToken(type);
+    public OssToken getToken() {
+        return helper.getToken();
     }
 
 }
