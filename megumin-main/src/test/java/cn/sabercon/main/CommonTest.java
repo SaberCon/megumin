@@ -1,8 +1,9 @@
 package cn.sabercon.main;
 
-import cn.hutool.crypto.SecureUtil;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 /**
  * @author SaberCon
@@ -11,8 +12,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class CommonTest {
 
+    @Autowired
+    StringRedisTemplate redisTemplate;
+
     @Test
     void test() {
-        System.out.println(SecureUtil.md5((String) null));
+        redisTemplate.slaveOfNoOne();
     }
 }

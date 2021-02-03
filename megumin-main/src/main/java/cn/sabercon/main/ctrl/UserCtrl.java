@@ -26,7 +26,7 @@ public class UserCtrl {
     private final UserService service;
 
     @GetMapping("current")
-    public UserInfo getLoginInfo() {
+    public UserInfo getCurrentInfo() {
         var info = service.getLoginInfo();
         info.setPhone(maskPhoneNumber(info.getPhone()));
         return info;

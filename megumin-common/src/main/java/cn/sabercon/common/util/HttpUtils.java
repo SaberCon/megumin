@@ -21,7 +21,7 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class HttpUtils {
 
-    private static final String TOKEN_HEADER = "jwt-token";
+    private static final String TOKEN_HEADER = "token";
 
     public static HttpServletRequest getRequest() {
         var attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();

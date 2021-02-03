@@ -7,6 +7,8 @@ spring:
     url: jdbc:mysql://www.sabercon.cn:3306/megumin?serverTimezone=Asia/Shanghai
     username: root
     password: ENC(z+RhuUIJkbiC1SvLB60veNQ7af5hmZk82EHLLErazaAJ/1u8Hsq25C0ByNmZJNFo)
+    hikari:
+      max-lifetime: 30000 # 测试环境长时间不使用连接容易失效
   jpa:
     show-sql: true
     hibernate:

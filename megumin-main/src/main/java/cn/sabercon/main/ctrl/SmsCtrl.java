@@ -5,7 +5,6 @@ import cn.sabercon.main.component.SmsHelper;
 import cn.sabercon.main.enums.type.SmsType;
 import cn.sabercon.main.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.validation.constraints.NotNull;
@@ -23,17 +22,14 @@ public class SmsCtrl {
 
     @GetMapping
     public void sendCode(@NotNull SmsType type, String phone) {
-        if (ObjectUtils.isEmpty(phone)) {
+        if (type != SmsType.LOGIN) {
             phone = userService.getLoginInfo().getPhone();
         }
         manager.sendCode(type, phone);
     }
 
     @GetMapping("check")
-    public boolean checkCode(@NotNull SmsType type, String phone, @NotNull String code) {
-        if (ObjectUtils.isEmpty(phone)) {
-            phone = userService.getLoginInfo().getPhone();
-        }
-        return manager.checkCode(type, phone, code);
+    public boolean checkCode(@NotNull SmsType type, @NotNull String code) {
+        return manager.checkCode(type, userService.getLoginInfo().getPhone(), code);
     }
 }

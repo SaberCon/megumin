@@ -27,10 +27,12 @@ import java.util.stream.Collectors;
 @ConditionalOnWebApplication
 public class WebConfig implements WebMvcConfigurer {
 
+    private final ConverterFactory<String, Enum> strToEnumConverterFactory;
     private final ConverterFactory<String, IntEnum> strToIntEnumConverterFactory;
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
+        registry.addConverterFactory(strToEnumConverterFactory);
         registry.addConverterFactory(strToIntEnumConverterFactory);
     }
 

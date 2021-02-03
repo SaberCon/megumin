@@ -47,7 +47,7 @@ public class SwaggerConfig {
     private List<RequestParameter> buildGlobalParams() {
         // jwt token
         var token = new RequestParameterBuilder()
-                .name("jwt-token")
+                .name("token")
                 .description("认证 token")
                 .in(ParameterType.HEADER)
                 .query(q -> q.model(m -> m.scalarModel(ScalarType.STRING)))

@@ -17,11 +17,11 @@ public class Result<T> {
 
     boolean success;
 
-    String errorCode;
+    String code;
 
-    String errorMessage;
+    String msg;
 
-    String debugMessage;
+    String debugMsg;
 
     T data;
 
