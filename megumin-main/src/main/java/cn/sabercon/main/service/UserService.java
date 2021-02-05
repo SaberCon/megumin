@@ -89,10 +89,10 @@ public class UserService {
     }
 
     @Tx
-    public void updatePwd(String newPwd, String code) {
+    public void updatePwd(String password, String code) {
         Checker.isTrue(smsHelper.checkCode(SmsType.UPDATE_PWD, getLoginInfo().getPhone(), code), SMS_CODE_WRONG);
         var user = repo.findById(HttpUtils.userId()).orElseThrow();
-        user.setPassword(SecureUtil.md5(newPwd));
+        user.setPassword(SecureUtil.md5(password));
         redisHelper.delete(buildRedisKey(LOGIN_USER_PREFIX, user.getId()));
     }
 

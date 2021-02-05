@@ -22,14 +22,17 @@ public class SmsCtrl {
 
     @GetMapping
     public void sendCode(@NotNull SmsType type, String phone) {
-        if (type != SmsType.LOGIN) {
+        if (type == SmsType.UNBIND_PHONE || type == SmsType.UPDATE_PWD) {
             phone = userService.getLoginInfo().getPhone();
         }
         manager.sendCode(type, phone);
     }
 
     @GetMapping("check")
-    public boolean checkCode(@NotNull SmsType type, @NotNull String code) {
-        return manager.checkCode(type, userService.getLoginInfo().getPhone(), code);
+    public boolean checkCode(@NotNull SmsType type, @NotNull String code, String phone) {
+        if (type == SmsType.UNBIND_PHONE || type == SmsType.UPDATE_PWD) {
+            phone = userService.getLoginInfo().getPhone();
+        }
+        return manager.checkCode(type, phone, code);
     }
 }

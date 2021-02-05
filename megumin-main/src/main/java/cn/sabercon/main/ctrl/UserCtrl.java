@@ -43,8 +43,8 @@ public class UserCtrl {
     }
 
     @PutMapping("pwd")
-    public void updatePwd(@NotNull String newPwd, @NotNull String code) {
-        service.updatePwd(newPwd, code);
+    public void updatePwd(@NotNull String password, @NotNull String code) {
+        service.updatePwd(password, code);
     }
 
     @PutMapping
