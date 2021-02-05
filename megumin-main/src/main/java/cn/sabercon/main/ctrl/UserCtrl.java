@@ -38,8 +38,8 @@ public class UserCtrl {
     }
 
     @PutMapping("phone")
-    public void updatePhone(@NotNull String newPhone, @NotNull String unbindCode, @NotNull String bindCode) {
-        service.updatePhone(newPhone, unbindCode, bindCode);
+    public void updatePhone(@NotNull String phone, @NotNull String unbindCode, @NotNull String bindCode) {
+        service.updatePhone(phone, unbindCode, bindCode);
     }
 
     @PutMapping("pwd")

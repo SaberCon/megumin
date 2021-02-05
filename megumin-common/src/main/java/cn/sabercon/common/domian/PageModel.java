@@ -23,23 +23,15 @@ public class PageModel<T> {
      * 数据列表
      */
     List<T> list;
-    /**
-     * 当前页码
-     */
-    int current;
-    /**
-     * 当前页幅
-     */
-    int pageSize;
 
     /**
      * 转换 SpringData 分页后的结果
      */
     public static <T> PageModel<T> from(Page<T> page) {
-        return new PageModel<>(page.getTotalElements(), page.getContent(), page.getNumber(), page.getSize());
+        return new PageModel<>(page.getTotalElements(), page.getContent());
     }
 
     public <U> PageModel<U> map(Function<? super T, ? extends U> converter) {
-        return new PageModel<>(total, list.stream().map(converter).collect(Collectors.toList()), current, pageSize);
+        return new PageModel<>(total, list.stream().map(converter).collect(Collectors.toList()));
     }
 }

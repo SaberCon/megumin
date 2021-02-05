@@ -1,6 +1,7 @@
 package cn.sabercon.main.domain.model;
 
 import cn.sabercon.main.enums.type.ContentType;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -29,4 +30,7 @@ public class PostModel {
     private ContentType type;
 
     private Long replies;
+
+    @ApiModelProperty("当前用户是否已关注")
+    private Boolean followed = false;
 }

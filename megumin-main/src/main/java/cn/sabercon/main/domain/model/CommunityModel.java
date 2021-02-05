@@ -1,5 +1,6 @@
 package cn.sabercon.main.domain.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -24,4 +25,7 @@ public class CommunityModel {
     private LocalDateTime ctime;
 
     private Long members;
+
+    @ApiModelProperty("当前用户是否已加入")
+    private Boolean joined = false;
 }

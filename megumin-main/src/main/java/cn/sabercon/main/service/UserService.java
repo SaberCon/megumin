@@ -78,13 +78,13 @@ public class UserService {
     }
 
     @Tx
-    public void updatePhone(String newPhone, String unbindCode, String bindCode) {
+    public void updatePhone(String phone, String unbindCode, String bindCode) {
         var oldPhone = getLoginInfo().getPhone();
         Checker.isTrue(smsHelper.checkCode(SmsType.UNBIND_PHONE, oldPhone, unbindCode), SMS_CODE_WRONG);
-        Checker.isTrue(smsHelper.checkCode(SmsType.BIND_PHONE, newPhone, bindCode), SMS_CODE_WRONG);
-        Checker.isTrue(!repo.existsByPhone(newPhone), PHONE_ALREADY_BOUND);
+        Checker.isTrue(smsHelper.checkCode(SmsType.BIND_PHONE, phone, bindCode), SMS_CODE_WRONG);
+        Checker.isTrue(!repo.existsByPhone(phone), PHONE_ALREADY_BOUND);
         var user = repo.findById(HttpUtils.userId()).orElseThrow();
-        user.setPhone(newPhone);
+        user.setPhone(phone);
         refreshUserInfoCache(user);
     }
 
