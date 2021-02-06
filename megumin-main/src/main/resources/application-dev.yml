@@ -59,5 +59,4 @@ aliyun:
   oss:
     endpoint: oss-cn-shenzhen.aliyuncs.com
     bucket: motto
-    role-arn: acs:ram::1601562664794679:role/sabercon
     access-domain: http://oss.sabercon.cn

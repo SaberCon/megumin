@@ -38,8 +38,6 @@ public class AliyunProperties {
 
         private String bucket;
 
-        private String roleArn;
-
         private String accessDomain;
     }
 }

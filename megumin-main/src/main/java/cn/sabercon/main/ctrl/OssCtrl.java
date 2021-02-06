@@ -2,7 +2,7 @@ package cn.sabercon.main.ctrl;
 
 import cn.sabercon.common.anno.CustomController;
 import cn.sabercon.main.component.OssHelper;
-import cn.sabercon.main.domain.model.OssToken;
+import cn.sabercon.main.domain.model.OssData;
 import cn.sabercon.main.enums.type.FileType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.ObjectUtils;
@@ -30,8 +30,8 @@ public class OssCtrl {
     }
 
     @GetMapping
-    public OssToken getToken() {
-        return helper.getToken();
+    public OssData getOssData() {
+        return helper.getOssData();
     }
 
 }

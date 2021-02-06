@@ -22,12 +22,12 @@ public class AliyunConfig {
 
     private final AliyunProperties properties;
 
-    @Bean
+    @Bean(destroyMethod = "shutdown")
     public OSS ossClient() {
         return new OSSClientBuilder().build(properties.getOss().getEndpoint(), properties.getAccessKeyId(), properties.getAccessKeySecret());
     }
 
-    @Bean
+    @Bean(destroyMethod = "shutdown")
     public IAcsClient acsClient() {
         return new DefaultAcsClient(DefaultProfile.getProfile("cn-shenzhen", properties.getAccessKeyId(), properties.getAccessKeySecret()));
     }
