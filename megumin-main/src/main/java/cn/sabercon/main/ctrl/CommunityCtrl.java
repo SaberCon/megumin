@@ -26,7 +26,7 @@ public class CommunityCtrl {
         return service.listHot();
     }
 
-    @GetMapping("join")
+    @GetMapping("joined")
     public Page<CommunityModel> listJoined() {
         return service.listJoined();
     }
