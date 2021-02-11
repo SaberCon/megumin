@@ -27,7 +27,7 @@ public class CommunityService {
     private final UserCommunityRepo userCommunityRepo;
 
     public Page<CommunityModel> listHot() {
-        return repo.findAll(pagination(repo.getSort(Community::getMembers).descending()))
+        return repo.findAll(pagination(repo.getSort(Community::getMembers).descending().and(DESC_CTIME)))
                 .map(e -> PojoUtils.convert(e, CommunityModel.class));
     }
 
