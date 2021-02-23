@@ -10,5 +10,6 @@ class SimpleTest {
 
     @Test
     void test() throws Exception {
+
     }
 }

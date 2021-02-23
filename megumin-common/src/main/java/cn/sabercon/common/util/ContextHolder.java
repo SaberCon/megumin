@@ -25,14 +25,14 @@ public class ContextHolder implements ApplicationContextAware, DisposableBean {
 
     private static Environment environment;
 
-    private static final Queue<Task> CALL_BACKS = new ConcurrentLinkedQueue<>();
+    private static final Queue<Runnable> CALL_BACKS = new ConcurrentLinkedQueue<>();
 
     private static boolean isContextReady;
 
     /**
      * 针对某些需要 context 的初始化方法提交回调, 回调会在 context 初始化后执行, 如果提交时已初始化完成则会立即执行
      */
-    public static void addCallBack(Task callback) {
+    public static void addCallBack(Runnable callback) {
         if (isContextReady) {
             callback.run();
         } else {

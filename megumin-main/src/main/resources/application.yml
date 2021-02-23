@@ -4,6 +4,7 @@ spring:
 sabercon:
   enable-common: true
   jwt-key: ENC(pzsYI7Ytk2RGuna1MZWaXsTH0YI3p9YuxLs6eK3UZWDF7odx641Po2BUT2qdrzHM)
+  default-password: ENC(z+RhuUIJkbiC1SvLB60veNQ7af5hmZk82EHLLErazaAJ/1u8Hsq25C0ByNmZJNFo)
 jasypt:
   encryptor:
     password: sabercon
